@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function Landing() {
   return (
     <React.Fragment>
-      <Container>
+      <Container style={{ padding: "0px" }}>
         <Row>
           <Col xs="12">
             <img style={{ maxWidth: "100%" }} src={logo} alt="logo" />
@@ -38,10 +38,12 @@ function Landing() {
             </p>
           </Col>
           <Col xs={{ size: 4, offset: 4 }} style={{ textAlign: "center" }}>
-            <Arrow
-              size={56}
-              style={{ margin: "auto", display: "inline-block" }}
-            />
+            <Link to="/cities">
+              <Arrow
+                size={56}
+                style={{ margin: "auto", display: "inline-block" }}
+              />
+            </Link>
           </Col>
           <Row style={{ padding: "5px" }}>
             <Col xs={{ size: 12 }} style={{ textAlign: "center" }}>
@@ -56,7 +58,10 @@ function Landing() {
               </Link>
             </Col>
             <Col xs={{ size: 6, offset: 2 }} style={{ textAlign: "center" }}>
-              <Link style={{ margin: "auto", display: "inline-block" }}>
+              <Link
+                to="/signin"
+                style={{ margin: "auto", display: "inline-block" }}
+              >
                 Create Acount
               </Link>
             </Col>

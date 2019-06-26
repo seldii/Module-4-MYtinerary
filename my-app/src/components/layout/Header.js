@@ -10,7 +10,7 @@ function Header() {
       <Container>
         <Row>
           <Col xs={{ size: 2 }}>
-            <Link to="/login">
+            <Link to="/profile">
               <FaUser style={{ color: "#FF6347" }} size={48} />
             </Link>
           </Col>

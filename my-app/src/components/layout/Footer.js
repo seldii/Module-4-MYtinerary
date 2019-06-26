@@ -10,7 +10,7 @@ export default function Footer() {
         <Row style={{ alignItems: "center" }}>
           <Col xs={{ size: 4, offset: 4 }} style={{ textAlign: "center" }}>
             <Link style={{ margin: "auto", display: "inline-block" }}>
-              <FaHome size={56} />
+              <FaHome style={{ color: "#FF6347" }} size={56} />
             </Link>
           </Col>
         </Row>
