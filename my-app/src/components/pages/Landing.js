@@ -3,6 +3,7 @@ import logo from "../layout/MYtineraryLogo.png";
 import { Container, Row, Col } from "reactstrap";
 import { FaArrowCircleRight as Arrow } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
 
 function Landing() {
   return (
@@ -67,6 +68,17 @@ function Landing() {
             </Col>
           </Row>
         </Row>
+        <footer>
+          <Container style={{ alignItems: "center" }}>
+            <Row style={{ alignItems: "center" }}>
+              <Col xs={{ size: 4, offset: 4 }} style={{ textAlign: "center" }}>
+                <Link style={{ margin: "auto", display: "inline-block" }}>
+                  <FaHome style={{ color: "#FF6347" }} size={56} />
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        </footer>
       </Container>
     </React.Fragment>
   );
