@@ -1,0 +1,21 @@
+#root {
+  margin-top: 5px;
+}
+.slick-next:before,
+[dir="rtl"] .slick-prev:before {
+  content: ">";
+  font-weight: bolder;
+  color: blueviolet;
+}
+.slick-prev:before {
+  content: "<";
+  font-weight: bolder;
+  color: blueviolet;
+}
+
+.slick-next {
+  right: -15px;
+}
+.slick-prev {
+  left: -15px;
+}

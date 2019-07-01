@@ -4,6 +4,7 @@ import Barcelona from "../pages/Barcelona.png";
 import NewYork from "../pages/NewYork.png";
 import Amsterdam from "../pages/Amsterdam.png";
 import Paris from "../pages/Paris.png";
+import "../../App.css";
 
 const items = [
   {
@@ -72,26 +73,6 @@ const items = [
   }
 ];
 
-function SampleNextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block", background: "red" }}
-      onClick={onClick}
-    />
-  );
-}
-function SamplePrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block", background: "green" }}
-      onClick={onClick}
-    />
-  );
-}
 export class SlideMe extends Component {
   render() {
     var settings = {
@@ -102,9 +83,7 @@ export class SlideMe extends Component {
       slidesToScroll: 1,
       rows: 2,
       slidesPerRow: 2,
-      slide: "container",
-      nextArrow: <SampleNextArrow />,
-      prevArrow: <SamplePrevArrow />
+      slide: "container"
     };
     return (
       <Slider {...settings}>

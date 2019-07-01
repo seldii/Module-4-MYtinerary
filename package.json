@@ -1,0 +1,26 @@
+{
+  "name": "MYtinerary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "cd backend && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seldii/Module-4-MYtinerary-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/seldii/Module-4-MYtinerary-/issues"
+  },
+  "homepage": "https://github.com/seldii/Module-4-MYtinerary-#readme"
+}
