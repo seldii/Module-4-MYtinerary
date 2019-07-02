@@ -8,15 +8,15 @@ function Header() {
   return (
     <header className="App-header">
       <Container>
-        <Row>
-          <Col xs={{ size: 2 }}>
+        <Row style={{ flexWrap: "nowrap" }}>
+          <Col xs>
             <Link to="/profile">
-              <FaUser style={{ color: "#FF6347" }} size={48} />
+              <FaUser style={{ color: "#FF6347", float: "left" }} size={48} />
             </Link>
           </Col>
-          <Col xs={{ size: 2, offset: 7 }}>
+          <Col xs>
             <Link to="/">
-              <FaBars style={{ color: "#FF6347" }} size={48} />
+              <FaBars style={{ color: "#FF6347", float: "right" }} size={48} />
             </Link>
           </Col>
         </Row>

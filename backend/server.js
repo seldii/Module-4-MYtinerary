@@ -12,7 +12,7 @@ const db = require("./Config/keys").mongoURI;
 
 //Connect to Mongo
 mongoose
-  .connect(db)
+  .connect(db, { useNewUrlParser: true })
   .then(console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 const PORT = process.env.PORT || 5000;
