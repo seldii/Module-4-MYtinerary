@@ -8,13 +8,18 @@ import {
   CardImgOverlay
 } from "reactstrap";
 
+import { connect } from "react-redux";
+import { getCities } from "../../actions/cityActions";
+import PropTypes from "prop-types";
+
 export class Cities extends Component {
-  constructor(props) {
+  /* constructor(props) {
     super(props);
     this.state = { cities: [] };
-  }
+  } */
 
   componentDidMount() {
+    this.props.getCities();
     axios
       .get("/cities")
       .then(res => {
@@ -24,9 +29,9 @@ export class Cities extends Component {
   }
   render() {
     let cityList;
-
-    if (this.state.cities) {
-      cityList = this.state.cities.map(city => {
+    const { cities } = this.props.city;
+    if (cities) {
+      cityList = cities.map(city => {
         return (
           <Card inverse>
             <CardImg width="100%" src={city.image} alt="Card image cap" />
@@ -53,4 +58,16 @@ export class Cities extends Component {
   }
 }
 
-export default Cities;
+Cities.propTypes = {
+  getCities: PropTypes.func.isRequired,
+  city: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  city: state.city
+});
+
+export default connect(
+  mapStateToProps,
+  { getCities }
+)(Cities);
