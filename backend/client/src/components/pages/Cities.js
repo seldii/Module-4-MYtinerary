@@ -11,27 +11,32 @@ import {
 import { connect } from "react-redux";
 import { getCities } from "../../actions/cityActions";
 import PropTypes from "prop-types";
+import _ from "lodash";
 
 export class Cities extends Component {
-  /* constructor(props) {
-    super(props);
-    this.state = { cities: [] };
-  } */
+  constructor() {
+    super();
+    this.state = { searchCity: "" };
+  }
 
   componentDidMount() {
     this.props.getCities();
-    axios
-      .get("/cities")
-      .then(res => {
-        this.setState({ cities: res.data });
-      })
-      .catch(err => console.log(err));
   }
+
+  filterCity = event => {
+    this.setState({ searchCity: event.target.value.toLowerCase() });
+  };
+
   render() {
     let cityList;
+    console.log(this.props.city);
     const { cities } = this.props.city;
-    if (cities) {
-      cityList = cities.map(city => {
+    let filteredCities = cities.filter(city => {
+      let cityName = city.name.toLowerCase();
+      return cityName.indexOf(this.state.searchCity) !== -1;
+    });
+    if (filteredCities) {
+      cityList = filteredCities.map(city => {
         return (
           <Card inverse>
             <CardImg width="100%" src={city.image} alt="Card image cap" />
@@ -54,7 +59,17 @@ export class Cities extends Component {
     } else {
       cityList = <div>Loading..</div>;
     }
-    return <Container style={{ marginTop: "15px" }}>{cityList}</Container>;
+    return (
+      <Container>
+        <input
+          type="text"
+          value={this.state.searchCity}
+          placeholder="Search"
+          onChange={this.filterCity.bind(this)}
+        />
+        <Container style={{ marginTop: "15px" }}>{cityList}</Container>
+      </Container>
+    );
   }
 }
 

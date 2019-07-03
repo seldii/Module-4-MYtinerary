@@ -8,6 +8,8 @@ import {
 
 const initialState = {
   cities: [],
+  value: "",
+  filteredCities: [],
   loading: false
 };
 
@@ -19,6 +21,7 @@ export default function(state = initialState, action) {
         cities: action.payload,
         loading: false
       };
+
     case CITIES_LOADING:
       return {
         ...state,

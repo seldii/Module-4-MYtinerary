@@ -10,6 +10,7 @@ import { Container } from "reactstrap";
 import Cities from "./components/pages/Cities";
 import { Provider } from "react-redux";
 import store from "./store";
+import VisibleCities from "./components/container/VisibleCities";
 
 class App extends Component {
   render() {
