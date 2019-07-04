@@ -16,6 +16,14 @@ export const getCities = () => dispatch => {
     })
   );
 };
+export const addCity = city => dispatch => {
+  axios.post("/cities", city).then(res =>
+    dispatch({
+      type: ADD_CITY,
+      payload: res.data
+    })
+  );
+};
 
 export const setCitiesLoading = () => {
   return {

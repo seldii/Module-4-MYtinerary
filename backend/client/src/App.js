@@ -8,9 +8,30 @@ import Profile from "./components/pages/Profile";
 import Login from "./components/pages/Login";
 import { Container } from "reactstrap";
 import Cities from "./components/pages/Cities";
+import CityCreator from "./components/cityCreator/CityCreator";
 import { Provider } from "react-redux";
 import store from "./store";
-import VisibleCities from "./components/container/VisibleCities";
+import "typeface-roboto";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import {
+  faGlobe,
+  faMapPin,
+  faHeart,
+  faSuitcaseRolling,
+  faUserAlt,
+  faIgloo
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(
+  fab,
+  faGlobe,
+  faMapPin,
+  faHeart,
+  faSuitcaseRolling,
+  faUserAlt,
+  faIgloo
+);
 
 class App extends Component {
   render() {
@@ -24,6 +45,7 @@ class App extends Component {
             <Route path="/profile" component={Profile} />
             <Route path="/login" component={Login} />
             <Route path="/cities" component={Cities} />
+            <Route path="/city-creator" component={CityCreator} />
           </Container>
         </Router>
       </Provider>

@@ -15,9 +15,8 @@ router.post("/", cityValidation, async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    const city = await new City(req.body);
-    city.save();
-    res.send(city);
+    const newCity = await new City(req.body);
+    newCity.save().then(city => res.json(city));
   } catch (err) {
     res.status(500).send("Server Error");
   }

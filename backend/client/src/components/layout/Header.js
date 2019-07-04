@@ -1,23 +1,29 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
-import { FaBars, FaUser } from "react-icons/fa";
+import Nav from "./Nav";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Header() {
   return (
     <header className="App-header">
       <Container>
         <Row style={{ flexWrap: "nowrap" }}>
-          <Col xs>
+          <Col xs style={{ margin: "auto" }}>
             <Link to="/profile">
-              <FaUser style={{ color: "#FF6347", float: "left" }} size={48} />
+              <FontAwesomeIcon
+                style={{
+                  float: "left",
+                  fontSize: "2em",
+                  color: "#FF6347",
+                  textAlign: "center"
+                }}
+                icon="user-alt"
+              />
             </Link>
           </Col>
           <Col xs>
-            <Link to="/">
-              <FaBars style={{ color: "#FF6347", float: "right" }} size={48} />
-            </Link>
+            <Nav />
           </Col>
         </Row>
       </Container>

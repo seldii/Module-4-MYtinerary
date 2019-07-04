@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import axios from "axios";
+
 import {
   Container,
   Card,
   CardTitle,
   CardImg,
-  CardImgOverlay
+  CardImgOverlay,
+  Row,
+  Col
 } from "reactstrap";
 
 import { connect } from "react-redux";
-import { getCities } from "../../actions/cityActions";
+import { getCities } from "../../store/actions/cityActions";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
@@ -61,13 +63,19 @@ export class Cities extends Component {
     }
     return (
       <Container>
-        <input
-          type="text"
-          value={this.state.searchCity}
-          placeholder="Search"
-          onChange={this.filterCity.bind(this)}
-        />
-        <Container style={{ marginTop: "15px" }}>{cityList}</Container>
+        <Row>
+          <Col xs="12">
+            <input
+              style={{ width: "100%" }}
+              type="text"
+              value={this.state.searchCity}
+              placeholder="Search"
+              onChange={this.filterCity.bind(this)}
+            />
+          </Col>
+        </Row>
+
+        {cityList}
       </Container>
     );
   }

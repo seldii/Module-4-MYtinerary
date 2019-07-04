@@ -21,7 +21,11 @@ export default function(state = initialState, action) {
         cities: action.payload,
         loading: false
       };
-
+    case ADD_CITY:
+      return {
+        ...state,
+        cities: [action.payload, ...state.cities]
+      };
     case CITIES_LOADING:
       return {
         ...state,
