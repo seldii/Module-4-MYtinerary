@@ -22,7 +22,7 @@ function Header() {
               />
             </Link>
           </Col>
-          <Col xs>
+          <Col xs style={{ margin: "auto", padding: "0px" }}>
             <Nav />
           </Col>
         </Row>

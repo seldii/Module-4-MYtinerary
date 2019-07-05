@@ -9,21 +9,16 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import EditLocationIcon from "@material-ui/icons/EditLocation";
-import { maxWidth } from "@material-ui/system";
 
 const useStyles = makeStyles(theme => ({
   list: {
-    width: 250
-  },
-  fullList: {
     width: "auto"
   },
 
   icon: {
-    margin: theme.spacing(0),
+    margin: "auto",
     float: "right",
-    fontSize: "3em",
+    fontSize: "3rem",
     color: "#FF6347"
   }
 }));

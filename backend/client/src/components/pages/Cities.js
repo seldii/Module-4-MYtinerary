@@ -9,6 +9,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+import Input from "@material-ui/core/Input";
 
 import { connect } from "react-redux";
 import { getCities } from "../../store/actions/cityActions";
@@ -31,16 +32,16 @@ export class Cities extends Component {
 
   render() {
     let cityList;
-    console.log(this.props.city);
+
     const { cities } = this.props.city;
     let filteredCities = cities.filter(city => {
       let cityName = city.name.toLowerCase();
       return cityName.indexOf(this.state.searchCity) !== -1;
     });
     if (filteredCities) {
-      cityList = filteredCities.map(city => {
+      cityList = filteredCities.map((city, _id) => {
         return (
-          <Card inverse>
+          <Card inverse key={_id}>
             <CardImg width="100%" src={city.image} alt="Card image cap" />
             <CardImgOverlay style={{ display: "flex" }}>
               <CardTitle
@@ -65,9 +66,9 @@ export class Cities extends Component {
       <Container>
         <Row>
           <Col xs="12">
-            <input
+            <Input
               style={{ width: "100%" }}
-              type="text"
+              type="search"
               value={this.state.searchCity}
               placeholder="Search"
               onChange={this.filterCity.bind(this)}

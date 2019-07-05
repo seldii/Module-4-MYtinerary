@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import SaveIcon from "@material-ui/icons/Save";
 import TextField from "@material-ui/core/TextField";
-import { Form, Button } from "reactstrap";
+
+import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { addCity } from "../../store/actions/cityActions";
+import { setError } from "../../store/actions/errorActions";
+import ErrorMessage from "../common/ErrorMessage";
 import PropTypes from "prop-types";
 class CityCreator extends Component {
   constructor(props) {
@@ -35,7 +38,8 @@ class CityCreator extends Component {
     return (
       <div>
         <h1>City Creator</h1>
-        <Form onSubmit={this.onSubmit}>
+        <ErrorMessage />
+        <form id="city-creator" onSubmit={this.onSubmit}>
           <TextField
             required
             id="outlined-name"
@@ -88,11 +92,17 @@ class CityCreator extends Component {
             onChange={this.onChange}
           />
 
-          <Button fullWidth variant="contained" size="small">
+          <Button
+            form="city-creator"
+            fullWidth
+            variant="contained"
+            size="small"
+            type="submit"
+          >
             <SaveIcon />
             Save
           </Button>
-        </Form>
+        </form>
       </div>
     );
   }
@@ -109,5 +119,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addCity }
+  { addCity, setError }
 )(CityCreator);

@@ -20,7 +20,8 @@ import {
   faHeart,
   faSuitcaseRolling,
   faUserAlt,
-  faIgloo
+  faIgloo,
+  faBomb
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -30,7 +31,8 @@ library.add(
   faHeart,
   faSuitcaseRolling,
   faUserAlt,
-  faIgloo
+  faIgloo,
+  faBomb
 );
 
 class App extends Component {

@@ -17,6 +17,7 @@ router.post("/", cityValidation, async (req, res) => {
   try {
     const newCity = await new City(req.body);
     newCity.save().then(city => res.json(city));
+    res.send({ msg: "City created." });
   } catch (err) {
     res.status(500).send("Server Error");
   }
@@ -47,7 +48,18 @@ router.patch("/:id", cityValidation, async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const cities = await City.find();
-    cities.sort((a, b) => a - b);
+    cities.sort(function(a, b) {
+      let nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      let nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      // names must be equal
+      return 0;
+    });
     res.send(cities);
   } catch (err) {
     res.send(err.message);
