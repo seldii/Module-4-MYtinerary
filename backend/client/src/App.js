@@ -14,6 +14,7 @@ import store from "./store";
 import "typeface-roboto";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
+import "typeface-roboto";
 import {
   faGlobe,
   faMapPin,
@@ -21,7 +22,9 @@ import {
   faSuitcaseRolling,
   faUserAlt,
   faIgloo,
-  faBomb
+  faBomb,
+  faTrashAlt,
+  faEdit
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -32,7 +35,9 @@ library.add(
   faSuitcaseRolling,
   faUserAlt,
   faIgloo,
-  faBomb
+  faBomb,
+  faTrashAlt,
+  faEdit
 );
 
 class App extends Component {

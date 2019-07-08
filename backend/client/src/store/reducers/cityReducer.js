@@ -27,6 +27,12 @@ export default function(state = initialState, action) {
         cities: [action.payload, ...state.cities],
         loading: false
       };
+    case DELETE_CITY:
+      return {
+        ...state,
+        cities: state.cities.filter(city => city._id !== action.payload),
+        loading: false
+      };
     case CITIES_LOADING:
       return {
         ...state,

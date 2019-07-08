@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import CityCreatorCard from "./CityCreatorCard";
+import { getCities } from "../../store/actions/cityActions";
 import SaveIcon from "@material-ui/icons/Save";
 import TextField from "@material-ui/core/TextField";
-
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { addCity } from "../../store/actions/cityActions";
@@ -19,14 +20,23 @@ class CityCreator extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+  componentDidMount() {
+    this.props.getCities();
+  }
   onSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
 
     const newCity = this.state;
 
     //Add City via addCity action
     this.props.addCity(newCity);
+
+    //Clear form
+    this.setState({
+      name: "",
+      country: "",
+      image: ""
+    });
   }
   onChange(e) {
     this.setState({
@@ -35,11 +45,20 @@ class CityCreator extends Component {
   }
 
   render() {
+    let cityList;
+    const { cities } = this.props.city;
+    cityList = cities.map((city, _id) => {
+      return <CityCreatorCard key={_id} name={city.name} id={_id} />;
+    });
     return (
       <div>
         <h1>City Creator</h1>
         <ErrorMessage />
-        <form id="city-creator" onSubmit={this.onSubmit}>
+        <form
+          id="city-creator"
+          onSubmit={this.onSubmit}
+          style={{ marginBottom: "1rem" }}
+        >
           <TextField
             required
             id="outlined-name"
@@ -103,6 +122,7 @@ class CityCreator extends Component {
             Save
           </Button>
         </form>
+        <div>{cityList}</div>
       </div>
     );
   }
@@ -110,7 +130,8 @@ class CityCreator extends Component {
 
 CityCreator.propTypes = {
   addCity: PropTypes.func.isRequired,
-  city: PropTypes.object.isRequired
+  city: PropTypes.object.isRequired,
+  getCities: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -119,5 +140,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addCity, setError }
+  { addCity, getCities, setError }
 )(CityCreator);

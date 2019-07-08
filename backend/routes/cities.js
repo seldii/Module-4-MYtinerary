@@ -16,8 +16,7 @@ router.post("/", cityValidation, async (req, res) => {
   }
   try {
     const newCity = await new City(req.body);
-    newCity.save().then(city => res.json(city));
-    res.send({ msg: "City created." });
+    newCity.save().then(city => res.send(city));
   } catch (err) {
     res.status(500).send("Server Error");
   }
