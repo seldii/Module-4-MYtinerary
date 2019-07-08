@@ -1,5 +1,6 @@
 import {
   GET_CITIES,
+  GET_CITY,
   ADD_CITY,
   DELETE_CITY,
   UPDATE_CITY,
@@ -8,6 +9,7 @@ import {
 
 const initialState = {
   cities: [],
+  city: {},
   value: "",
   filteredCities: [],
   loading: false
@@ -19,6 +21,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         cities: action.payload,
+        loading: false
+      };
+    case GET_CITY:
+      return {
+        ...state,
+        city: action.payload,
         loading: false
       };
     case ADD_CITY:

@@ -5,3 +5,4 @@ export const UPDATE_CITY = "UPDATE_CITY";
 export const CITIES_LOADING = "CITIES_LOADING";
 export const SET_ERROR = "SET_ERROR";
 export const REMOVE_ERROR = "REMOVE_ERROR";
+export const GET_CITY = "GET_CITY";

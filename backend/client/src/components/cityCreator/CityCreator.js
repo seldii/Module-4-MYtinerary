@@ -48,7 +48,7 @@ class CityCreator extends Component {
     let cityList;
     const { cities } = this.props.city;
     cityList = cities.map((city, _id) => {
-      return <CityCreatorCard key={_id} name={city.name} id={_id} />;
+      return <CityCreatorCard key={_id} city={city} />;
     });
     return (
       <div>

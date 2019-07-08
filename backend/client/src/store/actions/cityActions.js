@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   GET_CITIES,
+  GET_CITY,
   ADD_CITY,
   DELETE_CITY,
   UPDATE_CITY,
@@ -16,6 +17,18 @@ export const getCities = () => dispatch => {
       payload: res.data
     })
   );
+};
+
+export const getCity = id => async dispatch => {
+  try {
+    const res = await axios.get(`/cities/${id}`);
+    dispatch({
+      type: GET_CITY,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
 };
 export const addCity = newCity => async dispatch => {
   const config = {
@@ -37,14 +50,16 @@ export const addCity = newCity => async dispatch => {
   }
 };
 
-export const deleteCity = _id => async dispatch => {
+export const deleteCity = id => async dispatch => {
   try {
-    await axios.delete(`/cities/${_id}`);
+    await axios.delete(`/cities/${id}`);
     dispatch({
       type: DELETE_CITY,
-      payload: _id
+      payload: id
     });
-  } catch (err) {}
+  } catch (err) {
+    console.log(err.response.data);
+  }
 };
 
 export const setCitiesLoading = () => {

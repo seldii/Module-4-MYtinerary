@@ -5,7 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteCity } from "../../store/actions/cityActions";
+import { deleteCity, getCity } from "../../store/actions/cityActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -27,23 +27,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CityCreatorCard = ({ name, id, deleteCity }) => {
+const CityCreatorCard = ({ city, deleteCity, getCity }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const handleChange = event => deleteCity(id);
+  function handleDelete(event) {
+    console.log(city._id);
+    deleteCity(city._id);
+  }
+  function handleGetCity(event) {
+    console.log(city);
+    getCity(city._id);
+  }
 
   return (
-    <Card className={classes.card} key={id}>
+    <Card className={classes.card}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {name}
+            {city.name}
           </Typography>
         </CardContent>
-        <IconButton onClick={handleChange} className={classes.icon}>
+        <IconButton onClick={handleDelete} className={classes.icon}>
           <FontAwesomeIcon icon="trash-alt" />
         </IconButton>
-        <IconButton className={classes.icon}>
+        <IconButton onClick={handleGetCity} className={classes.icon}>
           <FontAwesomeIcon icon="edit" />
         </IconButton>
       </div>
@@ -52,10 +59,11 @@ const CityCreatorCard = ({ name, id, deleteCity }) => {
 };
 
 CityCreatorCard.propTypes = {
-  deleteCity: PropTypes.func.isRequired
+  deleteCity: PropTypes.func.isRequired,
+  getCity: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { deleteCity }
+  { deleteCity, getCity }
 )(CityCreatorCard);
