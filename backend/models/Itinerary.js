@@ -1,11 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ItinerarySchema = new Schema({
+  user: {
+    type: String,
+    required: true
+  },
   title: {
-    type: String
+    type: String,
+    required: true
+  },
+  city: {
+    type: String,
+    required: true,
+    lowercase: true
   },
   profilePic: {
-    type: String
+    type: String,
+    required: true
   },
   rating: {
     type: Number

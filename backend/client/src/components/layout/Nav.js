@@ -91,6 +91,14 @@ export default function TemporaryDrawer() {
             <ListItemText>City Creator</ListItemText>
           </ListItem>
         </Link>
+        <Link to="/itinerary-creator">
+          <ListItem button>
+            <ListItemIcon style={iconStyle()}>
+              <FontAwesomeIcon icon="clipboard-list" />
+            </ListItemIcon>
+            <ListItemText>Itinerary Creator</ListItemText>
+          </ListItem>
+        </Link>
         <Link to="/">
           <ListItem button>
             <ListItemIcon style={iconStyle()}>

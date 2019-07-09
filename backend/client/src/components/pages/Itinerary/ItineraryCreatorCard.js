@@ -5,7 +5,10 @@ import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteCity, getCity } from "../../store/actions/cityActions";
+import {
+  deleteItinerary,
+  getItinerary
+} from "../../../store/actions/itineraryAction";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -27,15 +30,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CityCreatorCard = ({ city, deleteCity, getCity, displayCity }) => {
+const ItineraryCreatorCard = ({
+  itinerary,
+  deleteItinerary,
+  getItinerary,
+  displayItinerary
+}) => {
   const classes = useStyles();
 
   function handleDelete() {
-    deleteCity(city._id);
+    deleteItinerary(itinerary._id);
   }
   function handleGetCity() {
-    getCity(city._id);
-    displayCity(city);
+    getItinerary(itinerary._id);
+    displayItinerary(itinerary);
   }
 
   return (
@@ -43,7 +51,7 @@ const CityCreatorCard = ({ city, deleteCity, getCity, displayCity }) => {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {city.name}
+            {itinerary.title}
           </Typography>
         </CardContent>
         <IconButton onClick={handleDelete} className={classes.icon}>
@@ -57,12 +65,12 @@ const CityCreatorCard = ({ city, deleteCity, getCity, displayCity }) => {
   );
 };
 
-CityCreatorCard.propTypes = {
-  deleteCity: PropTypes.func.isRequired,
-  getCity: PropTypes.func.isRequired
+ItineraryCreatorCard.propTypes = {
+  deleteItinerary: PropTypes.func.isRequired,
+  getItinerary: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { deleteCity, getCity }
-)(CityCreatorCard);
+  { deleteItinerary, getItinerary }
+)(ItineraryCreatorCard);

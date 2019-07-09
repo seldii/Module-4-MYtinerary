@@ -1,4 +1,3 @@
-import axios from "axios";
 import uuid from "uuid";
 import { SET_ERROR, REMOVE_ERROR } from "./types";
 

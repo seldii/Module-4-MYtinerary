@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 import {
   Container,
   Card,
@@ -41,22 +41,24 @@ export class Cities extends Component {
     if (filteredCities) {
       cityList = filteredCities.map((city, _id) => {
         return (
-          <Card inverse key={_id}>
-            <CardImg width="100%" src={city.image} alt="Card image cap" />
-            <CardImgOverlay style={{ display: "flex" }}>
-              <CardTitle
-                style={{
-                  textAlign: "center",
-                  width: "100%",
-                  alignSelf: "center",
-                  backgroundColor: "rgba(255,255,255,0.5)",
-                  marginBottom: "0px"
-                }}
-              >
-                {city.name}
-              </CardTitle>
-            </CardImgOverlay>
-          </Card>
+          <Link key={_id} to={`/cities/${city.name}`}>
+            <Card inverse key={_id}>
+              <CardImg width="100%" src={city.image} alt="Card image cap" />
+              <CardImgOverlay style={{ display: "flex" }}>
+                <CardTitle
+                  style={{
+                    textAlign: "center",
+                    width: "100%",
+                    alignSelf: "center",
+                    backgroundColor: "rgba(255,255,255,0.5)",
+                    marginBottom: "0px"
+                  }}
+                >
+                  {city.name}
+                </CardTitle>
+              </CardImgOverlay>
+            </Card>
+          </Link>
         );
       });
     } else {

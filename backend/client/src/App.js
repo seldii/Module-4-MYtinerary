@@ -8,7 +8,9 @@ import Profile from "./components/pages/Profile";
 import Login from "./components/pages/Login";
 import { Container } from "reactstrap";
 import Cities from "./components/pages/Cities";
+import City from "./components/pages/City";
 import CityCreator from "./components/cityCreator/CityCreator";
+import CreateItinerary from "./components/pages/Itinerary/CreateItinerary";
 import { Provider } from "react-redux";
 import store from "./store";
 import "typeface-roboto";
@@ -24,7 +26,8 @@ import {
   faIgloo,
   faBomb,
   faTrashAlt,
-  faEdit
+  faEdit,
+  faClipboardList
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -37,7 +40,8 @@ library.add(
   faIgloo,
   faBomb,
   faTrashAlt,
-  faEdit
+  faEdit,
+  faClipboardList
 );
 
 class App extends Component {
@@ -52,7 +56,9 @@ class App extends Component {
             <Route path="/profile" component={Profile} />
             <Route path="/login" component={Login} />
             <Route path="/cities" component={Cities} />
+            <Route exact path="/cities/:cityName" component={City} />
             <Route path="/city-creator" component={CityCreator} />
+            <Route path="/itinerary-creator" component={CreateItinerary} />
           </Container>
         </Router>
       </Provider>

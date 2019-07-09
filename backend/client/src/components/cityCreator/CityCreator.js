@@ -90,7 +90,7 @@ class CityCreator extends Component {
     });
     return (
       <div>
-        <h1>City Creator</h1>
+        <h2>City Creator</h2>
         <ErrorMessage />
         <form
           id="city-creator"

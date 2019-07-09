@@ -7,6 +7,8 @@ app.use(bodyParser.json());
 
 app.use("/cities", require("./routes/cities"));
 
+app.use("/itineraries", require("./routes/itineraries"));
+
 //DB Config
 const db = require("./Config/keys").mongoURI;
 
