@@ -5,7 +5,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { addCity } from "../../store/actions/cityActions";
+import { addCity, updateCity } from "../../store/actions/cityActions";
 import { setError } from "../../store/actions/errorActions";
 import ErrorMessage from "../common/ErrorMessage";
 import PropTypes from "prop-types";
@@ -20,7 +20,8 @@ class CityCreator extends Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.setCity = this.setCity.bind(this);
+    this.displayCity = this.displayCity.bind(this);
+    this.update = this.update.bind(this);
   }
   componentDidMount() {
     this.props.getCities();
@@ -44,22 +45,48 @@ class CityCreator extends Component {
       image: ""
     });
   }
+
+  update(e) {
+    e.preventDefault();
+
+    const id = this.state.city._id;
+    const city = {
+      name: this.state.name,
+      country: this.state.country,
+      image: this.state.image
+    };
+
+    //Update City via updateCity action
+    this.props.updateCity(id, city);
+
+    // Clear form
+    this.setState({
+      city: null
+    });
+  }
   onChange(e) {
+    console.log(this.state.city);
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  setCity(property) {
-    this.setState({ city: property });
+  displayCity(property) {
+    this.setState({
+      city: property,
+      name: property.name,
+      country: property.country,
+      image: property.image
+    });
   }
 
   render() {
     let cityList;
-    console.log(this.state);
     const { cities } = this.props.cities;
     cityList = cities.map((city, _id) => {
-      return <CityCreatorCard key={_id} city={city} setCity={this.setCity} />;
+      return (
+        <CityCreatorCard key={_id} city={city} displayCity={this.displayCity} />
+      );
     });
     return (
       <div>
@@ -67,7 +94,7 @@ class CityCreator extends Component {
         <ErrorMessage />
         <form
           id="city-creator"
-          onSubmit={this.onSubmit}
+          onSubmit={this.state.city === null ? this.onSubmit : this.update}
           style={{ marginBottom: "1rem" }}
         >
           <TextField
@@ -141,7 +168,8 @@ class CityCreator extends Component {
 
 CityCreator.propTypes = {
   addCity: PropTypes.func.isRequired,
-  cities: PropTypes.array.isRequired,
+  updateCity: PropTypes.func.isRequired,
+  cities: PropTypes.object.isRequired,
   getCities: PropTypes.func.isRequired,
   city: PropTypes.object.isRequired
 };
@@ -153,5 +181,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addCity, getCities, setError }
+  { addCity, getCities, setError, updateCity }
 )(CityCreator);

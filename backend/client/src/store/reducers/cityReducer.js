@@ -10,8 +10,6 @@ import {
 const initialState = {
   cities: [],
   city: {},
-  value: "",
-  filteredCities: [],
   loading: false
 };
 
@@ -33,6 +31,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         cities: [action.payload, ...state.cities],
+        loading: false
+      };
+
+    case UPDATE_CITY:
+      return {
+        ...state,
+        cities: [
+          action.payload,
+          ...state.cities.filter(city => city._id !== action.payload._id)
+        ],
         loading: false
       };
     case DELETE_CITY:

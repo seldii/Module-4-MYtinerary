@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CityCreatorCard = ({ city, deleteCity, getCity, setCity }) => {
+const CityCreatorCard = ({ city, deleteCity, getCity, displayCity }) => {
   const classes = useStyles();
   const theme = useTheme();
   function handleDelete(event) {
@@ -37,7 +37,7 @@ const CityCreatorCard = ({ city, deleteCity, getCity, setCity }) => {
   function handleGetCity(event) {
     console.log(city);
     getCity(city._id);
-    setCity(city);
+    displayCity(city);
   }
 
   return (

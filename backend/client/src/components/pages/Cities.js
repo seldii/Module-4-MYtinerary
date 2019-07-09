@@ -84,7 +84,7 @@ export class Cities extends Component {
 
 Cities.propTypes = {
   getCities: PropTypes.func.isRequired,
-  cities: PropTypes.array.isRequired
+  cities: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

@@ -29,6 +29,26 @@ export const getCity = id => async dispatch => {
     console.log(err.response.data);
   }
 };
+
+export const updateCity = (id, city) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  try {
+    const res = await axios.patch(`/cities/${id}`, city, config);
+    dispatch({
+      type: UPDATE_CITY,
+      payload: res.data
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setError(error.msg)));
+    }
+  }
+};
 export const addCity = newCity => async dispatch => {
   const config = {
     headers: {
