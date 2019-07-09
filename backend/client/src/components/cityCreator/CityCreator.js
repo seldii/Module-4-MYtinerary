@@ -15,10 +15,12 @@ class CityCreator extends Component {
     this.state = {
       name: "",
       country: "",
-      image: ""
+      image: "",
+      city: null
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.setCity = this.setCity.bind(this);
   }
   componentDidMount() {
     this.props.getCities();
@@ -26,7 +28,11 @@ class CityCreator extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const newCity = this.state;
+    const newCity = {
+      name: this.state.name,
+      country: this.state.country,
+      image: this.state.image
+    };
 
     //Add City via addCity action
     this.props.addCity(newCity);
@@ -44,11 +50,16 @@ class CityCreator extends Component {
     });
   }
 
+  setCity(property) {
+    this.setState({ city: property });
+  }
+
   render() {
     let cityList;
-    const { cities } = this.props.city;
+    console.log(this.state);
+    const { cities } = this.props.cities;
     cityList = cities.map((city, _id) => {
-      return <CityCreatorCard key={_id} city={city} />;
+      return <CityCreatorCard key={_id} city={city} setCity={this.setCity} />;
     });
     return (
       <div>
@@ -130,12 +141,14 @@ class CityCreator extends Component {
 
 CityCreator.propTypes = {
   addCity: PropTypes.func.isRequired,
-  city: PropTypes.object.isRequired,
-  getCities: PropTypes.func.isRequired
+  cities: PropTypes.array.isRequired,
+  getCities: PropTypes.func.isRequired,
+  city: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  city: state.city
+  cities: state.cities,
+  city: state.cities.city
 });
 
 export default connect(

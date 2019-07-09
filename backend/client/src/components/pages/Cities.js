@@ -33,7 +33,7 @@ export class Cities extends Component {
   render() {
     let cityList;
 
-    const { cities } = this.props.city;
+    const { cities } = this.props.cities;
     let filteredCities = cities.filter(city => {
       let cityName = city.name.toLowerCase();
       return cityName.indexOf(this.state.searchCity) !== -1;
@@ -84,11 +84,11 @@ export class Cities extends Component {
 
 Cities.propTypes = {
   getCities: PropTypes.func.isRequired,
-  city: PropTypes.object.isRequired
+  cities: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-  city: state.city
+  cities: state.cities
 });
 
 export default connect(

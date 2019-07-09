@@ -9,14 +9,13 @@ import {
 } from "./types";
 import { setError } from "./errorActions";
 
-export const getCities = () => dispatch => {
+export const getCities = () => async dispatch => {
   dispatch(setCitiesLoading());
-  axios.get("/cities").then(res =>
-    dispatch({
-      type: GET_CITIES,
-      payload: res.data
-    })
-  );
+  const res = await axios.get("/cities");
+  dispatch({
+    type: GET_CITIES,
+    payload: res.data
+  });
 };
 
 export const getCity = id => async dispatch => {
