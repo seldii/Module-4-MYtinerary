@@ -16,14 +16,17 @@ export class CreateItinerary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hashtag: [],
       user: "",
-      title: "",
-      city: "",
+      formData: {
+        hashtag: [],
+        title: "",
+        city: "",
+        duration: null,
+        price: null
+      },
       profilePic: "",
       rating: null,
-      duration: null,
-      price: null
+      itinerary: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -38,11 +41,11 @@ export class CreateItinerary extends Component {
     e.preventDefault();
 
     const newItinerary = {
-      hashtag: this.state.hashtag,
-      title: this.state.title,
-      city: this.state.city,
-      duration: this.state.duration,
-      price: this.state.price
+      hashtag: this.state.formData.hashtag,
+      title: this.state.formData.title,
+      city: this.state.formData.city,
+      duration: this.state.formData.duration,
+      price: this.state.formData.price
     };
 
     //Add City via addCity action
@@ -50,13 +53,13 @@ export class CreateItinerary extends Component {
 
     //Clear form
     this.setState({
-      itinerary: null,
-      hashtag: [],
-      title: "",
-      city: "",
-      rating: null,
-      duration: null,
-      price: null
+      formData: {
+        hashtag: [],
+        title: "",
+        city: "",
+        duration: null,
+        price: null
+      }
     });
   }
 
@@ -65,11 +68,11 @@ export class CreateItinerary extends Component {
 
     const id = this.state.itinerary._id;
     const itinerary = {
-      hashtag: this.state.hashtag,
-      title: this.state.title,
-      city: this.state.city,
-      duration: this.state.duration,
-      price: this.state.price
+      hashtag: this.state.formData.hashtag,
+      title: this.state.formData.title,
+      city: this.state.formData.city,
+      duration: this.state.formData.duration,
+      price: this.state.formData.price
     };
 
     //Update City via updateCity action
@@ -80,20 +83,28 @@ export class CreateItinerary extends Component {
       itinerary: null
     });
   }
-  onChange(e) {
-    console.log(this.state);
+  onChange(event) {
+    const prevformData = this.state.formData;
+    const {
+      target: { name, value }
+    } = event;
+    const formData = { ...prevformData, [name]: value };
+
     this.setState({
-      [e.target.name]: e.target.value
+      formData
     });
   }
 
   displayItinerary(property) {
     this.setState({
-      hashtag: property.hashtag,
-      title: property.title,
-      city: property.city,
-      duration: property.duration,
-      price: property.price
+      itinerary: property,
+      formData: {
+        hashtag: property.hashtag,
+        title: property.title,
+        city: property.city,
+        duration: property.duration,
+        price: property.price
+      }
     });
   }
   render() {
@@ -115,13 +126,18 @@ export class CreateItinerary extends Component {
       <div>
         <h2>Itinerary Creator</h2>
         <ErrorMessage />
-        <form>
-          {["title", "city", "duration", "price"].map(query => (
+        <form
+          id="itinerary-creator"
+          onSubmit={this.state.itinerary === null ? this.onSubmit : this.update}
+          style={{ marginBottom: "1rem" }}
+        >
+          {Object.keys(this.state.formData).map((keyName, i) => (
             <TextField
+              key={i}
               id="outlined-name"
               type="text"
-              name={query}
-              label={query}
+              name={keyName}
+              label={keyName}
               variant="outlined"
               style={{ marginBottom: 8 }}
               helperText=""
@@ -130,12 +146,12 @@ export class CreateItinerary extends Component {
               InputLabelProps={{
                 shrink: true
               }}
-              value={this.state.query}
+              value={this.state.formData[keyName] || ""}
               onChange={this.onChange}
             />
           ))}
           <Button
-            form="city-creator"
+            form="itinerary-creator"
             fullWidth
             variant="contained"
             size="small"

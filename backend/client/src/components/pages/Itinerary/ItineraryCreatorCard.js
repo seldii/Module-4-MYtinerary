@@ -41,7 +41,7 @@ const ItineraryCreatorCard = ({
   function handleDelete() {
     deleteItinerary(itinerary._id);
   }
-  function handleGetCity() {
+  function handleGetItinerary() {
     getItinerary(itinerary._id);
     displayItinerary(itinerary);
   }
@@ -50,14 +50,14 @@ const ItineraryCreatorCard = ({
     <Card className={classes.card}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
+          <Typography component="h6" variant="h6">
             {itinerary.title}
           </Typography>
         </CardContent>
         <IconButton onClick={handleDelete} className={classes.icon}>
           <FontAwesomeIcon icon="trash-alt" />
         </IconButton>
-        <IconButton onClick={handleGetCity} className={classes.icon}>
+        <IconButton onClick={handleGetItinerary} className={classes.icon}>
           <FontAwesomeIcon icon="edit" />
         </IconButton>
       </div>

@@ -9,12 +9,6 @@ const Itinerary = require("../models/Itinerary");
 const itineraryValidation = require("../validation/itinerary");
 const { validationResult } = require("express-validator/check");
 
-//Test
-
-router.get("/test", (req, res) => {
-  res.send({ msg: "Itineraries test route." });
-});
-
 //Create
 router.post("/", itineraryValidation, async (req, res) => {
   const errors = validationResult(req);
@@ -67,6 +61,20 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const itinerary = await Itinerary.findById(req.params.id);
+    if (!itinerary) {
+      return res.status(404).send("Itinerary not found");
+    }
+    res.send(itinerary);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
+//getByCity
+
+router.get("/itineraries/:city", async (req, res) => {
+  try {
+    const itinerary = await Itinerary.find({ city: req.params.city });
     if (!itinerary) {
       return res.status(404).send("Itinerary not found");
     }

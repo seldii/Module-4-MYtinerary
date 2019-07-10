@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  withRouter,
+  Switch
+} from "react-router-dom";
 import Header from "./components/layout/Header";
 import "./App.css";
 import Landing from "./components/pages/LandingFirst";
@@ -51,14 +56,20 @@ class App extends Component {
         <Router>
           <Container>
             <Header />
-            <Route exact path="/" component={Landing} />
-            <Route path="/signin" component={CreateAccount} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/login" component={Login} />
-            <Route path="/cities" component={Cities} />
-            <Route exact path="/cities/:cityName" component={City} />
-            <Route path="/city-creator" component={CityCreator} />
-            <Route path="/itinerary-creator" component={CreateItinerary} />
+            <Switch>
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/signin" component={CreateAccount} />
+              <Route exact path="/profile" component={Profile} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/cities" component={Cities} />
+              <Route
+                exact
+                path="/cities/:cityName"
+                component={withRouter(City)}
+              />
+              <Route exact path="/city-creator" component={CityCreator} />
+              <Route path="/itinerary-creator" component={CreateItinerary} />
+            </Switch>
           </Container>
         </Router>
       </Provider>

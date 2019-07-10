@@ -4,7 +4,8 @@ import {
   GET_ITINERARY,
   CREATE_ITINERARY,
   DELETE_ITINERARY,
-  UPDATE_ITINERARY
+  UPDATE_ITINERARY,
+  GET_ITINERARIES_BY_CITYNAME
 } from "./types";
 import { setError } from "./errorActions";
 
@@ -21,6 +22,18 @@ export const getItinerary = id => async dispatch => {
     const res = await axios.get(`/itineraries/${id}`);
     dispatch({
       type: GET_ITINERARY,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+export const getItinerariesByCity = cityName => async dispatch => {
+  try {
+    const res = await axios.get(`/itineraries/itineraries/${cityName}`);
+    dispatch({
+      type: GET_ITINERARIES_BY_CITYNAME,
       payload: res.data
     });
   } catch (err) {

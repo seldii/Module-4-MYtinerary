@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {
   Container,
   Card,
@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { getCities } from "../../store/actions/cityActions";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import store from "../../store";
 
 export class Cities extends Component {
   constructor() {
@@ -32,7 +33,7 @@ export class Cities extends Component {
 
   render() {
     let cityList;
-
+    console.log(this.props);
     const { cities } = this.props.cities;
     let filteredCities = cities.filter(city => {
       let cityName = city.name.toLowerCase();
@@ -41,7 +42,11 @@ export class Cities extends Component {
     if (filteredCities) {
       cityList = filteredCities.map((city, _id) => {
         return (
-          <Link key={_id} to={`/cities/${city.name}`}>
+          <Link
+            key={_id}
+            to={{ pathname: `/cities/${city.name}` }}
+            params={{ cityName: city.name }}
+          >
             <Card inverse key={_id}>
               <CardImg width="100%" src={city.image} alt="Card image cap" />
               <CardImgOverlay style={{ display: "flex" }}>
@@ -93,7 +98,23 @@ const mapStateToProps = state => ({
   cities: state.cities
 });
 
-export default connect(
-  mapStateToProps,
-  { getCities }
-)(Cities);
+const mapDispatchToProps = dispatch => {
+  return {
+    getItinerariesByCity: cityName => {
+      dispatch({
+        type: "GET_ITINERARIES_BY_CITYNAME",
+        cityName: cityName
+      });
+    },
+    getCities: () => {
+      dispatch(getCities());
+    }
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Cities)
+);
