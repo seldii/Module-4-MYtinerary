@@ -16,6 +16,7 @@ import Cities from "./components/pages/Cities";
 import City from "./components/pages/City";
 import CityCreator from "./components/cityCreator/CityCreator";
 import CreateItinerary from "./components/pages/Itinerary/CreateItinerary";
+import SingleItinerary from "./components/pages/Itinerary/SingleItinerary";
 import { Provider } from "react-redux";
 import store from "./store";
 import "typeface-roboto";
@@ -66,6 +67,11 @@ class App extends Component {
                 exact
                 path="/cities/:cityName"
                 component={withRouter(City)}
+              />
+              <Route
+                exact
+                path="/:cityName/:itinerary"
+                component={withRouter(SingleItinerary)}
               />
               <Route exact path="/city-creator" component={CityCreator} />
               <Route path="/itinerary-creator" component={CreateItinerary} />
