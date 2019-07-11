@@ -33,7 +33,7 @@ export class Cities extends Component {
 
   render() {
     let cityList;
-    console.log(this.props);
+
     const { cities } = this.props.cities;
     let filteredCities = cities.filter(city => {
       let cityName = city.name.toLowerCase();

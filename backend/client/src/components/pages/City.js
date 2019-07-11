@@ -3,10 +3,12 @@ import { getItinerariesByCity } from "../../store/actions/itineraryAction";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import ItineraryCard from "../pages/Itinerary/ItineraryCard";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
 
 export class City extends Component {
   componentDidMount() {
-    console.log(this.props.match.params);
     const { cityName } = this.props.match.params;
     this.props.getItinerariesByCity(cityName);
   }
@@ -19,22 +21,28 @@ export class City extends Component {
 
   render() {
     let itineraryList;
-    console.log(this.props.itinerariesByCity);
 
     if (this.props.itinerariesByCity) {
       itineraryList = this.props.itinerariesByCity.map(i => {
-        return <h6>{i.title}</h6>;
+        return <ItineraryCard key={i._id} itinerary={i} />;
       });
     } else {
       itineraryList = <div>Not found</div>;
     }
-    return <div>{itineraryList}</div>;
+    return (
+      <div>
+        <Box style={{ margin: "auto", textAlign: "center" }} component="div">
+          {this.props.match.params.cityName}
+        </Box>
+        {itineraryList}
+      </div>
+    );
   }
 }
 
 City.propTypes = {
   getItinerariesByCity: PropTypes.func.isRequired,
-  itinerariesByCity: PropTypes.object.isRequired
+  itinerariesByCity: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const mapStateToProps = state => ({
