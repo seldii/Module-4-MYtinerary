@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { loadUser } from "../src/store/actions/authActions";
 import {
   BrowserRouter as Router,
   Route,
@@ -33,7 +34,8 @@ import {
   faBomb,
   faTrashAlt,
   faEdit,
-  faClipboardList
+  faClipboardList,
+  faPaperPlane
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -47,10 +49,14 @@ library.add(
   faBomb,
   faTrashAlt,
   faEdit,
-  faClipboardList
+  faClipboardList,
+  faPaperPlane
 );
 
 class App extends Component {
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
   render() {
     return (
       <Provider store={store}>

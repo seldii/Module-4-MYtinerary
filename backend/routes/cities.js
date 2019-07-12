@@ -8,8 +8,10 @@ const { validationResult } = require("express-validator/check");
 //City Model
 const City = require("../models/City");
 
+const auth = require("../../backend/middleware/auth");
+
 //Create
-router.post("/", cityValidation, async (req, res) => {
+router.post("/", cityValidation, auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -23,7 +25,7 @@ router.post("/", cityValidation, async (req, res) => {
 });
 
 //Update
-router.patch("/:id", cityValidation, async (req, res) => {
+router.patch("/:id", cityValidation, auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

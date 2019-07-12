@@ -9,8 +9,10 @@ const Itinerary = require("../models/Itinerary");
 const itineraryValidation = require("../validation/itinerary");
 const { validationResult } = require("express-validator/check");
 
+const auth = require("../../backend/middleware/auth");
+
 //Create
-router.post("/", itineraryValidation, async (req, res) => {
+router.post("/", itineraryValidation, auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -24,7 +26,7 @@ router.post("/", itineraryValidation, async (req, res) => {
 });
 
 //Update
-router.patch("/:id", itineraryValidation, async (req, res) => {
+router.patch("/:id", itineraryValidation, auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -86,7 +88,7 @@ router.get("/itineraries/:city", async (req, res) => {
 
 //Delete
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const itinerary = await Itinerary.findByIdAndDelete(req.params.id);
     if (!itinerary) {

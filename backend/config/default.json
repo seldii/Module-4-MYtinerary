@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://Seldii:Ubiqum2019@cluster0-n74ce.gcp.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "Berlin_Ubiqum_Coder_Secret_123"
+}
