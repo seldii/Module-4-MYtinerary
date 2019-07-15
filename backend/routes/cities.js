@@ -81,7 +81,7 @@ router.get("/:id", async (req, res) => {
 
 //Delete
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const city = await City.findByIdAndDelete(req.params.id);
     if (!city) {

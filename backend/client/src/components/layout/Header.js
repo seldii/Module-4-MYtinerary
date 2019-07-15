@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
 import Nav from "./Nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import LogInModal from "../Auth/LogInModal";
 
 function Header() {
   return (
@@ -10,17 +11,7 @@ function Header() {
       <Container>
         <Row style={{ flexWrap: "nowrap" }}>
           <Col xs style={{ margin: "auto" }}>
-            <Link to="/profile">
-              <FontAwesomeIcon
-                style={{
-                  float: "left",
-                  fontSize: "2em",
-                  color: "#FF6347",
-                  textAlign: "center"
-                }}
-                icon="user-alt"
-              />
-            </Link>
+            <LogInModal />
           </Col>
           <Col xs style={{ margin: "auto", padding: "0px" }}>
             <Nav />

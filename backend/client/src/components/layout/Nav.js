@@ -1,5 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -9,6 +11,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import LogOut from "../Auth/LogOut";
+import LogInModal from "../Auth/LogInModal";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -31,11 +35,13 @@ const iconStyle = () => {
   };
 };
 
-export default function TemporaryDrawer() {
+const TemporaryDrawer = props => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     right: false
   });
+
+  const { isAuthenticated, user } = props.auth;
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -52,7 +58,6 @@ export default function TemporaryDrawer() {
     <div
       className={classes.list}
       role="presentation"
-      onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
@@ -107,6 +112,24 @@ export default function TemporaryDrawer() {
             <ListItemText>Home</ListItemText>
           </ListItem>
         </Link>
+        {!isAuthenticated ? (
+          <LogInModal style={{ zIndex: "999" }} />
+        ) : (
+          <Fragment>
+            <ListItem button>{user ? `Welcome ${user.name} !` : ""}</ListItem>
+            <ListItem button>
+              <LogOut />
+            </ListItem>
+          </Fragment>
+        )}
+
+        {!isAuthenticated ? (
+          <Link to="/sign-in">
+            <ListItem button>
+              <ListItemText>Register</ListItemText>
+            </ListItem>
+          </Link>
+        ) : null}
       </List>
     </div>
   );
@@ -119,6 +142,7 @@ export default function TemporaryDrawer() {
       />
 
       <Drawer
+        style={{ zIndex: "1" }}
         anchor="right"
         open={state.right}
         onClose={toggleDrawer("right", false)}
@@ -127,4 +151,13 @@ export default function TemporaryDrawer() {
       </Drawer>
     </div>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(TemporaryDrawer);

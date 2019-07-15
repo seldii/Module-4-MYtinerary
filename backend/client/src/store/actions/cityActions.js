@@ -8,6 +8,8 @@ import {
   CITIES_LOADING
 } from "./types";
 import { setError } from "./errorActions";
+import { tokenConfig } from "./authActions";
+import { returnErrors } from "./authErrActions";
 
 export const getCities = () => async dispatch => {
   dispatch(setCitiesLoading());
@@ -30,14 +32,19 @@ export const getCity = id => async dispatch => {
   }
 };
 
-export const updateCity = (id, city) => async dispatch => {
+export const updateCity = (id, city) => async (dispatch, getState) => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
   try {
-    const res = await axios.patch(`/cities/${id}`, city, config);
+    const res = await axios.patch(
+      `/cities/${id}`,
+      city,
+      config,
+      tokenConfig(getState)
+    );
     dispatch({
       type: UPDATE_CITY,
       payload: res.data
@@ -49,14 +56,19 @@ export const updateCity = (id, city) => async dispatch => {
     }
   }
 };
-export const addCity = newCity => async dispatch => {
+export const addCity = newCity => async (dispatch, getState) => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
   try {
-    const res = await axios.post("/cities", newCity, config);
+    const res = await axios.post(
+      "/cities",
+      newCity,
+      config,
+      tokenConfig(getState)
+    );
     dispatch({
       type: ADD_CITY,
       payload: res.data
@@ -69,9 +81,9 @@ export const addCity = newCity => async dispatch => {
   }
 };
 
-export const deleteCity = id => async dispatch => {
+export const deleteCity = id => async (dispatch, getState) => {
   try {
-    await axios.delete(`/cities/${id}`);
+    await axios.delete(`/cities/${id}`, tokenConfig(getState));
     dispatch({
       type: DELETE_CITY,
       payload: id
