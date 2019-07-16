@@ -10,7 +10,7 @@ const User = require("../models/User");
 
 //@router  POST /auth
 //@desc Auth user
-// @access Public
+//@access Public
 
 router.post("/", (req, res) => {
   const { email, password } = req.body;

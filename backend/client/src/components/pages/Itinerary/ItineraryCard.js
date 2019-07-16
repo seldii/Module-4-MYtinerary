@@ -8,7 +8,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Avatar from "@material-ui/core/Avatar";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import Activity from "./Activity";
 import Button from "@material-ui/core/Button";
@@ -29,13 +29,6 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
 
-  info: {
-    flex: "1 0 auto"
-  },
-  playIcon: {
-    height: 38,
-    width: 38
-  },
   avatar: {
     margin: 10,
     width: 60,
@@ -45,37 +38,37 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column"
   },
-  panel: {
-    margin: 0
-  },
 
   panelContent: {
     width: "100%"
   },
   panelExpandIcon: {
-    justifySelf: "center"
-  }
+    color: "red",
+    "&$expanded": {
+      transform: "none"
+    }
+  },
+  expanded: {}
 }));
 
 const ItineraryCard = ({ itinerary }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [expansionPanelOpen, setState] = useState(0);
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = panel => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   return (
     <div>
-      <ExpansionPanel className={classes.panel}>
+      <ExpansionPanel
+        className={classes.panel}
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
         <ExpansionPanelSummary
-          expanded={expansionPanelOpen}
-          expandIcon={
-            <Button
-              onClick={() =>
-                setState({ expansionPanelOpen: !expansionPanelOpen })
-              }
-            >
-              {expansionPanelOpen ? "Close" : "View All"}
-            </Button>
-          }
+          expandIcon={expanded === "panel1" ? "Close" : <ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
           class={{
@@ -101,61 +94,62 @@ const ItineraryCard = ({ itinerary }) => {
                 <Typography>{itinerary.user}</Typography>
               </div>
             </div>
-
-            <CardContent className={classes.content}>
-              <Typography component="h1" variant="subtitle1">
-                {itinerary.title}
-              </Typography>
-              <Grid
-                className={classes.info}
-                container
-                direction="column"
-                justify="space-between"
-                alignItems="baseline"
-              >
+            <Card style={{ width: "100%" }}>
+              <CardContent className={classes.content}>
+                <Typography component="h1" variant="subtitle1">
+                  {itinerary.title}
+                </Typography>
                 <Grid
+                  className={classes.info}
                   container
-                  direction="row"
+                  direction="column"
                   justify="space-between"
                   alignItems="baseline"
                 >
-                  <Typography variant="body2" component="div">
-                    Likes:{itinerary.rating || "-"}
-                  </Typography>
-                  <Typography variant="body2" component="div">
-                    {itinerary.duration || "-"} Hours
-                  </Typography>
-                  <Typography variant="body2" component="div">
-                    {(() => {
-                      const x = itinerary.price;
-                      switch (true) {
-                        case x === 0:
-                          return "Free";
-                        case x < 15:
-                          return "$";
-                        case x < 40:
-                          return "$$";
-                        case x < 60:
-                          return "$$$";
-                        default:
-                          return "";
-                      }
-                    })()}
-                  </Typography>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="baseline"
+                  >
+                    <Typography variant="body2" component="div">
+                      Likes:{itinerary.rating || "-"}
+                    </Typography>
+                    <Typography variant="body2" component="div">
+                      {itinerary.duration || "-"} Hours
+                    </Typography>
+                    <Typography variant="body2" component="div">
+                      {(() => {
+                        const x = itinerary.price;
+                        switch (true) {
+                          case x === 0:
+                            return "Free";
+                          case x < 15:
+                            return "$";
+                          case x < 40:
+                            return "$$";
+                          case x < 60:
+                            return "$$$";
+                          default:
+                            return "";
+                        }
+                      })()}
+                    </Typography>
+                  </Grid>
+                  <Box display="flex" flexDirection="row" flexWrap="wrap">
+                    {itinerary.hashtag.length > 0 ? (
+                      itinerary.hashtag[0].split("," || " ").map((h, index) => (
+                        <Typography key={index} variant="body2">
+                          #{h}
+                        </Typography>
+                      ))
+                    ) : (
+                      <div>#</div>
+                    )}
+                  </Box>
                 </Grid>
-                <Box display="flex" flexDirection="row" flexWrap="wrap">
-                  {itinerary.hashtag.length > 0 ? (
-                    itinerary.hashtag[0].split("," || " ").map((h, index) => (
-                      <Typography key={index} variant="body2">
-                        #{h}
-                      </Typography>
-                    ))
-                  ) : (
-                    <div>#</div>
-                  )}
-                </Box>
-              </Grid>
-            </CardContent>
+              </CardContent>
+            </Card>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>

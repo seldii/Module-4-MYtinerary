@@ -8,16 +8,14 @@ import {
 } from "react-router-dom";
 import Header from "./components/layout/Header";
 import "./App.css";
-import Landing from "./components/pages/LandingFirst";
-import CreateAccount from "./components/pages/CreateAccount";
-import Profile from "./components/pages/Profile";
-import Login from "./components/pages/Login";
+import Landing from "./components/pages/Landing";
 import { Container } from "reactstrap";
 import Cities from "./components/pages/Cities";
 import City from "./components/pages/City";
 import CityCreator from "./components/cityCreator/CityCreator";
 import CreateItinerary from "./components/pages/Itinerary/CreateItinerary";
 import SingleItinerary from "./components/pages/Itinerary/SingleItinerary";
+import MyItineraries from "./components/pages/userProfile/MyItineraries";
 import RegisterationPage from "./components/Auth/RegisterationPage";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -66,9 +64,7 @@ class App extends Component {
             <Header />
             <Switch>
               <Route exact path="/" component={Landing} />
-              <Route exact path="/signin" component={CreateAccount} />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/login" component={Login} />
+
               <Route exact path="/cities" component={Cities} />
               <Route
                 exact
@@ -83,6 +79,11 @@ class App extends Component {
               <Route exact path="/city-creator" component={CityCreator} />
               <Route path="/itinerary-creator" component={CreateItinerary} />
               <Route exact path="/sign-in" component={RegisterationPage} />
+              <Route
+                exact
+                path="/profile/:user/myitineraries"
+                component={withRouter(MyItineraries)}
+              />
             </Switch>
           </Container>
         </Router>

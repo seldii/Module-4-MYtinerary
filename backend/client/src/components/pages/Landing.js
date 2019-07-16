@@ -1,86 +1,86 @@
 import React from "react";
 import logo from "../layout/MYtineraryLogo.png";
-import { Container, Row, Col } from "reactstrap";
-import { FaArrowCircleRight as Arrow } from "react-icons/fa";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { FaArrowAltCircleRight } from "react-icons/fa";
+import LogInModal from "../Auth/LogInModal";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    margin: "auto"
+  }
+}));
 
 function Landing() {
+  const classes = useStyles();
   return (
-    <React.Fragment>
-      <Container style={{ padding: "0px" }}>
-        <Row>
-          <Col xs="12">
-            <img style={{ maxWidth: "100%" }} src={logo} alt="logo" />
-          </Col>
-          <Col xs="12">
-            <p
-              style={{
-                fontSize: "17px",
-                fontWeight: "bold",
-
-                textAlign: "center"
-              }}
-            >
+    <div className={classes.root}>
+      <Grid
+        container
+        direction="column"
+        justify="space-between"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item xs={12}>
+          <img style={{ maxWidth: "100%" }} src={logo} alt="logo" />
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
               Find your perfect trip, designed by insiders who know and love
               their cities{" "}
-            </p>
-          </Col>
-          <Col xs={{ size: 8, offset: 2 }}>
-            <p
-              style={{
-                fontSize: "20px",
-                fontWeight: "bold",
-
-                textAlign: "center"
-              }}
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              direction="column"
             >
-              Start browsing
-            </p>
-          </Col>
-          <Col xs={{ size: 4, offset: 4 }} style={{ textAlign: "center" }}>
-            <Link to="/cities">
-              <Arrow
-                size={56}
-                style={{ margin: "auto", display: "inline-block" }}
-              />
-            </Link>
-          </Col>
-          <Row style={{ padding: "5px" }}>
-            <Col xs={{ size: 12 }} style={{ textAlign: "center" }}>
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>Start browsing</Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Link to="/cities">
+                  <FaArrowAltCircleRight size={56} color={"#FF6347"} />
+                </Link>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12} style={{ textAlign: "center" }}>
               <p>Want to build your own MYtinerary?</p>
-            </Col>
-            <Col xs={{ size: 4 }} style={{ textAlign: "center" }}>
-              <Link
-                to="/login"
-                style={{ margin: "auto", display: "inline-block" }}
-              >
-                Log in
-              </Link>
-            </Col>
-            <Col xs={{ size: 6, offset: 2 }} style={{ textAlign: "center" }}>
-              <Link
-                to="/signin"
-                style={{ margin: "auto", display: "inline-block" }}
-              >
+            </Grid>
+          </Grid>
+          <Grid container direction="row">
+            <Grid
+              item
+              xs={6}
+              style={{ display: "flex", alignContent: "baseline" }}
+            >
+              <LogInModal />
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              style={{ display: "flex", justifyContent: "flex-end" }}
+            >
+              <Link to="/sign-in" style={{ padding: "0 1rem 0 0" }}>
                 Create Acount
               </Link>
-            </Col>
-          </Row>
-        </Row>
-        <footer>
-          <Container style={{ alignItems: "center" }}>
-            <Row style={{ alignItems: "center" }}>
-              <Col xs={{ size: 4, offset: 4 }} style={{ textAlign: "center" }}>
-                <Link style={{ margin: "auto", display: "inline-block" }}>
-                  <FaHome style={{ color: "#FF6347" }} size={56} />
-                </Link>
-              </Col>
-            </Row>
-          </Container>
-        </footer>
-      </Container>
-    </React.Fragment>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 export default Landing;

@@ -86,6 +86,20 @@ router.get("/itineraries/:city", async (req, res) => {
   }
 });
 
+//getByUser
+
+router.get("/profile/:user", async (req, res) => {
+  try {
+    const itinerary = await Itinerary.find({ user: req.params.user });
+    if (!itinerary) {
+      return res.status(404).send("Itinerary not found");
+    }
+    res.send(itinerary);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
 //Delete
 
 router.delete("/:id", auth, async (req, res) => {

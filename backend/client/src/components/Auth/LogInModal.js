@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Button,
   Modal,
@@ -8,10 +8,9 @@ import {
   FormGroup,
   Label,
   Input,
-  NavLink,
   Alert
 } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../store/actions/authActions";
@@ -79,10 +78,19 @@ class LogInModal extends Component {
 
   render() {
     return (
-      <div>
-        <NavLink onClick={this.toggle} href="#">
+      <Fragment>
+        <Button
+          style={{
+            background: "none",
+            color: "blue",
+            border: "none",
+            padding: "0rem 0rem 0rem 1rem"
+          }}
+          onClick={this.toggle}
+          href="#"
+        >
           Log in
-        </NavLink>
+        </Button>
 
         <Modal
           isOpen={this.state.modal}
@@ -123,7 +131,7 @@ class LogInModal extends Component {
             </Form>
           </ModalBody>
         </Modal>
-      </div>
+      </Fragment>
     );
   }
 }

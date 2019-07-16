@@ -5,9 +5,11 @@ import {
   CREATE_ITINERARY,
   DELETE_ITINERARY,
   UPDATE_ITINERARY,
-  GET_ITINERARIES_BY_CITYNAME
+  GET_ITINERARIES_BY_CITYNAME,
+  GET_ITINERARIES_BY_USER
 } from "./types";
 import { setError } from "./errorActions";
+import { tokenConfig } from "./authActions";
 
 export const getItineraries = () => async dispatch => {
   const res = await axios.get("/itineraries");
@@ -41,14 +43,30 @@ export const getItinerariesByCity = cityName => async dispatch => {
   }
 };
 
-export const updateItinerary = (id, itinerary) => async dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
+//GET ITINERARIES BY USER
+
+export const getItinerariesByUser = user => async dispatch => {
   try {
-    const res = await axios.patch(`/itineraries/${id}`, itinerary, config);
+    const res = await axios.get(`/itineraries/profile/${user}`);
+    dispatch({
+      type: GET_ITINERARIES_BY_USER,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+export const updateItinerary = (id, itinerary) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const res = await axios.patch(
+      `/itineraries/${id}`,
+      itinerary,
+      tokenConfig(getState)
+    );
     dispatch({
       type: UPDATE_ITINERARY,
       payload: res.data
@@ -60,14 +78,13 @@ export const updateItinerary = (id, itinerary) => async dispatch => {
     }
   }
 };
-export const createItinerary = newItinerary => async dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
+export const createItinerary = newItinerary => async (dispatch, getState) => {
   try {
-    const res = await axios.post("/itineraries", newItinerary, config);
+    const res = await axios.post(
+      "/itineraries",
+      newItinerary,
+      tokenConfig(getState)
+    );
     dispatch({
       type: CREATE_ITINERARY,
       payload: res.data
@@ -80,9 +97,9 @@ export const createItinerary = newItinerary => async dispatch => {
   }
 };
 
-export const deleteItinerary = id => async dispatch => {
+export const deleteItinerary = id => async (dispatch, getState) => {
   try {
-    await axios.delete(`/itineraries/${id}`);
+    await axios.delete(`/itineraries/${id}`, tokenConfig(getState));
     dispatch({
       type: DELETE_ITINERARY,
       payload: id

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
+import Footer from "../layout/Footer";
 
 class RegisterPage extends Component {
   state = {
@@ -96,6 +97,7 @@ class RegisterPage extends Component {
             </Button>
           </FormGroup>
         </Form>
+        <Footer />
       </div>
     );
   }

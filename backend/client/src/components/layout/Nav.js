@@ -69,41 +69,6 @@ const TemporaryDrawer = props => {
             <ListItemText>Cities</ListItemText>
           </ListItem>
         </Link>
-        <Link to="">
-          <ListItem button>
-            <ListItemIcon style={iconStyle()}>
-              <FontAwesomeIcon icon="heart" />
-            </ListItemIcon>
-            <ListItemText>Cities You Loved</ListItemText>
-          </ListItem>
-        </Link>
-        <Link to="/cities">
-          <ListItem button>
-            <ListItemIcon style={iconStyle()}>
-              <FontAwesomeIcon icon="suitcase-rolling" />
-            </ListItemIcon>
-            <ListItemText>Your Itineraries</ListItemText>
-          </ListItem>
-        </Link>
-      </List>
-      <Divider />
-      <List>
-        <Link to="/city-creator">
-          <ListItem button>
-            <ListItemIcon style={iconStyle()}>
-              <FontAwesomeIcon icon="map-pin" />
-            </ListItemIcon>
-            <ListItemText>City Creator</ListItemText>
-          </ListItem>
-        </Link>
-        <Link to="/itinerary-creator">
-          <ListItem button>
-            <ListItemIcon style={iconStyle()}>
-              <FontAwesomeIcon icon="clipboard-list" />
-            </ListItemIcon>
-            <ListItemText>Itinerary Creator</ListItemText>
-          </ListItem>
-        </Link>
         <Link to="/">
           <ListItem button>
             <ListItemIcon style={iconStyle()}>
@@ -113,17 +78,6 @@ const TemporaryDrawer = props => {
           </ListItem>
         </Link>
         {!isAuthenticated ? (
-          <LogInModal style={{ zIndex: "999" }} />
-        ) : (
-          <Fragment>
-            <ListItem button>{user ? `Welcome ${user.name} !` : ""}</ListItem>
-            <ListItem button>
-              <LogOut />
-            </ListItem>
-          </Fragment>
-        )}
-
-        {!isAuthenticated ? (
           <Link to="/sign-in">
             <ListItem button>
               <ListItemText>Register</ListItemText>
@@ -131,6 +85,54 @@ const TemporaryDrawer = props => {
           </Link>
         ) : null}
       </List>
+      <Divider />
+      {isAuthenticated ? (
+        <Fragment>
+          <Link to="">
+            <ListItem button>
+              <ListItemIcon style={iconStyle()}>
+                <FontAwesomeIcon icon="heart" />
+              </ListItemIcon>
+              <ListItemText>Cities You Loved</ListItemText>
+            </ListItem>
+          </Link>
+          <Link to={{ pathname: `/profile/${user.name}/myitineraries` }}>
+            <ListItem button>
+              <ListItemIcon style={iconStyle()}>
+                <FontAwesomeIcon icon="suitcase-rolling" />
+              </ListItemIcon>
+              <ListItemText>Your Itineraries</ListItemText>
+            </ListItem>
+          </Link>
+
+          <List>
+            <Link to="/city-creator">
+              <ListItem button>
+                <ListItemIcon style={iconStyle()}>
+                  <FontAwesomeIcon icon="map-pin" />
+                </ListItemIcon>
+                <ListItemText>City Creator</ListItemText>
+              </ListItem>
+            </Link>
+            <Link to="/itinerary-creator">
+              <ListItem button>
+                <ListItemIcon style={iconStyle()}>
+                  <FontAwesomeIcon icon="clipboard-list" />
+                </ListItemIcon>
+                <ListItemText>Itinerary Creator</ListItemText>
+              </ListItem>
+            </Link>
+            <ListItem button>{user ? `Welcome ${user.name} !` : ""}</ListItem>
+            <LogOut />
+          </List>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <ListItem button>
+            <LogInModal style={{ zIndex: "999" }} />
+          </ListItem>
+        </Fragment>
+      )}
     </div>
   );
 

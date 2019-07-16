@@ -33,18 +33,8 @@ export const getCity = id => async dispatch => {
 };
 
 export const updateCity = (id, city) => async (dispatch, getState) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
   try {
-    const res = await axios.patch(
-      `/cities/${id}`,
-      city,
-      config,
-      tokenConfig(getState)
-    );
+    const res = await axios.patch(`/cities/${id}`, city, tokenConfig(getState));
     dispatch({
       type: UPDATE_CITY,
       payload: res.data
@@ -57,18 +47,8 @@ export const updateCity = (id, city) => async (dispatch, getState) => {
   }
 };
 export const addCity = newCity => async (dispatch, getState) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
   try {
-    const res = await axios.post(
-      "/cities",
-      newCity,
-      config,
-      tokenConfig(getState)
-    );
+    const res = await axios.post("/cities", newCity, tokenConfig(getState));
     dispatch({
       type: ADD_CITY,
       payload: res.data

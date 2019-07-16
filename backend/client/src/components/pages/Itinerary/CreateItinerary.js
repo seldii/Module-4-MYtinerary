@@ -41,6 +41,7 @@ export class CreateItinerary extends Component {
     e.preventDefault();
 
     const newItinerary = {
+      user: this.props.auth.user._id,
       hashtag: this.state.formData.hashtag,
       title: this.state.formData.title,
       city: this.state.formData.city,
@@ -68,6 +69,7 @@ export class CreateItinerary extends Component {
 
     const id = this.state.itinerary._id;
     const itinerary = {
+      user: this.props.auth.user._id,
       hashtag: this.state.formData.hashtag,
       title: this.state.formData.title,
       city: this.state.formData.city,
@@ -171,12 +173,14 @@ CreateItinerary.propTypes = {
   updateItinerary: PropTypes.func.isRequired,
   itineraries: PropTypes.object.isRequired,
   getItineraries: PropTypes.func.isRequired,
-  itinerary: PropTypes.object.isRequired
+  itinerary: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   itineraries: state.itineraries,
-  itinerary: state.itineraries.itinerary
+  itinerary: state.itineraries.itinerary,
+  auth: state.auth
 });
 
 export default connect(

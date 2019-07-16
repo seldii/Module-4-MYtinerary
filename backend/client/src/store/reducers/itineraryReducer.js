@@ -4,13 +4,15 @@ import {
   CREATE_ITINERARY,
   DELETE_ITINERARY,
   UPDATE_ITINERARY,
-  GET_ITINERARIES_BY_CITYNAME
+  GET_ITINERARIES_BY_CITYNAME,
+  GET_ITINERARIES_BY_USER
 } from "../actions/types";
 
 const initialState = {
   itineraries: [],
   itinerary: null,
   itinerariesByCity: [],
+  itinerariesByUser: [],
   loading: true
 };
 
@@ -33,6 +35,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         itinerariesByCity: action.payload
+      };
+    case GET_ITINERARIES_BY_USER:
+      return {
+        ...state,
+        itinerariesByUser: action.payload
       };
     case CREATE_ITINERARY:
       return {

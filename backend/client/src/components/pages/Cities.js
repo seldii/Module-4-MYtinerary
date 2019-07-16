@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import { getCities } from "../../store/actions/cityActions";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import store from "../../store";
 
 export class Cities extends Component {
   constructor() {

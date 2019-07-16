@@ -70,7 +70,11 @@ ItineraryCreatorCard.propTypes = {
   getItinerary: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { deleteItinerary, getItinerary }
 )(ItineraryCreatorCard);

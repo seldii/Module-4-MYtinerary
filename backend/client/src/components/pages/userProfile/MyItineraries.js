@@ -1,32 +1,35 @@
 import React, { Component } from "react";
-import { getItinerariesByCity } from "../../store/actions/itineraryAction";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { getItinerariesByUser } from "../../../store/actions/itineraryAction";
+import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
-import ItineraryCard from "../pages/Itinerary/ItineraryCard";
+import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import Footer from "../layout/Footer";
+import Footer from "../../layout/Footer";
 
-export class City extends Component {
+export class MyItineraries extends Component {
   componentDidMount() {
-    const { cityName } = this.props.match.params;
-    this.props.getItinerariesByCity(cityName);
+    console.log(this.props.auth);
+    const { user } = this.props.auth;
+    console.log(user.name);
+    this.props.getItinerariesByUser(user.name);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props);
+    console.log(this.props.match);
     if (this.props.match.params !== nextProps.match.params) {
       this.props.getItinerariesByCity(nextProps.match.params);
     }
+    console.log(this.props.itinerariesByUser);
   }
 
   render() {
     let itineraryList;
 
-    if (this.props.itinerariesByCity) {
-      itineraryList = this.props.itinerariesByCity.map(i => {
+    if (this.props.itinerariesByUser) {
+      itineraryList = this.props.itinerariesByUser.map(i => {
         return <ItineraryCard key={i._id} itinerary={i} />;
       });
     } else {
@@ -58,18 +61,19 @@ export class City extends Component {
   }
 }
 
-City.propTypes = {
-  getItinerariesByCity: PropTypes.func.isRequired,
-  itinerariesByCity: PropTypes.arrayOf(PropTypes.object).isRequired
+MyItineraries.propTypes = {
+  getItinerariesByUser: PropTypes.func.isRequired,
+  itinerariesByUser: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const mapStateToProps = state => ({
-  itinerariesByCity: state.itineraries.itinerariesByCity
+  itinerariesByUser: state.itineraries.itinerariesByUser,
+  auth: state.auth
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { getItinerariesByCity }
-  )(City)
+    { getItinerariesByUser }
+  )(MyItineraries)
 );
