@@ -41,7 +41,7 @@ export class CreateItinerary extends Component {
     e.preventDefault();
 
     const newItinerary = {
-      user: this.props.auth.user._id,
+      user: this.props.auth.user,
       hashtag: this.state.formData.hashtag,
       title: this.state.formData.title,
       city: this.state.formData.city,
@@ -69,7 +69,7 @@ export class CreateItinerary extends Component {
 
     const id = this.state.itinerary._id;
     const itinerary = {
-      user: this.props.auth.user._id,
+      user: this.props.auth.user,
       hashtag: this.state.formData.hashtag,
       title: this.state.formData.title,
       city: this.state.formData.city,

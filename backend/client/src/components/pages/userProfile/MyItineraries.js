@@ -20,7 +20,7 @@ export class MyItineraries extends Component {
   componentWillReceiveProps(nextProps) {
     console.log(this.props.match);
     if (this.props.match.params !== nextProps.match.params) {
-      this.props.getItinerariesByCity(nextProps.match.params);
+      this.props.getItinerariesByUser(nextProps.match.params);
     }
     console.log(this.props.itinerariesByUser);
   }

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ItinerarySchema = new Schema({
   user: {
-    type: String
+    type: Object
   },
   title: {
     type: String,

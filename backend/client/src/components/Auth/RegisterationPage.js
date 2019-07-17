@@ -10,6 +10,7 @@ class RegisterPage extends Component {
   state = {
     name: "",
     email: "",
+    image: "",
     password: "",
     msg: null
   };
@@ -45,11 +46,12 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password } = this.state;
+    const { name, email, image, password } = this.state;
 
     const newUser = {
       name,
       email,
+      image,
       password
     };
     console.log(newUser);
@@ -82,7 +84,15 @@ class RegisterPage extends Component {
               className="mb-3"
               onChange={this.onChange}
             />
-
+            <Label for="image">Profile Picture</Label>
+            <Input
+              type="url"
+              name="image"
+              id="image"
+              placeholder="Please enter an URL"
+              className="mb-3"
+              onChange={this.onChange}
+            />
             <Label for="password">Password</Label>
             <Input
               type="password"

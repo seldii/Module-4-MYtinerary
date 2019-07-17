@@ -44,22 +44,11 @@ const TemporaryDrawer = props => {
   const { isAuthenticated, user } = props.auth;
 
   const toggleDrawer = (side, open) => event => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
     setState({ ...state, [side]: open });
   };
 
   const sideList = side => (
-    <div
-      className={classes.list}
-      role="presentation"
-      onKeyDown={toggleDrawer(side, false)}
-    >
+    <div className={classes.list} role="presentation">
       <List>
         <Link to="/cities">
           <ListItem button>
@@ -129,7 +118,7 @@ const TemporaryDrawer = props => {
       ) : (
         <Fragment>
           <ListItem button>
-            <LogInModal style={{ zIndex: "999" }} />
+            <LogInModal />
           </ListItem>
         </Fragment>
       )}
@@ -144,7 +133,6 @@ const TemporaryDrawer = props => {
       />
 
       <Drawer
-        style={{ zIndex: "1" }}
         anchor="right"
         open={state.right}
         onClose={toggleDrawer("right", false)}

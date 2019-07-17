@@ -1,24 +1,20 @@
 import React, { Component, Fragment } from "react";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Alert
-} from "reactstrap";
-
-import { connect } from "react-redux";
+import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
+import Button from "@material-ui/core/Button";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import { Alert } from "reactstrap";
+import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
 
 class LogInModal extends Component {
   state = {
-    modal: false,
+    open: false,
     email: "",
     password: "",
     msg: null
@@ -54,7 +50,7 @@ class LogInModal extends Component {
     // Clear errors
     this.props.clearErrors();
     this.setState({
-      modal: !this.state.modal
+      open: !this.state.open
     });
   };
 
@@ -79,58 +75,58 @@ class LogInModal extends Component {
   render() {
     return (
       <Fragment>
-        <Button
-          style={{
-            background: "none",
-            color: "blue",
-            border: "none",
-            padding: "0rem 0rem 0rem 1rem"
-          }}
-          onClick={this.toggle}
-          href="#"
-        >
-          Log in
-        </Button>
+        <Button onClick={this.toggle}>Log in</Button>
 
-        <Modal
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          keyboard={true}
-          autoFocus={false}
+        <Dialog
+          open={this.state.open}
+          onClose={this.toggle}
+          aria-labelledby="form-dialog-title"
         >
-          <ModalHeader toggle={this.toggle}>Login</ModalHeader>
-          <ModalBody>
+          <DialogTitle id="form-dialog-title">Login</DialogTitle>
+          <DialogContent>
             {this.state.msg ? (
               <Alert color="danger">{this.state.msg}</Alert>
             ) : null}
-            <Form onSubmit={this.onSubmit}>
-              <FormGroup>
-                <Label for="email">Email</Label>
-                <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
-                  className="mb-3"
-                  onChange={this.onChange}
-                />
+            <DialogContentText>
+              Please enter your login details
+            </DialogContentText>
+            <form onSubmit={this.onSubmit}>
+              <TextField
+                autoFocus
+                margin="dense"
+                type="email"
+                name="email"
+                label="Email"
+                id="email"
+                placeholder="Email"
+                className="mb-3"
+                onChange={this.onChange}
+                fullWidth
+              />
 
-                <Label for="password">Password</Label>
-                <Input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Password"
-                  className="mb-3"
-                  onChange={this.onChange}
-                />
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
+              <TextField
+                type="password"
+                name="password"
+                id="password"
+                lanel="Password"
+                placeholder="Password"
+                className="mb-3"
+                onChange={this.onChange}
+                fullWidth
+              />
+              <DialogActions>
+                <Button
+                  type="submit"
+                  value="Submit"
+                  onClick={this.toggle}
+                  style={{ marginTop: "2rem" }}
+                >
                   Login
                 </Button>
-              </FormGroup>
-            </Form>
-          </ModalBody>
-        </Modal>
+              </DialogActions>
+            </form>
+          </DialogContent>
+        </Dialog>
       </Fragment>
     );
   }

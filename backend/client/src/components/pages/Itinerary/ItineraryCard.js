@@ -11,7 +11,6 @@ import Avatar from "@material-ui/core/Avatar";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import Activity from "./Activity";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -86,12 +85,12 @@ const ItineraryCard = ({ itinerary }) => {
           <div className={classes.card}>
             <div className={classes.profile}>
               <Avatar
-                alt={itinerary.user}
-                src={itinerary.profilePic}
+                alt={itinerary.user.name}
+                src={itinerary.user.image}
                 className={classes.avatar}
               />
               <div style={{ alignSelf: "center" }}>
-                <Typography>{itinerary.user}</Typography>
+                <Typography>{itinerary.user.name}</Typography>
               </div>
             </div>
             <Card style={{ width: "100%" }}>

@@ -90,7 +90,7 @@ router.get("/itineraries/:city", async (req, res) => {
 
 router.get("/profile/:user", async (req, res) => {
   try {
-    const itinerary = await Itinerary.find({ user: req.params.user });
+    const itinerary = await Itinerary.find({ "user.name": req.params.user });
     if (!itinerary) {
       return res.status(404).send("Itinerary not found");
     }

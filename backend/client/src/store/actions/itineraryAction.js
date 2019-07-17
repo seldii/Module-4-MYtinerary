@@ -45,9 +45,9 @@ export const getItinerariesByCity = cityName => async dispatch => {
 
 //GET ITINERARIES BY USER
 
-export const getItinerariesByUser = user => async dispatch => {
+export const getItinerariesByUser = userName => async dispatch => {
   try {
-    const res = await axios.get(`/itineraries/profile/${user}`);
+    const res = await axios.get(`/itineraries/profile/${userName}`);
     dispatch({
       type: GET_ITINERARIES_BY_USER,
       payload: res.data
