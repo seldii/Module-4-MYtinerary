@@ -13,7 +13,7 @@ const User = require("../models/User");
 // @access Public
 
 router.post("/", (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, image } = req.body;
   //Validation
   if (!name || !email || !password) {
     return res.status(400).json({ msg: "Please fill out all fields" });
@@ -24,7 +24,8 @@ router.post("/", (req, res) => {
     const newUser = new User({
       name,
       email,
-      password
+      password,
+      image
     });
 
     bcrypt.genSalt(10, (err, salt) => {
@@ -43,7 +44,8 @@ router.post("/", (req, res) => {
                 user: {
                   id: user.id,
                   name: user.name,
-                  email: user.email
+                  email: user.email,
+                  image: user.image
                 }
               });
             }

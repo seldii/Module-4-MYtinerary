@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import LogInModal from "../Auth/LogInModal";
+import RegisterationModal from "../Auth/RegisterationModal";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -73,9 +74,7 @@ function Landing() {
               xs={6}
               style={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <Link to="/sign-in" style={{ padding: "0 1rem 0 0" }}>
-                Create Acount
-              </Link>
+              <RegisterationModal />
             </Grid>
           </Grid>
         </Grid>

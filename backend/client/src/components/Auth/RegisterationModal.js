@@ -1,21 +1,24 @@
-import React, { Component, Fragment } from "react";
-import TextField from "@material-ui/core/TextField";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import TextField from "@material-ui/core/TextField";
 import { Alert } from "reactstrap";
 import { connect } from "react-redux";
-import { login } from "../../store/actions/authActions";
+import PropTypes from "prop-types";
+import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
+import Footer from "../layout/Footer";
 
-class LogInModal extends Component {
+class RegisterPage extends Component {
   state = {
     open: false,
+    name: "",
     email: "",
+    image: "",
     password: "",
     msg: null
   };
@@ -23,25 +26,17 @@ class LogInModal extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired
   };
 
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
-      // Check for register error
-      if (error.id === "LOGIN_FAIL") {
+      if (error.id === "REGISTER_FAIL") {
         this.setState({ msg: error.msg.msg });
       } else {
         this.setState({ msg: null });
-      }
-    }
-
-    // If authenticated, close modal
-    if (this.state.open) {
-      if (isAuthenticated) {
-        this.toggle();
       }
     }
   }
@@ -61,38 +56,51 @@ class LogInModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { email, password } = this.state;
+    const { name, email, image, password } = this.state;
 
-    const user = {
+    const newUser = {
+      name,
       email,
+      image,
       password
     };
 
-    // Attempt to login
-    this.props.login(user);
+    //Attempt to register
+    this.props.register(newUser);
   };
 
   render() {
     return (
-      <Fragment>
-        <Button onClick={this.toggle}>Log in</Button>
-
+      <div>
+        <Button onClick={this.toggle}>Register</Button>
         <Dialog
           open={this.state.open}
           onClose={this.toggle}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Login</DialogTitle>
+          <DialogTitle id="form-dialog-title">Sign in</DialogTitle>
           <DialogContent>
             {this.state.msg ? (
               <p style={{ color: "red" }}>{this.state.msg}</p>
             ) : (
               <DialogContentText>
-                Please enter your login details
+                Please enter your registeration details
               </DialogContentText>
             )}
 
             <form onSubmit={this.onSubmit}>
+              <TextField
+                autoFocus
+                margin="dense"
+                type="name"
+                name="name"
+                label="Name"
+                id="name"
+                placeholder="Name"
+                className="mb-3"
+                onChange={this.onChange}
+                fullWidth
+              />
               <TextField
                 autoFocus
                 margin="dense"
@@ -116,19 +124,31 @@ class LogInModal extends Component {
                 onChange={this.onChange}
                 fullWidth
               />
+              <TextField
+                type="url"
+                name="image"
+                id="image"
+                label="Image"
+                placeholder="Please enter a valid url"
+                className="mb-3"
+                onChange={this.onChange}
+                fullWidth
+              />
+
               <DialogActions>
                 <Button
                   type="submit"
                   value="Submit"
                   style={{ marginTop: "2rem" }}
                 >
-                  Login
+                  Register
                 </Button>
               </DialogActions>
             </form>
           </DialogContent>
         </Dialog>
-      </Fragment>
+        <Footer />
+      </div>
     );
   }
 }
@@ -140,5 +160,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { login, clearErrors }
-)(LogInModal);
+  { register, clearErrors }
+)(RegisterPage);

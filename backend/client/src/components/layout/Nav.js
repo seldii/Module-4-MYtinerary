@@ -13,6 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LogOut from "../Auth/LogOut";
 import LogInModal from "../Auth/LogInModal";
+import RegisterationModal from "../Auth/RegisterationModal";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -66,13 +67,7 @@ const TemporaryDrawer = props => {
             <ListItemText>Home</ListItemText>
           </ListItem>
         </Link>
-        {!isAuthenticated ? (
-          <Link to="/sign-in">
-            <ListItem button>
-              <ListItemText>Register</ListItemText>
-            </ListItem>
-          </Link>
-        ) : null}
+        {!isAuthenticated ? <RegisterationModal /> : null}
       </List>
       <Divider />
       {isAuthenticated ? (
