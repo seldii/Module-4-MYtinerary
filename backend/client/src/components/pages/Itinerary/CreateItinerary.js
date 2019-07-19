@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   getItineraries,
-  createItinerary,
-  updateItinerary
+  createItinerary
 } from "../../../store/actions/itineraryAction";
 import { setError } from "../../../store/actions/errorActions";
 import ErrorMessage from "../../common/ErrorMessage";
@@ -11,28 +10,24 @@ import { connect } from "react-redux";
 import ItineraryCreatorCard from "./ItineraryCreatorCard";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+import ActivityInputs from "./ActivityInputs";
 
 export class CreateItinerary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: "",
-      formData: {
-        hashtag: [],
-        title: "",
-        city: "",
-        duration: null,
-        price: null
-      },
-      profilePic: "",
-      rating: null,
-      itinerary: null
+      hashtag: [],
+      title: "",
+      city: "",
+      duration: null,
+      price: null,
+      activities: [{ description: "", image: "" }]
     };
 
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.displayItinerary = this.displayItinerary.bind(this);
-    this.update = this.update.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount() {
     this.props.getItineraries();
@@ -42,71 +37,57 @@ export class CreateItinerary extends Component {
 
     const newItinerary = {
       user: this.props.auth.user,
-      hashtag: this.state.formData.hashtag,
-      title: this.state.formData.title,
-      city: this.state.formData.city,
-      duration: this.state.formData.duration,
-      price: this.state.formData.price
+      hashtag: this.state.hashtag,
+      title: this.state.title,
+      city: this.state.city,
+      duration: this.state.duration,
+      price: this.state.price,
+      activities: this.state.activities
     };
 
-    //Add City via addCity action
+    //Add Itinerary via createItinerary action
     this.props.createItinerary(newItinerary);
 
     //Clear form
     this.setState({
-      formData: {
-        hashtag: [],
-        title: "",
-        city: "",
-        duration: null,
-        price: null
-      }
+      hashtag: [],
+      title: "",
+      city: "",
+      duration: null,
+      price: null,
+      activities: [{ description: "", image: "" }]
     });
   }
 
-  update(e) {
-    e.preventDefault();
+  handleChange = e => {
+    console.log(e.target.name);
 
-    const id = this.state.itinerary._id;
-    const itinerary = {
-      user: this.props.auth.user,
-      hashtag: this.state.formData.hashtag,
-      title: this.state.formData.title,
-      city: this.state.formData.city,
-      duration: this.state.formData.duration,
-      price: this.state.formData.price
-    };
+    if (["description", "image"].includes(e.target.dataset.fieldType)) {
+      let activities = [...this.state.activities];
+      activities[e.target.dataset.id][
+        e.target.dataset.fieldType
+      ] = e.target.value.toUpperCase();
+      this.setState({ activities }, () => console.log(this.state.activities));
+    } else {
+      this.setState({ [e.target.name]: e.target.value });
+    }
+  };
 
-    //Update City via updateCity action
-    this.props.updateItinerary(id, itinerary);
-
-    // Clear form
-    this.setState({
-      itinerary: null
-    });
-  }
-  onChange(event) {
-    const prevformData = this.state.formData;
-    const {
-      target: { name, value }
-    } = event;
-    const formData = { ...prevformData, [name]: value };
-
-    this.setState({
-      formData
-    });
-  }
+  addActivity = event => {
+    this.setState(prevState => ({
+      activities: [...prevState.activities, { description: "", image: "" }]
+    }));
+  };
 
   displayItinerary(property) {
     this.setState({
       itinerary: property,
-      formData: {
-        hashtag: property.hashtag,
-        title: property.title,
-        city: property.city,
-        duration: property.duration,
-        price: property.price
-      }
+      hashtag: property.hashtag,
+      title: property.title,
+      city: property.city,
+      duration: property.duration,
+      price: property.price,
+      activities: property.activities
     });
   }
   render() {
@@ -124,45 +105,83 @@ export class CreateItinerary extends Component {
       );
     });
 
+    let { title, city, activities, duration, price, hashtag } = this.state;
+
     return (
       <div>
         <h2>Itinerary Creator</h2>
         <ErrorMessage />
         <form
           id="itinerary-creator"
-          onSubmit={this.state.itinerary === null ? this.onSubmit : this.update}
-          style={{ marginBottom: "1rem" }}
+          onSubmit={this.onSubmit}
+          onChange={this.handleChange}
         >
-          {Object.keys(this.state.formData).map((keyName, i) => (
-            <TextField
-              key={i}
-              id="outlined-name"
-              type="text"
-              name={keyName}
-              label={keyName}
-              variant="outlined"
-              style={{ marginBottom: 8 }}
-              helperText=""
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
-              value={this.state.formData[keyName] || ""}
-              onChange={this.onChange}
-            />
-          ))}
+          <TextField
+            label="Title"
+            id="Title"
+            type="text"
+            name="title"
+            value={title}
+            fullWidth
+            style={{ marginBottom: 8 }}
+          />
+
+          <TextField
+            label="City"
+            id="city"
+            type="text"
+            name="city"
+            value={city}
+            fullWidth
+            style={{ marginBottom: 8 }}
+          />
+          <TextField
+            label="Duration"
+            id="Duration"
+            type="text"
+            name="duration"
+            value={duration}
+            helperText="How many hours?"
+            fullWidth
+            style={{ marginBottom: 8 }}
+          />
+
+          <TextField
+            label="Price"
+            id="price"
+            type="text"
+            name="price"
+            value={price}
+            helperText="Please enter the cost in Euro"
+            fullWidth
+            style={{ marginBottom: 8 }}
+          />
+
+          <Divider />
           <Button
+            type="button"
+            onClick={this.addActivity}
+            variant="contained"
+            size="medium"
+            style={{ backgroundColor: "#FF6347" }}
+          >
+            Add new activity
+          </Button>
+          <ActivityInputs activities={activities} />
+          <Button
+            type="submit"
             form="itinerary-creator"
             fullWidth
             variant="contained"
             size="small"
-            type="submit"
+            variant="contained"
+            size="medium"
+            style={{ backgroundColor: "#FF6347" }}
           >
-            Save
+            Submit
           </Button>
-          {itineraryList}
         </form>
+        {itineraryList}
       </div>
     );
   }
@@ -170,7 +189,6 @@ export class CreateItinerary extends Component {
 
 CreateItinerary.propTypes = {
   createItinerary: PropTypes.func.isRequired,
-  updateItinerary: PropTypes.func.isRequired,
   itineraries: PropTypes.object.isRequired,
   getItineraries: PropTypes.func.isRequired,
   itinerary: PropTypes.object.isRequired,
@@ -185,5 +203,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItineraries, createItinerary, updateItinerary, setError }
+  { getItineraries, createItinerary, setError }
 )(CreateItinerary);
