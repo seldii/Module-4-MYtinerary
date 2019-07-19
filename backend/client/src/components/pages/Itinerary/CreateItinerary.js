@@ -64,9 +64,8 @@ export class CreateItinerary extends Component {
 
     if (["description", "image"].includes(e.target.dataset.fieldType)) {
       let activities = [...this.state.activities];
-      activities[e.target.dataset.id][
-        e.target.dataset.fieldType
-      ] = e.target.value.toUpperCase();
+      activities[e.target.dataset.id][e.target.dataset.fieldType] =
+        e.target.value;
       this.setState({ activities }, () => console.log(this.state.activities));
     } else {
       this.setState({ [e.target.name]: e.target.value });

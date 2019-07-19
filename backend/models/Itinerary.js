@@ -30,6 +30,9 @@ const ItinerarySchema = new Schema({
   },
   activities: {
     type: Array
+  },
+  comments: {
+    type: Array
   }
 });
 module.exports = Itinerary = mongoose.model("itinerary", ItinerarySchema);

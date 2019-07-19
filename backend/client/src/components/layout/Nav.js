@@ -77,7 +77,7 @@ const TemporaryDrawer = props => {
               <ListItemIcon style={iconStyle()}>
                 <FontAwesomeIcon icon="heart" />
               </ListItemIcon>
-              <ListItemText>Cities You Loved</ListItemText>
+              <ListItemText>Favourite Cities</ListItemText>
             </ListItem>
           </Link>
           <Link to={{ pathname: `/profile/${user.name}/myitineraries` }}>
@@ -85,7 +85,7 @@ const TemporaryDrawer = props => {
               <ListItemIcon style={iconStyle()}>
                 <FontAwesomeIcon icon="suitcase-rolling" />
               </ListItemIcon>
-              <ListItemText>Your Itineraries</ListItemText>
+              <ListItemText>MyItineraries</ListItemText>
             </ListItem>
           </Link>
 

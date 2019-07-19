@@ -1,36 +1,55 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 
 import "../../App.css";
 
-const items = [
-  {
-    src:
-      "https://i1.wp.com/www.roadtripsaroundtheworld.com/wp-content/uploads/2016/03/Berlin-Walking-tour-map-Visit-roadtripsaroundtheworld.com-to-learn-more.jpg?w=1500&ssl=1"
-  },
-  {
-    src:
-      "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-540x360/06/71/e2/1b.jpg"
-  },
-  { src: "https://cdn.getyourguide.com/img/tour_img-301489-148.jpg" }
-];
-
 export class SlideMe extends Component {
   render() {
-    var settings = {
+    console.log(this.props);
+    const settings = {
       dots: true,
-      infinite: true,
+      infinite: false,
       speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      rows: 1,
-      slidesPerRow: 3,
-      slide: "container"
+      slidesToShow: 3,
+      slidesToScroll: 3
+    };
+
+    const styles = {
+      media: {},
+      card: {
+        position: "relative"
+      },
+      overlay: {
+        position: "",
+        top: "20px",
+        left: "20px",
+        color: "black",
+        backgroundColor: "white",
+        fontSize: "0.5 rem"
+      }
     };
     return (
       <Slider {...settings}>
-        {items.map(item => {
-          return <img style={{ height: "20px" }} src={item.src} alt="" />;
+        {this.props.itinerary.activities.map(item => {
+          return (
+            <Card style={styles.card}>
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  alt={item.description}
+                  image={item.image}
+                  title={item.description}
+                  style={styles.media}
+                />
+              </CardActionArea>
+              <div style={styles.overlay}>{item.description}</div>
+            </Card>
+          );
         })}
       </Slider>
     );

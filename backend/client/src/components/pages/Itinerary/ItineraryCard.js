@@ -152,7 +152,7 @@ const ItineraryCard = ({ itinerary }) => {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Activity />
+          <Activity itinerary={itinerary} />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

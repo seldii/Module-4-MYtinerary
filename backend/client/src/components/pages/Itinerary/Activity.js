@@ -1,12 +1,14 @@
 import React from "react";
 import ActivitySlider from "../../layout/ActivitySlider";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 
+import { makeStyles } from "@material-ui/core/styles";
+
+import Comment from "../../layout/Comment";
 const useStyles = makeStyles({
+  container: {
+    marginBottom: "40px",
+    width: "100%"
+  },
   root: {
     width: "100%",
     display: "flex",
@@ -20,17 +22,13 @@ const useStyles = makeStyles({
     flex: "auto"
   }
 });
-const Activity = () => {
+const Activity = props => {
   const classes = useStyles();
   return (
-    <div style={{ width: "100%" }}>
+    <div className={classes.container}>
       <h5>Activities:</h5>
-      <ActivitySlider />
-      <Typography>Comments:</Typography>
-      <Paper className={classes.root}>
-        <InputBase className={classes.input} placeholder="Your comment" />
-        <FontAwesomeIcon className={classes.icon} icon="paper-plane" />
-      </Paper>
+      <ActivitySlider itinerary={props.itinerary} />
+      <Comment itinerary={props.itinerary} />
     </div>
   );
 };
