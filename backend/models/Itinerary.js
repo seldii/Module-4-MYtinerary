@@ -33,6 +33,9 @@ const ItinerarySchema = new Schema({
   },
   comments: {
     type: Array
+  },
+  likes: {
+    type: Array
   }
 });
 module.exports = Itinerary = mongoose.model("itinerary", ItinerarySchema);

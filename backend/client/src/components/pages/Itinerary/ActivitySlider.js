@@ -6,8 +6,6 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
-import "../../App.css";
-
 export class SlideMe extends Component {
   render() {
     console.log(this.props);

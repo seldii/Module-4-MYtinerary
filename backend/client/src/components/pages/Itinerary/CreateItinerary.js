@@ -60,8 +60,6 @@ export class CreateItinerary extends Component {
   }
 
   handleChange = e => {
-    console.log(e.target.name);
-
     if (["description", "image"].includes(e.target.dataset.fieldType)) {
       let activities = [...this.state.activities];
       activities[e.target.dataset.id][e.target.dataset.fieldType] =

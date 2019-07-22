@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  IconButton,
+  CardActions,
+  Divider
+} from "@material-ui/core/";
+import clsx from "clsx";
+import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -11,6 +19,11 @@ import Avatar from "@material-ui/core/Avatar";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import Activity from "./Activity";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { updateItinerary } from "../../../store/actions/itineraryAction";
+import { getCurrentDate } from "../../utility/GetCurrentDate";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -38,125 +51,157 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column"
   },
 
-  panelContent: {
-    width: "100%"
-  },
-  panelExpandIcon: {
-    color: "red",
-    "&$expanded": {
-      transform: "none"
-    }
-  },
   expanded: {}
 }));
 
-const ItineraryCard = ({ itinerary }) => {
+const ItineraryCard = ({ itinerary, updateItinerary, auth }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [expanded, setExpanded] = React.useState(false);
+  const [liked, setLiked] = React.useState(false);
 
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  function handleExpandClick() {
+    setExpanded(!expanded);
+  }
+
+  function toggle() {
+    setLiked(!liked);
+    console.log(itinerary._id);
+    console.log(auth.user);
+    const id = itinerary._id;
+    const prevItinerary = itinerary;
+    const prevLikes = itinerary.likes;
+    const newDate = getCurrentDate();
+    const newLike = {
+      user: auth.user,
+      date: newDate
+    };
+
+    console.log(newLike);
+
+    const likes = [...prevLikes, newLike];
+    const newItinerary = {
+      ...prevItinerary,
+      likes
+    };
+
+    console.log(newItinerary);
+    updateItinerary(id, newItinerary);
+  }
 
   return (
-    <div>
-      <ExpansionPanel
-        className={classes.panel}
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <ExpansionPanelSummary
-          expandIcon={expanded === "panel1" ? "Close" : <ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-          class={{
-            content: classes.panelContent,
-            expandIcon: classes.panelExpandIcon
-          }}
-          style={{
-            margin: 0,
-            padding: 0,
-            display: "flex",
-            justifyItems: "center",
-            flexDirection: "column"
-          }}
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar
+            alt={itinerary.user.name}
+            src={itinerary.user.image}
+            className={classes.avatar}
+          />
+        }
+        action={
+          <IconButton
+            aria-label="Settings"
+            onClick={toggle}
+            className={clsx(classes.like, {
+              [classes.likedColored]: liked
+            })}
+            aria-expanded={liked}
+          >
+            <FontAwesomeIcon
+              style={{ color: liked ? "red" : "grey" }}
+              icon="heart"
+            />
+          </IconButton>
+        }
+        title={itinerary.title}
+        subheader={itinerary.user.name}
+      />
+
+      <CardContent className={classes.content}>
+        <Grid
+          className={classes.info}
+          container
+          direction="column"
+          justify="space-between"
+          alignItems="baseline"
         >
-          <div className={classes.card}>
-            <div className={classes.profile}>
-              <Avatar
-                alt={itinerary.user.name}
-                src={itinerary.user.image}
-                className={classes.avatar}
-              />
-              <div style={{ alignSelf: "center" }}>
-                <Typography>{itinerary.user.name}</Typography>
-              </div>
-            </div>
-            <Card style={{ width: "100%" }}>
-              <CardContent className={classes.content}>
-                <Typography component="h1" variant="subtitle1">
-                  {itinerary.title}
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="baseline"
+          >
+            <Typography variant="body2" component="div">
+              Likes:{itinerary.rating || "-"}
+            </Typography>
+            <Typography variant="body2" component="div">
+              {itinerary.duration || "-"} Hours
+            </Typography>
+            <Typography variant="body2" component="div">
+              {(() => {
+                const x = itinerary.price;
+                switch (true) {
+                  case x === 0:
+                    return "Free";
+                  case x < 15:
+                    return "$";
+                  case x < 40:
+                    return "$$";
+                  case x < 60:
+                    return "$$$";
+                  default:
+                    return "";
+                }
+              })()}
+            </Typography>
+          </Grid>
+          <Box display="flex" flexDirection="row" flexWrap="wrap">
+            {itinerary.hashtag.length > 0 ? (
+              itinerary.hashtag[0].split("," || " ").map((h, index) => (
+                <Typography key={index} variant="body2">
+                  #{h}
                 </Typography>
-                <Grid
-                  className={classes.info}
-                  container
-                  direction="column"
-                  justify="space-between"
-                  alignItems="baseline"
-                >
-                  <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="baseline"
-                  >
-                    <Typography variant="body2" component="div">
-                      Likes:{itinerary.rating || "-"}
-                    </Typography>
-                    <Typography variant="body2" component="div">
-                      {itinerary.duration || "-"} Hours
-                    </Typography>
-                    <Typography variant="body2" component="div">
-                      {(() => {
-                        const x = itinerary.price;
-                        switch (true) {
-                          case x === 0:
-                            return "Free";
-                          case x < 15:
-                            return "$";
-                          case x < 40:
-                            return "$$";
-                          case x < 60:
-                            return "$$$";
-                          default:
-                            return "";
-                        }
-                      })()}
-                    </Typography>
-                  </Grid>
-                  <Box display="flex" flexDirection="row" flexWrap="wrap">
-                    {itinerary.hashtag.length > 0 ? (
-                      itinerary.hashtag[0].split("," || " ").map((h, index) => (
-                        <Typography key={index} variant="body2">
-                          #{h}
-                        </Typography>
-                      ))
-                    ) : (
-                      <div>#</div>
-                    )}
-                  </Box>
-                </Grid>
-              </CardContent>
-            </Card>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+              ))
+            ) : (
+              <div>#</div>
+            )}
+          </Box>
+        </Grid>
+      </CardContent>
+
+      <CardActions disableSpacing style={{ justifyContent: "center" }}>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="Show more"
+        >
+          <Typography style={{ color: "blue" }}>
+            {!expanded ? "Show More" : "Show Less"}
+          </Typography>
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
           <Activity itinerary={itinerary} />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </div>
+        </CardContent>
+      </Collapse>
+    </Card>
   );
 };
 
-export default ItineraryCard;
+ItineraryCard.propTypes = {
+  updateItinerary: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { updateItinerary }
+)(ItineraryCard);

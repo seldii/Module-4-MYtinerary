@@ -1,9 +1,10 @@
 import React from "react";
-import ActivitySlider from "../../layout/ActivitySlider";
-
+import ActivitySlider from "./ActivitySlider";
 import { makeStyles } from "@material-ui/core/styles";
+import Divider from "@material-ui/core/Divider";
+import Comment from "./Comment";
+import CommentsList from "./CommentsList";
 
-import Comment from "../../layout/Comment";
 const useStyles = makeStyles({
   container: {
     marginBottom: "40px",
@@ -28,6 +29,7 @@ const Activity = props => {
     <div className={classes.container}>
       <h5>Activities:</h5>
       <ActivitySlider itinerary={props.itinerary} />
+      <Divider />
       <Comment itinerary={props.itinerary} />
     </div>
   );
