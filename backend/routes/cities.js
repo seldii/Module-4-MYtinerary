@@ -49,7 +49,7 @@ router.patch("/:id", cityValidation, auth, async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const cities = await City.find();
-    cities.sort(function(a, b) {
+    cities.sort((a, b) => {
       let nameA = a.name.toUpperCase(); // ignore upper and lowercase
       let nameB = b.name.toUpperCase(); // ignore upper and lowercase
       if (nameA < nameB) {

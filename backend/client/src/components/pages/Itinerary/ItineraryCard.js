@@ -22,7 +22,10 @@ import Activity from "./Activity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { updateItinerary } from "../../../store/actions/itineraryAction";
+import {
+  updateItinerary,
+  unlike
+} from "../../../store/actions/itineraryAction";
 import { getCurrentDate } from "../../utility/GetCurrentDate";
 
 const useStyles = makeStyles(theme => ({
@@ -65,28 +68,29 @@ const ItineraryCard = ({ itinerary, updateItinerary, auth }) => {
   }
 
   function toggle() {
-    setLiked(!liked);
-    console.log(itinerary._id);
-    console.log(auth.user);
+    if (itinerary.likes.includes(auth.user)) {
+      setLiked(liked);
+    }
+
     const id = itinerary._id;
     const prevItinerary = itinerary;
     const prevLikes = itinerary.likes;
-    const newDate = getCurrentDate();
-    const newLike = {
-      user: auth.user,
-      date: newDate
-    };
-
-    console.log(newLike);
-
-    const likes = [...prevLikes, newLike];
-    const newItinerary = {
-      ...prevItinerary,
-      likes
-    };
-
-    console.log(newItinerary);
-    updateItinerary(id, newItinerary);
+    console.log(itinerary._id);
+    console.log(auth.user);
+    if (!itinerary.likes.includes(auth.user)) {
+      setLiked(!liked);
+      const newDate = getCurrentDate();
+      const newLike = {
+        user: auth.user,
+        date: newDate
+      };
+      const likes = [...prevLikes, newLike];
+      const newItinerary = {
+        ...prevItinerary,
+        likes
+      };
+      updateItinerary(id, newItinerary);
+    }
   }
 
   return (

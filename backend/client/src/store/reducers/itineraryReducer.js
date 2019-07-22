@@ -5,7 +5,8 @@ import {
   DELETE_ITINERARY,
   UPDATE_ITINERARY,
   GET_ITINERARIES_BY_CITYNAME,
-  GET_ITINERARIES_BY_USER
+  GET_ITINERARIES_BY_USER,
+  UNLIKE
 } from "../actions/types";
 
 const initialState = {
@@ -66,6 +67,10 @@ export default function(state = initialState, action) {
           itinerary => itinerary._id !== action.payload
         ),
         loading: false
+      };
+    case UNLIKE:
+      return {
+        ...state
       };
     default:
       return state;

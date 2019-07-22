@@ -108,3 +108,11 @@ export const deleteItinerary = id => async (dispatch, getState) => {
     console.log(err.response.data);
   }
 };
+
+export const unlike = (id, user) => async getState => {
+  try {
+    await axios.delete(`/itineraries/${id}${user}`, tokenConfig(getState));
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
