@@ -3,7 +3,6 @@ import ActivitySlider from "./ActivitySlider";
 import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Comment from "./Comment";
-import CommentsList from "./CommentsList";
 
 const useStyles = makeStyles({
   container: {

@@ -56,4 +56,21 @@ router.post("/", (req, res) => {
   });
 });
 
+router.patch("/itinerary", (req, res) => {
+  const newFavorite = req.body.favorite;
+  const id = req.body.user._id;
+  User.findOne({ _id: id }, function(err, user) {
+    if (!user.favorites.includes(newFavorite)) {
+      user.favorites.push(newFavorite);
+      user.save(function(err, user) {
+        if (err) throw err;
+        console.log("user updated");
+        res.json(user);
+      });
+    } else {
+      console.log("already favorited");
+    }
+  });
+});
+
 module.exports = router;

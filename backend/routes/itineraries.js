@@ -114,20 +114,4 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
-//Unlike
-
-router.delete("/:id/:userId", async (req, res) => {
-  try {
-    const itinerary = await Itinerary.remove({
-      "likes.user._id": req.params.user
-    });
-    if (!itinerary) {
-      return res.status(404).send("Itinerary not found.");
-    }
-    res.send({ msg: "Itinerary deleted." });
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
-
 module.exports = router;

@@ -20,6 +20,9 @@ const UserSchema = new Schema({
   registryDate: {
     type: Date,
     default: Date.now
+  },
+  favorites: {
+    type: Array
   }
 });
 module.exports = User = mongoose.model("user", UserSchema);

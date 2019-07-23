@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
-export class SlideMe extends Component {
+export class ActivitySlider extends Component {
   render() {
     console.log(this.props);
     const settings = {
@@ -33,9 +31,9 @@ export class SlideMe extends Component {
     };
     return (
       <Slider {...settings}>
-        {this.props.itinerary.activities.map(item => {
+        {this.props.itinerary.activities.map((item, idx) => {
           return (
-            <Card style={styles.card}>
+            <Card key={idx} style={styles.card}>
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -54,4 +52,4 @@ export class SlideMe extends Component {
   }
 }
 
-export default SlideMe;
+export default ActivitySlider;

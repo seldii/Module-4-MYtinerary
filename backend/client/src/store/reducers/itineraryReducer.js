@@ -5,8 +5,7 @@ import {
   DELETE_ITINERARY,
   UPDATE_ITINERARY,
   GET_ITINERARIES_BY_CITYNAME,
-  GET_ITINERARIES_BY_USER,
-  UNLIKE
+  GET_ITINERARIES_BY_USER
 } from "../actions/types";
 
 const initialState = {
@@ -68,10 +67,7 @@ export default function(state = initialState, action) {
         ),
         loading: false
       };
-    case UNLIKE:
-      return {
-        ...state
-      };
+
     default:
       return state;
   }

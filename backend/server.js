@@ -18,6 +18,10 @@ app.use("/auth", require("./routes/auth"));
 //DB Config
 const db = config.get("mongoURI");
 
+// Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
+// by default, you need to set it to false.
+mongoose.set("useFindAndModify", false);
+
 //Connect to Mongo
 mongoose
   .connect(db, { useNewUrlParser: true, useCreateIndex: true })
