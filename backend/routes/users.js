@@ -70,11 +70,8 @@ router.patch("/itinerary", (req, res) => {
       user.favorites.push(newFavorite);
       user.save(function(err, user) {
         if (err) throw err;
-        console.log("user updated");
         res.json(user);
       });
-    } else {
-      console.log("already favorited");
     }
   });
 });
@@ -99,7 +96,7 @@ router.delete("/itinerary", async (req, res) => {
   if (user)
     user.save(function(err, user) {
       if (err) throw err;
-      console.log("user updated");
+
       res.json(user);
     });
 });

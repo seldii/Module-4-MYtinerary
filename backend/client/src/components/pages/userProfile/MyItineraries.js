@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getItinerariesByUser } from "../../../store/actions/itineraryAction";
+import { loadUser } from "../../../store/actions/authActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
@@ -11,19 +12,20 @@ import Footer from "../../layout/Footer";
 
 export class MyItineraries extends Component {
   componentDidMount() {
+    this.props.loadUser();
     console.log(this.props.auth);
     const { user } = this.props.auth;
     console.log(user.name);
     this.props.getItinerariesByUser(user.name);
   }
 
-  componentWillReceiveProps(nextProps) {
+  /*  componentWillReceiveProps(nextProps) {
     console.log(this.props.match);
     if (this.props.match.params !== nextProps.match.params) {
       this.props.getItinerariesByUser(nextProps.match.params);
     }
     console.log(this.props.itinerariesByUser);
-  }
+  } */
 
   render() {
     let itineraryList;
@@ -63,7 +65,8 @@ export class MyItineraries extends Component {
 
 MyItineraries.propTypes = {
   getItinerariesByUser: PropTypes.func.isRequired,
-  itinerariesByUser: PropTypes.arrayOf(PropTypes.object).isRequired
+  itinerariesByUser: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loadUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -74,6 +77,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { getItinerariesByUser }
+    { getItinerariesByUser, loadUser }
   )(MyItineraries)
 );

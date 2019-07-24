@@ -1,25 +1,33 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { makeStyles } from "@material-ui/core/styles";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import { amber, green } from "@material-ui/core/colors";
+import WarningIcon from "@material-ui/icons/Warning";
+
+const useStyles = makeStyles(theme => ({
+  snackbar: {
+    margin: theme.spacing(1),
+    backgroundColor: amber[700]
+  }
+}));
 
 const ErrorMessage = ({ error }) => {
-  return (
-    <List style={{ color: "#FF6347" }}>
-      {error.map(err => (
-        <ListItem key={err.id}>
-          <ListItemIcon>
-            <FontAwesomeIcon style={{ color: "#FF6347" }} icon="bomb" />
-          </ListItemIcon>
-          <ListItemText>{err.text}</ListItemText>
-        </ListItem>
-      ))}
-    </List>
-  );
+  const classes = useStyles();
+
+  return error.map(err => (
+    <SnackbarContent
+      key={err.id}
+      className={classes.snackbar}
+      message={
+        <span className={classes.message}>
+          <WarningIcon />
+          {err.text}
+        </span>
+      }
+    />
+  ));
 };
 
 ErrorMessage.propTypes = {

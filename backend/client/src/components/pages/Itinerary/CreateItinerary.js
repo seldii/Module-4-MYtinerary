@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import {
-  getItineraries,
-  createItinerary
+  getItinerariesByUser,
+  createItinerary,
+  updateItinerary
 } from "../../../store/actions/itineraryAction";
 import { setError } from "../../../store/actions/errorActions";
 import ErrorMessage from "../../common/ErrorMessage";
@@ -28,9 +29,18 @@ export class CreateItinerary extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.displayItinerary = this.displayItinerary.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.update = this.update.bind(this);
   }
   componentDidMount() {
-    this.props.getItineraries();
+    const { user } = this.props.auth;
+
+    this.props.getItinerariesByUser(user.name);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.match.params !== nextProps.match.params) {
+      this.props.getItinerariesByUser(nextProps.match.params);
+    }
   }
   onSubmit(e) {
     e.preventDefault();
@@ -53,10 +63,29 @@ export class CreateItinerary extends Component {
       hashtag: [],
       title: "",
       city: "",
+      currentItinerary: "",
       duration: null,
       price: null,
       activities: [{ description: "", image: "" }]
     });
+  }
+
+  update(e) {
+    e.preventDefault();
+
+    const id = this.props.itinerary._id;
+    const newItinerary = {
+      user: this.props.auth.user,
+      hashtag: this.state.hashtag,
+      title: this.state.title,
+      city: this.state.city,
+      duration: this.state.duration,
+      price: this.state.price,
+      activities: this.state.activities
+    };
+
+    //Update Itinerary via updateItinerary action
+    this.props.updateItinerary(id, newItinerary);
   }
 
   handleChange = e => {
@@ -90,17 +119,19 @@ export class CreateItinerary extends Component {
   render() {
     let itineraryList;
 
-    const { itineraries } = this.props.itineraries;
-
-    itineraryList = itineraries.map((itinerary, _id) => {
-      return (
-        <ItineraryCreatorCard
-          key={_id}
-          itinerary={itinerary}
-          displayItinerary={this.displayItinerary}
-        />
-      );
-    });
+    if (this.props.itinerariesByUser) {
+      itineraryList = this.props.itinerariesByUser.map((itinerary, _id) => {
+        return (
+          <ItineraryCreatorCard
+            key={_id}
+            itinerary={itinerary}
+            displayItinerary={this.displayItinerary}
+          />
+        );
+      });
+    } else {
+      itineraryList = <div>Not found</div>;
+    }
 
     let { title, city, activities, duration, price, hashtag } = this.state;
 
@@ -110,7 +141,7 @@ export class CreateItinerary extends Component {
         <ErrorMessage />
         <form
           id="itinerary-creator"
-          onSubmit={this.onSubmit}
+          onSubmit={this.props.itinerary ? this.update : this.onSubmit}
           onChange={this.handleChange}
         >
           <TextField
@@ -118,7 +149,7 @@ export class CreateItinerary extends Component {
             id="Title"
             type="text"
             name="title"
-            value={title}
+            value={title || ""}
             fullWidth
             style={{ marginBottom: 8 }}
           />
@@ -128,7 +159,7 @@ export class CreateItinerary extends Component {
             id="city"
             type="text"
             name="city"
-            value={city}
+            value={city || ""}
             fullWidth
             style={{ marginBottom: 8 }}
           />
@@ -137,7 +168,7 @@ export class CreateItinerary extends Component {
             id="Duration"
             type="text"
             name="duration"
-            value={duration}
+            value={duration || ""}
             helperText="How many hours?"
             fullWidth
             style={{ marginBottom: 8 }}
@@ -148,7 +179,7 @@ export class CreateItinerary extends Component {
             id="price"
             type="text"
             name="price"
-            value={price}
+            value={price || ""}
             helperText="Please enter the cost in Euro"
             fullWidth
             style={{ marginBottom: 8 }}
@@ -160,7 +191,7 @@ export class CreateItinerary extends Component {
             onClick={this.addActivity}
             variant="contained"
             size="medium"
-            style={{ backgroundColor: "#FF6347" }}
+            style={{ color: "#FF6347" }}
           >
             Add new activity
           </Button>
@@ -173,7 +204,7 @@ export class CreateItinerary extends Component {
             size="small"
             variant="contained"
             size="medium"
-            style={{ backgroundColor: "#FF6347" }}
+            style={{ color: "#FF6347" }}
           >
             Submit
           </Button>
@@ -186,19 +217,20 @@ export class CreateItinerary extends Component {
 
 CreateItinerary.propTypes = {
   createItinerary: PropTypes.func.isRequired,
-  itineraries: PropTypes.object.isRequired,
-  getItineraries: PropTypes.func.isRequired,
-  itinerary: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  getItinerariesByUser: PropTypes.func.isRequired,
+  itinerariesByUser: PropTypes.arrayOf(PropTypes.object).isRequired,
+
+  auth: PropTypes.object.isRequired,
+  updateItinerary: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  itineraries: state.itineraries,
+  itinerariesByUser: state.itineraries.itinerariesByUser,
   itinerary: state.itineraries.itinerary,
   auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
-  { getItineraries, createItinerary, setError }
+  { getItinerariesByUser, createItinerary, setError, updateItinerary }
 )(CreateItinerary);

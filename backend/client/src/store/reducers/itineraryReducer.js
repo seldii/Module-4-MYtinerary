@@ -45,6 +45,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         itineraries: [action.payload, ...state.itineraries],
+        itinerariesByUser: [action.payload, ...state.itinerariesByUser],
         loading: false
       };
 
@@ -63,6 +64,9 @@ export default function(state = initialState, action) {
       return {
         ...state,
         itineraries: state.itineraries.filter(
+          itinerary => itinerary._id !== action.payload
+        ),
+        itinerariesByUser: state.itinerariesByUser.filter(
           itinerary => itinerary._id !== action.payload
         ),
         loading: false

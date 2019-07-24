@@ -7,21 +7,23 @@ import {
   CardActions,
   Divider
 } from "@material-ui/core/";
-import clsx from "clsx";
+
 import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
+
 import { Box } from "@material-ui/core";
 import Activity from "./Activity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { updateItinerary } from "../../../store/actions/itineraryAction";
-import { addFavorite, removeFavorite } from "../../../store/actions/favorites";
+import {
+  addFavorite,
+  removeFavorite
+} from "../../../store/actions/favoriteActions";
 import { loadUser } from "../../../store/actions/authActions";
-import { getCurrentDate } from "../../utility/GetCurrentDate";
 
 class ItineraryCard extends Component {
   constructor(props) {
@@ -43,22 +45,23 @@ class ItineraryCard extends Component {
   };
 
   addFavorite = () => {
+    console.log("add");
     const favorite = {
       favorite: this.props.itinerary._id,
       user: this.props.auth.user
     };
-    console.log(favorite);
+
     this.props.addFavorite(favorite);
     this.props.loadUser();
   };
 
   removeFavorite = () => {
-    console.log("du bist da");
+    console.log("remove");
     const favorite = {
       favorite: this.props.itinerary._id,
       user: this.props.auth.user._id
     };
-    console.log(favorite);
+
     this.props.removeFavorite(favorite);
     this.props.loadUser();
   };
@@ -66,7 +69,7 @@ class ItineraryCard extends Component {
   render() {
     const { expanded } = this.state;
     const itinerary = this.props.itinerary;
-    console.log(this.props.auth.user.favorites.includes(itinerary._id));
+
     return (
       <Card>
         <CardHeader

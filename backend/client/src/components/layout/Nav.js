@@ -52,7 +52,11 @@ const TemporaryDrawer = props => {
     <div className={classes.list} role="presentation">
       <List>
         <Link to="/cities">
-          <ListItem button>
+          <ListItem
+            button
+            onClick={toggleDrawer(side, false)}
+            onKeyDown={toggleDrawer(side, false)}
+          >
             <ListItemIcon style={iconStyle()}>
               <FontAwesomeIcon icon="globe" />
             </ListItemIcon>
@@ -60,7 +64,11 @@ const TemporaryDrawer = props => {
           </ListItem>
         </Link>
         <Link to="/">
-          <ListItem button>
+          <ListItem
+            button
+            onClick={toggleDrawer(side, false)}
+            onKeyDown={toggleDrawer(side, false)}
+          >
             <ListItemIcon style={iconStyle()}>
               <FontAwesomeIcon icon="igloo" />
             </ListItemIcon>
@@ -73,7 +81,11 @@ const TemporaryDrawer = props => {
       {isAuthenticated ? (
         <Fragment>
           <Link to="">
-            <ListItem button>
+            <ListItem
+              button
+              onClick={toggleDrawer(side, false)}
+              onKeyDown={toggleDrawer(side, false)}
+            >
               <ListItemIcon style={iconStyle()}>
                 <FontAwesomeIcon icon="heart" />
               </ListItemIcon>
@@ -81,7 +93,11 @@ const TemporaryDrawer = props => {
             </ListItem>
           </Link>
           <Link to={{ pathname: `/profile/${user.name}/myitineraries` }}>
-            <ListItem button>
+            <ListItem
+              button
+              onClick={toggleDrawer(side, false)}
+              onKeyDown={toggleDrawer(side, false)}
+            >
               <ListItemIcon style={iconStyle()}>
                 <FontAwesomeIcon icon="suitcase-rolling" />
               </ListItemIcon>
@@ -91,7 +107,11 @@ const TemporaryDrawer = props => {
 
           <List>
             <Link to="/city-creator">
-              <ListItem button>
+              <ListItem
+                button
+                onClick={toggleDrawer(side, false)}
+                onKeyDown={toggleDrawer(side, false)}
+              >
                 <ListItemIcon style={iconStyle()}>
                   <FontAwesomeIcon icon="map-pin" />
                 </ListItemIcon>
@@ -99,7 +119,11 @@ const TemporaryDrawer = props => {
               </ListItem>
             </Link>
             <Link to="/itinerary-creator">
-              <ListItem button>
+              <ListItem
+                button
+                onClick={toggleDrawer(side, false)}
+                onKeyDown={toggleDrawer(side, false)}
+              >
                 <ListItemIcon style={iconStyle()}>
                   <FontAwesomeIcon icon="clipboard-list" />
                 </ListItemIcon>
@@ -113,7 +137,7 @@ const TemporaryDrawer = props => {
       ) : (
         <Fragment>
           <ListItem button>
-            <LogInModal />
+            <LogInModal toggleDrawer={toggleDrawer(side, false)} />
           </ListItem>
         </Fragment>
       )}

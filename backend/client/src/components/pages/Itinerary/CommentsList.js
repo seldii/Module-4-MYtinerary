@@ -39,8 +39,9 @@ const CommentsList = ({ comment }) => {
                 color="textPrimary"
               >
                 {comment.user.name}
-              </Typography>
-              <Typography>{comment.date}</Typography>
+              </Typography>{" "}
+              <br />
+              {comment.date}
             </React.Fragment>
           }
         />

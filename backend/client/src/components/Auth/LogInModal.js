@@ -120,6 +120,7 @@ class LogInModal extends Component {
                   type="submit"
                   value="Submit"
                   style={{ marginTop: "2rem" }}
+                  onClick={this.props.toggleDrawer}
                 >
                   Login
                 </Button>

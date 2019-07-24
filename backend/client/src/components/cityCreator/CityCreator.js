@@ -103,7 +103,6 @@ class CityCreator extends Component {
             type="text"
             name="name"
             label="Name"
-            variant="outlined"
             style={{ marginBottom: 8 }}
             helperText=""
             fullWidth
@@ -120,7 +119,6 @@ class CityCreator extends Component {
             type="text"
             name="country"
             label="Country"
-            variant="outlined"
             style={{ marginBottom: 8 }}
             helperText="Enter 2-letter Country Code"
             fullWidth
@@ -137,7 +135,6 @@ class CityCreator extends Component {
             type="text"
             name="image"
             label="Image"
-            variant="outlined"
             helperText="Enter a valid url"
             fullWidth
             style={{ marginBottom: 8 }}
@@ -156,7 +153,7 @@ class CityCreator extends Component {
             size="small"
             type="submit"
           >
-            <SaveIcon />
+            <SaveIcon style={{ color: "#FF6347" }} />
             Save
           </Button>
         </form>
