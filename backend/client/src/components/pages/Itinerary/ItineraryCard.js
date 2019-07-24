@@ -19,7 +19,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { updateItinerary } from "../../../store/actions/itineraryAction";
-import { addFavorite } from "../../../store/actions/favorites";
+import { addFavorite, removeFavorite } from "../../../store/actions/favorites";
+import { loadUser } from "../../../store/actions/authActions";
 import { getCurrentDate } from "../../utility/GetCurrentDate";
 
 class ItineraryCard extends Component {
@@ -37,15 +38,29 @@ class ItineraryCard extends Component {
       expanded: !this.state.expanded
     });
   };
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    this.props.loadUser();
+  };
+
   addFavorite = () => {
-    console.log(this.props.auth.user);
     const favorite = {
       favorite: this.props.itinerary._id,
       user: this.props.auth.user
     };
     console.log(favorite);
     this.props.addFavorite(favorite);
+    this.props.loadUser();
+  };
+
+  removeFavorite = () => {
+    console.log("du bist da");
+    const favorite = {
+      favorite: this.props.itinerary._id,
+      user: this.props.auth.user._id
+    };
+    console.log(favorite);
+    this.props.removeFavorite(favorite);
+    this.props.loadUser();
   };
 
   render() {
@@ -59,7 +74,14 @@ class ItineraryCard extends Component {
             <Avatar alt={itinerary.user.name} src={itinerary.user.image} />
           }
           action={
-            <IconButton aria-label="Settings" onClick={this.addFavorite}>
+            <IconButton
+              aria-label="Settings"
+              onClick={
+                this.props.auth.user.favorites.includes(itinerary._id)
+                  ? this.removeFavorite
+                  : this.addFavorite
+              }
+            >
               <FontAwesomeIcon
                 style={{
                   color: this.props.auth.user.favorites.includes(itinerary._id)
@@ -148,7 +170,9 @@ class ItineraryCard extends Component {
 
 ItineraryCard.propTypes = {
   updateItinerary: PropTypes.func.isRequired,
-  addFavorite: PropTypes.func.isRequired
+  addFavorite: PropTypes.func.isRequired,
+  removeFavorite: PropTypes.func.isRequired,
+  loadUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -158,5 +182,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateItinerary, addFavorite }
+  { updateItinerary, addFavorite, removeFavorite, loadUser }
 )(ItineraryCard);

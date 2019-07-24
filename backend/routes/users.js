@@ -8,6 +8,8 @@ const jwt = require("jsonwebtoken");
 //City Model
 const User = require("../models/User");
 
+const auth = require("../../backend/middleware/auth");
+
 //@router  POST /users
 //@desc Register new user
 // @access Public
@@ -56,6 +58,10 @@ router.post("/", (req, res) => {
   });
 });
 
+//@router  PATCH /users
+//@desc Add the itinerary to the favorites
+// @access Private
+
 router.patch("/itinerary", (req, res) => {
   const newFavorite = req.body.favorite;
   const id = req.body.user._id;
@@ -71,6 +77,31 @@ router.patch("/itinerary", (req, res) => {
       console.log("already favorited");
     }
   });
+});
+
+//@router  DELETE /users
+//@desc Remove the itinerary to the favorites
+// @access Private
+
+router.delete("/itinerary", async (req, res) => {
+  const unFavorite = req.body.favorite;
+  const id = req.body.user;
+
+  const user = await User.findByIdAndUpdate(
+    { _id: id },
+    {
+      $pull: {
+        favorites: unFavorite
+      }
+    },
+    { new: true }
+  );
+  if (user)
+    user.save(function(err, user) {
+      if (err) throw err;
+      console.log("user updated");
+      res.json(user);
+    });
 });
 
 module.exports = router;

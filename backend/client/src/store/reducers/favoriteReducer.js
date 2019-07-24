@@ -19,9 +19,7 @@ export default function(state = initialState, action) {
     case REMOVE_FAVORITE:
       return {
         ...state,
-        favorites: state.favorites.filter(
-          favorite => favorite.favorite !== action.payload.favorite
-        ),
+        favorites: state.favorites.pop(action.payload.favorite),
         loading: false
       };
 

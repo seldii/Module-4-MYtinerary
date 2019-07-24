@@ -14,3 +14,14 @@ export const addFavorite = favorite => async dispatch => {
     console.log(err);
   }
 };
+export const removeFavorite = favorite => async dispatch => {
+  try {
+    await axios({ method: "DELETE", url: "/users/itinerary/", data: favorite });
+    dispatch({
+      type: REMOVE_FAVORITE,
+      payload: favorite
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
