@@ -12,19 +12,18 @@ import Footer from "../../layout/Footer";
 
 export class MyItineraries extends Component {
   componentDidMount() {
-    this.props.loadUser();
-    console.log(this.props.auth);
-    const { user } = this.props.auth;
-    console.log(user.name);
-    this.props.getItinerariesByUser(user.name);
+    console.log(this.props.auth.user.name);
+    const userName = this.props.auth.user.name;
+    this.props.getItinerariesByUser(userName);
   }
 
-  /*  componentWillReceiveProps(nextProps) {
+  /* componentWillReceiveProps(nextProps) {
     console.log(this.props.match);
+    console.log(nextProps);
+
     if (this.props.match.params !== nextProps.match.params) {
       this.props.getItinerariesByUser(nextProps.match.params);
     }
-    console.log(this.props.itinerariesByUser);
   } */
 
   render() {

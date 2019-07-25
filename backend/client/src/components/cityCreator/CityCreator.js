@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import CityCreatorCard from "./CityCreatorCard";
 import { getCities } from "../../store/actions/cityActions";
 import SaveIcon from "@material-ui/icons/Save";
@@ -9,6 +10,8 @@ import { addCity, updateCity } from "../../store/actions/cityActions";
 import { setError } from "../../store/actions/errorActions";
 import ErrorMessage from "../common/ErrorMessage";
 import PropTypes from "prop-types";
+import LogInModal from "../Auth/LogInModal";
+
 class CityCreator extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +25,10 @@ class CityCreator extends Component {
     this.onChange = this.onChange.bind(this);
     this.displayCity = this.displayCity.bind(this);
     this.update = this.update.bind(this);
+  }
+  componentWillMount() {
+    if (!this.props.auth.isAuthenticated) {
+    }
   }
   componentDidMount() {
     this.props.getCities();
@@ -88,7 +95,7 @@ class CityCreator extends Component {
         <CityCreatorCard key={_id} city={city} displayCity={this.displayCity} />
       );
     });
-    return (
+    return this.props.auth.isAuthenticated ? (
       <div>
         <h2>City Creator</h2>
         <ErrorMessage />
@@ -159,6 +166,10 @@ class CityCreator extends Component {
         </form>
         <div>{cityList}</div>
       </div>
+    ) : (
+      <div>
+        Please <LogInModal /> or <Link to="/">Register</Link>
+      </div>
     );
   }
 }
@@ -173,7 +184,8 @@ CityCreator.propTypes = {
 
 const mapStateToProps = state => ({
   cities: state.cities,
-  city: state.cities.city
+  city: state.cities.city,
+  auth: state.auth
 });
 
 export default connect(

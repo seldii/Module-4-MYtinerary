@@ -10,6 +10,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
+import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
+import RegistrationPage from "../Auth/RegistrationPage";
 
 class LogInModal extends Component {
   state = {
@@ -125,6 +128,23 @@ class LogInModal extends Component {
                   Login
                 </Button>
               </DialogActions>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link
+                    to="/sign-up"
+                    component={RegistrationPage}
+                    variant="body2"
+                    onClick={this.props.toggleDrawer}
+                  >
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
             </form>
           </DialogContent>
         </Dialog>

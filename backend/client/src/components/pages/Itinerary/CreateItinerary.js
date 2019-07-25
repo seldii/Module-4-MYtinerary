@@ -13,6 +13,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import ActivityInputs from "./ActivityInputs";
+import LogInModal from "../../Auth/LogInModal";
+import { Link } from "react-router-dom";
 
 export class CreateItinerary extends Component {
   constructor(props) {
@@ -32,9 +34,10 @@ export class CreateItinerary extends Component {
     this.update = this.update.bind(this);
   }
   componentDidMount() {
-    const { user } = this.props.auth;
-
-    this.props.getItinerariesByUser(user.name);
+    if (this.props.auth.user) {
+      const { user } = this.props.auth;
+      this.props.getItinerariesByUser(user.name);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -135,7 +138,7 @@ export class CreateItinerary extends Component {
 
     let { title, city, activities, duration, price, hashtag } = this.state;
 
-    return (
+    return this.props.auth.isAuthenticated ? (
       <div>
         <h2>Itinerary Creator</h2>
         <ErrorMessage />
@@ -210,6 +213,10 @@ export class CreateItinerary extends Component {
           </Button>
         </form>
         {itineraryList}
+      </div>
+    ) : (
+      <div>
+        Please <LogInModal /> or <Link to="/">Register</Link>
       </div>
     );
   }

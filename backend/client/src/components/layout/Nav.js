@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LogOut from "../Auth/LogOut";
 import LogInModal from "../Auth/LogInModal";
 import RegisterationModal from "../Auth/RegisterationModal";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -137,6 +138,9 @@ const TemporaryDrawer = props => {
       ) : (
         <Fragment>
           <ListItem button>
+            <ListItemIcon style={iconStyle()}>
+              <LockOutlinedIcon />
+            </ListItemIcon>
             <LogInModal toggleDrawer={toggleDrawer(side, false)} />
           </ListItem>
         </Fragment>

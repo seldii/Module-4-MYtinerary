@@ -14,7 +14,7 @@ import Cities from "./components/pages/Cities";
 import City from "./components/pages/City";
 import CityCreator from "./components/cityCreator/CityCreator";
 import CreateItinerary from "./components/pages/Itinerary/CreateItinerary";
-
+import RegistrationPage from "./components/Auth/RegistrationPage";
 import MyItineraries from "./components/pages/userProfile/MyItineraries";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -63,7 +63,7 @@ class App extends Component {
             <Header />
             <Switch>
               <Route exact path="/" component={Landing} />
-
+              <Route exact path="/sign-up" component={RegistrationPage} />
               <Route exact path="/cities" component={Cities} />
               <Route
                 exact
@@ -87,4 +87,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
