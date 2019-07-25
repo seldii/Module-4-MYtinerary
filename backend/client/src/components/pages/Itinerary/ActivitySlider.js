@@ -12,7 +12,9 @@ export class ActivitySlider extends Component {
       infinite: false,
       speed: 500,
       slidesToShow: 3,
-      slidesToScroll: 3
+      slidesToScroll: 3,
+      focusOnSelect: true,
+      adaptiveHeight: true
     };
 
     const styles = {
@@ -21,7 +23,7 @@ export class ActivitySlider extends Component {
         position: "relative"
       },
       overlay: {
-        position: "",
+        position: "relative",
         top: "20px",
         left: "20px",
         color: "black",

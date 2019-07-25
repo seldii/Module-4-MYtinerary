@@ -6,6 +6,11 @@ import PropTypes from "prop-types";
 import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
 import Footer from "../layout/Footer";
+import Typography from "@material-ui/core/Typography";
+import ErrorMessage from "../common/ErrorMessage";
+import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
+import LogInModal from "./LogInModal";
 
 class RegisterPage extends Component {
   state = {
@@ -65,6 +70,14 @@ class RegisterPage extends Component {
   render() {
     return (
       <div>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        {this.state.msg ? (
+          <Typography style={{ color: "red" }}>{this.state.msg}</Typography>
+        ) : (
+          <Typography>Please enter your registeration details</Typography>
+        )}
         <form onSubmit={this.onSubmit}>
           <TextField
             autoFocus
@@ -92,10 +105,12 @@ class RegisterPage extends Component {
           />
 
           <TextField
+            autoFocus
+            margin="dense"
             type="password"
             name="password"
             id="password"
-            lanel="Password"
+            label="Password"
             placeholder="Password"
             className="mb-3"
             onChange={this.onChange}
@@ -111,10 +126,16 @@ class RegisterPage extends Component {
             onChange={this.onChange}
             fullWidth
           />
-
-          <Button type="submit" value="Submit" style={{ marginTop: "2rem" }}>
-            Register
+          <Button type="submit" fullWidth variant="contained" color="primary">
+            Sign Up
           </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="#" variant="body2">
+                Already have an account? <LogInModal />
+              </Link>
+            </Grid>
+          </Grid>
         </form>
 
         <Footer />

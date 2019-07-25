@@ -9,9 +9,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions";
-import { clearErrors } from "../../store/actions/authErrActions";
+import { clearErrors } from "../../store/actions/errorActions";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
 import RegistrationPage from "../Auth/RegistrationPage";
 
 class LogInModal extends Component {
@@ -49,8 +53,24 @@ class LogInModal extends Component {
   }
 
   toggle = () => {
-    // Clear errors
-    this.props.clearErrors();
+    const { isAuthenticated } = this.props;
+    if (!this.state.open) {
+      this.setState({
+        open: !this.state.open
+      });
+    } else {
+      if (isAuthenticated) {
+        // Clear errors
+        this.props.clearErrors();
+        this.setState({
+          open: !this.state.open
+        });
+        this.props.toggleDrawer();
+      }
+    }
+  };
+
+  handleClose = () => {
     this.setState({
       open: !this.state.open
     });
@@ -77,14 +97,29 @@ class LogInModal extends Component {
   render() {
     return (
       <Fragment>
-        <Button onClick={this.toggle}>Log in</Button>
+        <span style={{ fontFamily: "Lucida Console" }} onClick={this.toggle}>
+          Log in
+        </span>
 
         <Dialog
+          fullScreen
           open={this.state.open}
           onClose={this.toggle}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Login</DialogTitle>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleClose.bind(this)}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" style={{}}>
+              Login
+            </Typography>
+          </Toolbar>
           <DialogContent>
             {this.state.msg ? (
               <p style={{ color: "red" }}>{this.state.msg}</p>
@@ -123,14 +158,14 @@ class LogInModal extends Component {
                   type="submit"
                   value="Submit"
                   style={{ marginTop: "2rem" }}
-                  onClick={this.props.toggleDrawer}
+                  onClick={this.props.toggle}
                 >
                   Login
                 </Button>
               </DialogActions>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link to="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
@@ -155,7 +190,7 @@ class LogInModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.errorAuth
+  error: state.error
 });
 
 export default connect(

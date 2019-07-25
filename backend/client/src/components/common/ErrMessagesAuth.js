@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ErrorMessage = props => {
+const ErrMessagesAuth = props => {
   const classes = useStyles();
   console.log(props.errors);
   return props.errors.map(err => (
@@ -30,12 +30,12 @@ const ErrorMessage = props => {
   ));
 };
 
-ErrorMessage.propTypes = {
+ErrMessagesAuth.propTypes = {
   errors: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.error.errors
+  errors: state.error
 });
 
-export default connect(mapStateToProps)(ErrorMessage);
+export default connect(mapStateToProps)(ErrMessagesAuth);

@@ -10,7 +10,21 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
-import Footer from "../layout/Footer";
+import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import { Container } from "@material-ui/core";
+
+const classes = {
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: "1rem"
+  },
+  toolbar: {
+    marginTop: "2rem"
+  }
+};
 
 class RegisterPage extends Component {
   state = {
@@ -70,14 +84,30 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div>
-        <Button onClick={this.toggle}>Register</Button>
+      <Container>
+        <span style={{ fontFamily: "Lucida Console" }} onClick={this.toggle}>
+          Register
+        </span>
         <Dialog
+          fullScreen
           open={this.state.open}
           onClose={this.toggle}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Sign in</DialogTitle>
+          <Toolbar style={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.toggle}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" style={{}}>
+              Sign Up
+            </Typography>
+          </Toolbar>
+
           <DialogContent>
             {this.state.msg ? (
               <p style={{ color: "red" }}>{this.state.msg}</p>
@@ -87,7 +117,7 @@ class RegisterPage extends Component {
               </DialogContentText>
             )}
 
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit} style={classes.form}>
               <TextField
                 autoFocus
                 margin="dense"
@@ -101,7 +131,6 @@ class RegisterPage extends Component {
                 fullWidth
               />
               <TextField
-                autoFocus
                 margin="dense"
                 type="email"
                 name="email"
@@ -114,10 +143,11 @@ class RegisterPage extends Component {
               />
 
               <TextField
+                margin="dense"
                 type="password"
                 name="password"
                 id="password"
-                lanel="Password"
+                label="Password"
                 placeholder="Password"
                 className="mb-3"
                 onChange={this.onChange}
@@ -137,17 +167,17 @@ class RegisterPage extends Component {
               <DialogActions>
                 <Button
                   type="submit"
-                  value="Submit"
-                  style={{ marginTop: "2rem" }}
+                  fullWidth
+                  variant="contained"
+                  color="primary"
                 >
-                  Register
+                  Sign Up
                 </Button>
               </DialogActions>
             </form>
           </DialogContent>
         </Dialog>
-        <Footer />
-      </div>
+      </Container>
     );
   }
 }

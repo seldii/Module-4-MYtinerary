@@ -1,12 +1,13 @@
 import React from "react";
 import logo from "../layout/MYtineraryLogo.png";
-import Grid from "@material-ui/core/Grid";
+import { Grid, Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import LogInModal from "../Auth/LogInModal";
 import RegisterationModal from "../Auth/RegisterationModal";
 import { makeStyles } from "@material-ui/core/styles";
+import purple from "@material-ui/core/colors/purple";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,8 +16,13 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary,
+    backgroundColor: "white",
+    fontFamily: "Lucida Console",
     margin: "auto"
+  },
+  button: {
+    marginBottom: theme.spacing(2),
+    background: "transperant"
   }
 }));
 
@@ -34,10 +40,10 @@ function Landing() {
         <Grid item xs={12}>
           <img style={{ maxWidth: "100%" }} src={logo} alt="logo" />
           <Grid item xs={12}>
-            <Paper className={classes.paper}>
+            <div className={classes.paper}>
               Find your perfect trip, designed by insiders who know and love
               their cities{" "}
-            </Paper>
+            </div>
           </Grid>
           <Grid item xs={12}>
             <Grid
@@ -47,7 +53,7 @@ function Landing() {
               direction="column"
             >
               <Grid item xs={12}>
-                <Paper className={classes.paper}>Start browsing</Paper>
+                <div className={classes.paper}>Start browsing</div>
               </Grid>
               <Grid item xs={12}>
                 <Link to="/cities">
@@ -58,23 +64,21 @@ function Landing() {
           </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12} style={{ textAlign: "center" }}>
-              <p>Want to build your own MYtinerary?</p>
+              <div className={classes.paper}>
+                Want to build your own MYtinerary?
+              </div>
             </Grid>
           </Grid>
-          <Grid container direction="row">
-            <Grid
-              item
-              xs={6}
-              style={{ display: "flex", alignContent: "baseline" }}
-            >
-              <LogInModal />
+          <Grid container direction="column" justify="center">
+            <Grid item xs={12}>
+              <Button fullWidth variant="outlined" className={classes.button}>
+                <LogInModal style={{ fontFamily: "Lucida Console" }} />
+              </Button>
             </Grid>
-            <Grid
-              item
-              xs={6}
-              style={{ display: "flex", justifyContent: "flex-end" }}
-            >
-              <RegisterationModal />
+            <Grid item xs={12}>
+              <Button fullWidth variant="outlined" className={classes.button}>
+                <RegisterationModal />
+              </Button>
             </Grid>
           </Grid>
         </Grid>
