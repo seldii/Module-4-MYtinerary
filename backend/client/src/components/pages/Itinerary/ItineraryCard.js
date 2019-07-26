@@ -80,23 +80,30 @@ class ItineraryCard extends Component {
             <IconButton
               aria-label="Settings"
               onClick={
-                this.props.auth.user.favorites.includes(itinerary._id)
-                  ? this.removeFavorite
-                  : this.addFavorite
+                this.props.auth.isAuthenticated
+                  ? this.props.auth.user.favorites.includes(itinerary._id)
+                    ? this.removeFavorite
+                    : this.addFavorite
+                  : ""
               }
             >
               <FontAwesomeIcon
                 style={{
-                  color: this.props.auth.user.favorites.includes(itinerary._id)
-                    ? "red"
-                    : "grey"
+                  color: this.props.auth.isAuthenticated
+                    ? this.props.auth.user.favorites.includes(itinerary._id)
+                      ? "#FF6347"
+                      : "rgb(220,220,220)"
+                    : "rgb(220,220,220, 0.2)"
                 }}
                 icon="heart"
               />
             </IconButton>
           }
           title={itinerary.title}
-          subheader={itinerary.user.name}
+          titleTypographyProps={{
+            variant: "h5"
+          }}
+          subheader={"created by " + itinerary.user.name}
         />
 
         <CardContent>
@@ -112,13 +119,13 @@ class ItineraryCard extends Component {
               justify="space-between"
               alignItems="baseline"
             >
-              <Typography variant="body2" component="div">
+              <Typography variant="body1" component="div">
                 Likes:{itinerary.rating || "-"}
               </Typography>
-              <Typography variant="body2" component="div">
+              <Typography variant="body1" component="div">
                 {itinerary.duration || "-"} Hours
               </Typography>
-              <Typography variant="body2" component="div">
+              <Typography variant="body1" component="div">
                 {(() => {
                   const x = itinerary.price;
                   switch (true) {

@@ -2,11 +2,13 @@ import React, { Component, Fragment } from "react";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText
+} from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/errorActions";
@@ -96,7 +98,7 @@ class LogInModal extends Component {
 
   render() {
     return (
-      <Fragment>
+      <Container>
         <span style={{ fontFamily: "Lucida Console" }} onClick={this.toggle}>
           Log in
         </span>
@@ -155,8 +157,11 @@ class LogInModal extends Component {
               />
               <DialogActions>
                 <Button
+                  fullWidth
+                  variant="outlined"
                   type="submit"
                   value="Submit"
+                  color="primary"
                   style={{ marginTop: "2rem" }}
                   onClick={this.props.toggle}
                 >
@@ -183,7 +188,7 @@ class LogInModal extends Component {
             </form>
           </DialogContent>
         </Dialog>
-      </Fragment>
+      </Container>
     );
   }
 }

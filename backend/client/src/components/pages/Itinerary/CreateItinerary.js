@@ -187,6 +187,16 @@ export class CreateItinerary extends Component {
             fullWidth
             style={{ marginBottom: 8 }}
           />
+          <TextField
+            label="Hashtags"
+            id="hashtag"
+            type="text"
+            name="hashtag"
+            value={hashtag || ""}
+            helperText=""
+            fullWidth
+            style={{ marginBottom: 8 }}
+          />
 
           <Divider />
           <Button

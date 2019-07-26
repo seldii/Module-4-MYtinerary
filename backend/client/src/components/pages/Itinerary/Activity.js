@@ -1,5 +1,5 @@
 import React from "react";
-import ActivitySlider from "./ActivitySlider";
+import ActivitySlides from "./ActivitySlides";
 import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Comment from "./Comment";
@@ -27,7 +27,7 @@ const Activity = props => {
   return (
     <div className={classes.container}>
       <h5>Activities:</h5>
-      <ActivitySlider itinerary={props.itinerary} />
+      <ActivitySlides itinerary={props.itinerary} />
       <Divider />
       <Comment itinerary={props.itinerary} />
     </div>
