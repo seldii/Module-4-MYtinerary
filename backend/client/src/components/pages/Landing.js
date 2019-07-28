@@ -1,5 +1,6 @@
 import React from "react";
-import logo from "../layout/MYtineraryLogo.png";
+import logo from "../layout/logooo.png";
+import start from "../layout/start.png";
 import { Grid, Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     textAlign: "center",
     backgroundColor: "white",
-    fontFamily: "Lucida Console",
+    fontFamily: "Roboto",
     margin: "auto"
   },
   button: {
@@ -39,18 +40,19 @@ function Landing() {
       >
         <Grid item xs={12}>
           <img style={{ maxWidth: "100%" }} src={logo} alt="logo" />
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <div className={classes.paper}>
               Find your perfect trip, designed by insiders who know and love
               their cities{" "}
             </div>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <Grid
               container
               justify="space-between"
               alignItems="center"
               direction="column"
+              background={start}
             >
               <Grid item xs={12}>
                 <div className={classes.paper}>Start browsing</div>
