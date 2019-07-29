@@ -81,14 +81,16 @@ router.patch("/itinerary", (req, res) => {
 // @access Private
 
 router.delete("/itinerary", async (req, res) => {
-  const unFavorite = req.body.favorite;
+  const unFavorite = req.body.favorite._id;
   const id = req.body.user;
 
   const user = await User.findByIdAndUpdate(
     { _id: id },
     {
       $pull: {
-        favorites: unFavorite
+        favorites: {
+          _id: unFavorite
+        }
       }
     },
     { new: true }

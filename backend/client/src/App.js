@@ -16,6 +16,7 @@ import CityCreator from "./components/cityCreator/CityCreator";
 import CreateItinerary from "./components/pages/Itinerary/CreateItinerary";
 import RegistrationPage from "./components/Auth/RegistrationPage";
 import MyItineraries from "./components/pages/userProfile/MyItineraries";
+import FavItineraries from "./components/pages/userProfile/FavoriteItineraries";
 import { Provider } from "react-redux";
 import store from "./store";
 import "typeface-roboto";
@@ -84,6 +85,11 @@ class App extends Component {
                 exact
                 path="/profile/:user/myitineraries"
                 component={withRouter(MyItineraries)}
+              />
+              <Route
+                exact
+                path="/profile/:user/favoriteitineraries"
+                component={withRouter(FavItineraries)}
               />
             </Switch>
           </Container>

@@ -5,10 +5,22 @@ import { loadUser } from "../../../store/actions/authActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import { Typography, Box, Container, Divider, Grid } from "@material-ui/core/";
 import Footer from "../../layout/Footer";
+import { withStyles } from "@material-ui/core/styles";
+import notfound from "../../layout/notfound.png";
+
+const styles = theme => ({
+  notfound: {
+    color: theme.palette.secondary.main,
+    textAlign: "center"
+  },
+  link: {
+    color: theme.palette.secondary.main,
+    textAlign: "center",
+    textDecoration: "underline"
+  }
+});
 
 export class MyItineraries extends Component {
   componentDidMount() {
@@ -27,37 +39,50 @@ export class MyItineraries extends Component {
   } */
 
   render() {
+    const classes = this.props.classes;
     let itineraryList;
 
-    if (this.props.itinerariesByUser) {
+    if (this.props.itinerariesByUser.length) {
       itineraryList = this.props.itinerariesByUser.map(i => {
         return <ItineraryCard key={i._id} itinerary={i} />;
       });
     } else {
-      itineraryList = <div>Not found</div>;
+      itineraryList = (
+        <Container
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            /* bring your own prefixes */
+            transform: `translate(${-50}%, ${-50}%)`
+          }}
+        >
+          <Grid container direction="column">
+            <Grid item xs={12}>
+              <Typography className={classes.notfound}>
+                You've not created any itinerary yet
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <img style={{ maxWidth: "100%" }} src={notfound} alt="not found" />
+          </Grid>
+          <Grid item xs={12}>
+            <Link to="/itinerary-creator">
+              <Typography className={classes.link}>
+                Are you ready to create your own itinerary?
+              </Typography>
+            </Link>
+          </Grid>
+        </Container>
+      );
     }
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
-        <Box
-          style={{
-            margin: "auto",
-            textAlign: "center"
-          }}
-          component="div"
-        >
-          <Typography component="h2" variant="h5">
-            {this.props.match.params.cityName}
-          </Typography>
-        </Box>
+      <React.Fragment>
         <Divider variant="middle" />
         {itineraryList}
         <Footer />
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -77,5 +102,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     { getItinerariesByUser, loadUser }
-  )(MyItineraries)
+  )(withStyles(styles, { withTheme: true })(MyItineraries))
 );

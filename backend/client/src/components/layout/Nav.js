@@ -78,7 +78,7 @@ const TemporaryDrawer = props => {
       <Divider />
       {isAuthenticated ? (
         <Fragment>
-          <Link to="">
+          <Link to={{ pathname: `/profile/${user.name}/favoriteitineraries` }}>
             <ListItem
               button
               onClick={toggleDrawer(side, false)}

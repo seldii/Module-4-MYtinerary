@@ -39,7 +39,7 @@ class ItineraryCard extends Component {
     this.state = {
       expanded: false
     };
-    console.log(props);
+
     this.handleExpandClick = this.handleExpandClick.bind(this);
   }
 
@@ -55,7 +55,7 @@ class ItineraryCard extends Component {
   addFavorite = () => {
     console.log("add");
     const favorite = {
-      favorite: this.props.itinerary._id,
+      favorite: this.props.itinerary,
       user: this.props.auth.user
     };
 
@@ -66,7 +66,7 @@ class ItineraryCard extends Component {
   removeFavorite = () => {
     console.log("remove");
     const favorite = {
-      favorite: this.props.itinerary._id,
+      favorite: this.props.itinerary,
       user: this.props.auth.user._id
     };
 
@@ -77,6 +77,9 @@ class ItineraryCard extends Component {
   render() {
     const { expanded } = this.state;
     const itinerary = this.props.itinerary;
+    const favIds = this.props.auth.user.favorites.map(fav => {
+      return fav._id;
+    });
 
     return (
       <Card>
@@ -89,7 +92,7 @@ class ItineraryCard extends Component {
               aria-label="Settings"
               onClick={
                 this.props.auth.isAuthenticated
-                  ? this.props.auth.user.favorites.includes(itinerary._id)
+                  ? favIds.includes(itinerary._id)
                     ? this.removeFavorite
                     : this.addFavorite
                   : ""
@@ -98,7 +101,7 @@ class ItineraryCard extends Component {
               <FontAwesomeIcon
                 style={{
                   color: this.props.auth.isAuthenticated
-                    ? this.props.auth.user.favorites.includes(itinerary._id)
+                    ? favIds.includes(itinerary._id)
                       ? "#ff6d00"
                       : "rgb(220,220,220)"
                     : "rgb(220,220,220, 0.2)"
