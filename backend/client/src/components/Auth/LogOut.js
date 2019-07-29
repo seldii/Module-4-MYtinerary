@@ -17,9 +17,7 @@ export class LogOut extends Component {
   render() {
     return (
       <Fragment>
-        <NavLink onClick={this.handleOnClick} href="#">
-          Logout
-        </NavLink>
+        <div onClick={this.handleOnClick}>Logout</div>
       </Fragment>
     );
   }

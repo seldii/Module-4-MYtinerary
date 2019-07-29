@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
@@ -16,7 +17,14 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import { Container } from "@material-ui/core";
 
-const classes = {
+const styles = theme => ({
+  link: {
+    color: theme.palette.secondary.main
+  },
+  button: {
+    color: theme.palette.secondary.main,
+    marginTop: theme.spacing(2)
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: "1rem"
@@ -24,7 +32,7 @@ const classes = {
   toolbar: {
     marginTop: "2rem"
   }
-};
+});
 
 class RegisterPage extends Component {
   state = {
@@ -85,16 +93,16 @@ class RegisterPage extends Component {
   render() {
     return (
       <Container>
-        <span style={{ fontFamily: "Lucida Console" }} onClick={this.toggle}>
+        <div style={{ width: "100%" }} onClick={this.toggle}>
           Register
-        </span>
+        </div>
         <Dialog
           fullScreen
           open={this.state.open}
           onClose={this.toggle}
           aria-labelledby="form-dialog-title"
         >
-          <Toolbar style={classes.toolbar}>
+          <Toolbar className={this.props.classes.toolbar}>
             <IconButton
               edge="start"
               color="inherit"
@@ -117,7 +125,7 @@ class RegisterPage extends Component {
               </DialogContentText>
             )}
 
-            <form onSubmit={this.onSubmit} style={classes.form}>
+            <form onSubmit={this.onSubmit} className={this.props.classes.form}>
               <TextField
                 autoFocus
                 margin="dense"
@@ -167,9 +175,8 @@ class RegisterPage extends Component {
               <DialogActions>
                 <Button
                   type="submit"
-                  fullWidth
                   variant="contained"
-                  color="primary"
+                  className={this.props.classes.button}
                 >
                   Sign Up
                 </Button>
@@ -190,4 +197,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { register, clearErrors }
-)(RegisterPage);
+)(withStyles(styles, { withTheme: true })(RegisterPage));

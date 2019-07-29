@@ -6,18 +6,22 @@ import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import HomeIcon from "@material-ui/icons/Home";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { Link, withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
+    minWidth: "100%",
     position: "fixed",
     bottom: 0,
-    alignSelf: "center"
+    left: 0,
+    alignSelf: "center",
+    backgroundColor: "rgb(238,238,238,0.5)"
   },
   icon: {
-    color: "#FF6347"
+    color: theme.palette.secondary.main,
+    fontSize: 20
   }
-});
+}));
 
 function Footer({ history }) {
   const classes = useStyles();
@@ -35,15 +39,21 @@ function Footer({ history }) {
     >
       <BottomNavigationAction
         onClick={history.goBack}
-        icon={<ArrowLeftIcon className={classes.icon} />}
+        style={{ paddingTop: 16 }}
+        icon={
+          <FontAwesomeIcon
+            icon="arrow-alt-circle-left"
+            className={classes.icon}
+          />
+        }
       />
       <BottomNavigationAction
         component={Link}
         to={"/"}
-        icon={<HomeIcon className={classes.icon} />}
+        icon={<FontAwesomeIcon icon="igloo" className={classes.icon} />}
       />
       <BottomNavigationAction
-        icon={<LocationOnIcon className={classes.icon} />}
+        icon={<FontAwesomeIcon icon="user-alt" className={classes.icon} />}
       />
     </BottomNavigation>
   );

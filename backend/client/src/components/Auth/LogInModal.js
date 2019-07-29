@@ -6,8 +6,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText
+  DialogContentText,
+  Link as NavLink
 } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions";
@@ -19,6 +21,16 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import RegistrationPage from "../Auth/RegistrationPage";
+
+const styles = theme => ({
+  link: {
+    color: theme.palette.secondary.main
+  },
+  button: {
+    color: theme.palette.secondary.main,
+    marginTop: theme.spacing(2)
+  }
+});
 
 class LogInModal extends Component {
   state = {
@@ -98,10 +110,10 @@ class LogInModal extends Component {
 
   render() {
     return (
-      <Container>
-        <span style={{ fontFamily: "Lucida Console" }} onClick={this.toggle}>
+      <Container style={{ padding: 0 }}>
+        <div style={{ width: "100%", padding: 0 }} onClick={this.toggle}>
           Log in
-        </span>
+        </div>
 
         <Dialog
           fullScreen
@@ -157,12 +169,10 @@ class LogInModal extends Component {
               />
               <DialogActions>
                 <Button
-                  fullWidth
-                  variant="outlined"
+                  variant="contained"
                   type="submit"
                   value="Submit"
-                  color="primary"
-                  style={{ marginTop: "2rem" }}
+                  className={this.props.classes.button}
                   onClick={this.props.toggle}
                 >
                   Login
@@ -170,7 +180,11 @@ class LogInModal extends Component {
               </DialogActions>
               <Grid container>
                 <Grid item xs>
-                  <Link to="#" variant="body2">
+                  <Link
+                    to="#"
+                    variant="body2"
+                    className={this.props.classes.link}
+                  >
                     Forgot password?
                   </Link>
                 </Grid>
@@ -179,6 +193,7 @@ class LogInModal extends Component {
                     to="/sign-up"
                     component={RegistrationPage}
                     variant="body2"
+                    className={this.props.classes.link}
                     onClick={this.props.toggleDrawer}
                   >
                     {"Don't have an account? Sign Up"}
@@ -201,4 +216,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { login, clearErrors }
-)(LogInModal);
+)(withStyles(styles, { withTheme: true })(LogInModal));

@@ -11,7 +11,15 @@ import {
 import TextField from "@material-ui/core/TextField";
 import { getCurrentDate } from "../../utility/GetCurrentDate";
 import CommentsList from "./CommentsList";
+import { withStyles } from "@material-ui/core/styles/";
+import { withTheme } from "@material-ui/styles";
 
+const styles = theme => ({
+  sent: {
+    color: theme.palette.secondary.main,
+    fontSize: "xx-large"
+  }
+});
 export class Comment extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +88,12 @@ export class Comment extends Component {
           <Grid container spacing={1} alignItems="center">
             <Grid item xs={10}>
               <TextField
-                placeholder="Write a comment.."
+                disabled={!this.props.auth.isAuthenticated}
+                placeholder={
+                  this.props.auth.isAuthenticated
+                    ? "Write a comment.."
+                    : "Login to leave a comment"
+                }
                 value={this.state.comment}
                 name="comment"
                 fullWidth
@@ -89,7 +102,10 @@ export class Comment extends Component {
             </Grid>
             <Grid item xs={2}>
               <Button type="submit">
-                <FontAwesomeIcon color="blue" icon="paper-plane" />
+                <FontAwesomeIcon
+                  className={this.props.classes.sent}
+                  icon="paper-plane"
+                />
               </Button>
             </Grid>
           </Grid>
@@ -112,4 +128,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { updateItinerary }
-)(Comment);
+)(withStyles(styles, { withTheme: true })(Comment));

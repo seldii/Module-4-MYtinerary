@@ -1,14 +1,13 @@
 import React from "react";
 import logo from "../layout/logooo.png";
 import start from "../layout/start.png";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Typography, Fab } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
-import { FaArrowAltCircleRight } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import LogInModal from "../Auth/LogInModal";
 import RegisterationModal from "../Auth/RegisterationModal";
 import { makeStyles } from "@material-ui/core/styles";
-import purple from "@material-ui/core/colors/purple";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,12 +17,23 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     textAlign: "center",
     backgroundColor: "white",
-    fontFamily: "Roboto",
-    margin: "auto"
+    margin: "auto",
+    fontStyle: "italic",
+    color: theme.palette.secondary.main
   },
   button: {
     marginBottom: theme.spacing(2),
-    background: "transperant"
+    background: theme.palette.secondary.light,
+    "&:hover": {
+      background: theme.palette.primary.light
+    },
+    color: "white",
+    font: theme.typography.button,
+    width: "100%",
+    height: "2.5rem"
+  },
+  search: {
+    color: theme.palette.primary.main
   }
 }));
 
@@ -52,35 +62,42 @@ function Landing() {
               justify="space-between"
               alignItems="center"
               direction="column"
-              background={start}
+              style={{ background: { start } }}
             >
               <Grid item xs={12}>
-                <div className={classes.paper}>Start browsing</div>
+                <Typography className={classes.paper} variant="body2">
+                  Start browsing
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Link to="/cities">
-                  <FaArrowAltCircleRight size={56} color={"#FF6347"} />
+                  <FaSearch size={56} className={classes.search} />
                 </Link>
               </Grid>
             </Grid>
           </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12} style={{ textAlign: "center" }}>
-              <div className={classes.paper}>
+              <Typography variant="body2" className={classes.paper}>
                 Want to build your own MYtinerary?
-              </div>
+              </Typography>
             </Grid>
           </Grid>
           <Grid container direction="column" justify="center">
             <Grid item xs={12}>
-              <Button fullWidth variant="outlined" className={classes.button}>
-                <LogInModal style={{ fontFamily: "Lucida Console" }} />
-              </Button>
+              <Fab
+                fullWidth
+                variant="extended"
+                component="button"
+                className={classes.button}
+              >
+                <LogInModal />
+              </Fab>
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth variant="outlined" className={classes.button}>
+              <Fab variant="extended" className={classes.button}>
                 <RegisterationModal />
-              </Button>
+              </Fab>
             </Grid>
           </Grid>
         </Grid>

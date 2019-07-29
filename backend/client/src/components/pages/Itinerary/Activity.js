@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Comment from "./Comment";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     marginBottom: "40px",
     width: "100%"
@@ -20,13 +20,16 @@ const useStyles = makeStyles({
   },
   input: {
     flex: "auto"
+  },
+  title: {
+    color: theme.palette.primary.main
   }
-});
+}));
 const Activity = props => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <h5>Activities:</h5>
+      <h5 className={classes.title}>Activities:</h5>
       <ActivitySlides itinerary={props.itinerary} />
       <Divider />
       <Comment itinerary={props.itinerary} />

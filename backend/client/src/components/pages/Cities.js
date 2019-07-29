@@ -10,11 +10,28 @@ import {
   Col
 } from "reactstrap";
 import Input from "@material-ui/core/Input";
-
+import { withStyles } from "@material-ui/core/styles/";
+import { Typography } from "@material-ui/core/";
 import { connect } from "react-redux";
 import { getCities } from "../../store/actions/cityActions";
 import PropTypes from "prop-types";
+import Footer from "../layout/Footer";
 import _ from "lodash";
+
+const styles = theme => ({
+  cardTitle: {
+    textAlign: "center",
+    width: "100%",
+    alignSelf: "center",
+    backgroundColor: "rgba(255,145,0,0.5)",
+    marginBottom: "0px",
+    color: theme.palette.primary.contrastText
+  },
+  cityList: {
+    marginBottom: "60px",
+    padding: 0
+  }
+});
 
 export class Cities extends Component {
   constructor() {
@@ -48,16 +65,8 @@ export class Cities extends Component {
             <Card inverse key={_id}>
               <CardImg width="100%" src={city.image} alt="Card image cap" />
               <CardImgOverlay style={{ display: "flex" }}>
-                <CardTitle
-                  style={{
-                    textAlign: "center",
-                    width: "100%",
-                    alignSelf: "center",
-                    backgroundColor: "rgba(255,255,255,0.5)",
-                    marginBottom: "0px"
-                  }}
-                >
-                  {city.name}
+                <CardTitle className={this.props.classes.cardTitle}>
+                  <Typography variant="subtitle1">{city.name}</Typography>
                 </CardTitle>
               </CardImgOverlay>
             </Card>
@@ -68,20 +77,23 @@ export class Cities extends Component {
       cityList = <div>Loading..</div>;
     }
     return (
-      <Container>
-        <Row>
-          <Col xs="12">
-            <Input
-              style={{ width: "100%" }}
-              type="search"
-              value={this.state.searchCity}
-              placeholder="Search"
-              onChange={this.filterCity.bind(this)}
-            />
-          </Col>
-        </Row>
+      <Container fluid>
+        <Container fluid className={this.props.classes.cityList}>
+          <Row>
+            <Col xs="12">
+              <Input
+                style={{ width: "100%" }}
+                type="search"
+                value={this.state.searchCity}
+                placeholder="Search"
+                onChange={this.filterCity.bind(this)}
+              />
+            </Col>
+          </Row>
 
-        {cityList}
+          {cityList}
+        </Container>
+        <Footer />
       </Container>
     );
   }
@@ -114,5 +126,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Cities)
+  )(withStyles(styles, { withTheme: true })(Cities))
 );

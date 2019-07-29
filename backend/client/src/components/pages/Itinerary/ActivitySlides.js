@@ -9,11 +9,11 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 400,
+    maxWidth: "100%",
     flexGrow: 1
   },
   header: {
-    backgroundColor: "#eeeeee",
+    backgroundColor: "rgb(238,238,238,0.5)",
     color: "black",
     display: "flex",
     alignItems: "center",
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   img: {
     height: 255,
-    maxWidth: 400,
+    maxWidth: "100%",
     overflow: "hidden",
     display: "block",
     width: "100%"
@@ -70,7 +70,6 @@ export default function ActivitySlides(props) {
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >
-            Next
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
             ) : (
@@ -85,7 +84,6 @@ export default function ActivitySlides(props) {
             ) : (
               <KeyboardArrowLeft />
             )}
-            Back
           </Button>
         }
       />

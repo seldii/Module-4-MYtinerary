@@ -13,8 +13,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LogOut from "../Auth/LogOut";
 import LogInModal from "../Auth/LogInModal";
-import RegisterationModal from "../Auth/RegisterationModal";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -25,17 +23,17 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     float: "right",
     fontSize: "3rem",
-    color: "#FF6347"
+    color: theme.palette.primary.main
+  },
+
+  menuIcon: {
+    color: theme.palette.secondary.main
+  },
+
+  listItemText: {
+    color: theme.palette.secondary.light
   }
 }));
-
-const iconStyle = () => {
-  return {
-    minWidth: "10px",
-    paddingRight: "2px",
-    color: "#FF6347"
-  };
-};
 
 const TemporaryDrawer = props => {
   const classes = useStyles();
@@ -58,10 +56,10 @@ const TemporaryDrawer = props => {
             onClick={toggleDrawer(side, false)}
             onKeyDown={toggleDrawer(side, false)}
           >
-            <ListItemIcon style={iconStyle()}>
+            <ListItemIcon className={classes.menuIcon}>
               <FontAwesomeIcon icon="globe" />
             </ListItemIcon>
-            <ListItemText>Cities</ListItemText>
+            <ListItemText className={classes.listItemText}>Cities</ListItemText>
           </ListItem>
         </Link>
         <Link to="/">
@@ -70,13 +68,12 @@ const TemporaryDrawer = props => {
             onClick={toggleDrawer(side, false)}
             onKeyDown={toggleDrawer(side, false)}
           >
-            <ListItemIcon style={iconStyle()}>
+            <ListItemIcon className={classes.menuIcon}>
               <FontAwesomeIcon icon="igloo" />
             </ListItemIcon>
-            <ListItemText>Home</ListItemText>
+            <ListItemText className={classes.listItemText}>Home</ListItemText>
           </ListItem>
         </Link>
-        {!isAuthenticated ? <RegisterationModal /> : null}
       </List>
       <Divider />
       {isAuthenticated ? (
@@ -87,10 +84,12 @@ const TemporaryDrawer = props => {
               onClick={toggleDrawer(side, false)}
               onKeyDown={toggleDrawer(side, false)}
             >
-              <ListItemIcon style={iconStyle()}>
+              <ListItemIcon className={classes.menuIcon}>
                 <FontAwesomeIcon icon="heart" />
               </ListItemIcon>
-              <ListItemText>Favourite Cities</ListItemText>
+              <ListItemText className={classes.listItemText}>
+                Itineraries You've Liked
+              </ListItemText>
             </ListItem>
           </Link>
           <Link to={{ pathname: `/profile/${user.name}/myitineraries` }}>
@@ -99,10 +98,12 @@ const TemporaryDrawer = props => {
               onClick={toggleDrawer(side, false)}
               onKeyDown={toggleDrawer(side, false)}
             >
-              <ListItemIcon style={iconStyle()}>
+              <ListItemIcon className={classes.menuIcon}>
                 <FontAwesomeIcon icon="suitcase-rolling" />
               </ListItemIcon>
-              <ListItemText>MyItineraries</ListItemText>
+              <ListItemText className={classes.listItemText}>
+                MyItineraries
+              </ListItemText>
             </ListItem>
           </Link>
 
@@ -113,10 +114,12 @@ const TemporaryDrawer = props => {
                 onClick={toggleDrawer(side, false)}
                 onKeyDown={toggleDrawer(side, false)}
               >
-                <ListItemIcon style={iconStyle()}>
+                <ListItemIcon className={classes.menuIcon}>
                   <FontAwesomeIcon icon="map-pin" />
                 </ListItemIcon>
-                <ListItemText>City Creator</ListItemText>
+                <ListItemText className={classes.listItemText}>
+                  Add / Update a City
+                </ListItemText>
               </ListItem>
             </Link>
             <Link to="/itinerary-creator">
@@ -125,23 +128,34 @@ const TemporaryDrawer = props => {
                 onClick={toggleDrawer(side, false)}
                 onKeyDown={toggleDrawer(side, false)}
               >
-                <ListItemIcon style={iconStyle()}>
+                <ListItemIcon className={classes.menuIcon}>
                   <FontAwesomeIcon icon="clipboard-list" />
                 </ListItemIcon>
-                <ListItemText>Itinerary Creator</ListItemText>
+                <ListItemText className={classes.listItemText}>
+                  Add / Update an Itinerary
+                </ListItemText>
               </ListItem>
             </Link>
             <ListItem button>{user ? `Welcome ${user.name} !` : ""}</ListItem>
-            <LogOut />
+            <ListItem button>
+              <ListItemIcon className={classes.menuIcon}>
+                <FontAwesomeIcon icon="sign-out-alt" />
+              </ListItemIcon>
+              <ListItemText className={classes.listItemText}>
+                <LogOut />
+              </ListItemText>
+            </ListItem>
           </List>
         </Fragment>
       ) : (
         <Fragment>
           <ListItem button>
-            <ListItemIcon style={iconStyle()}>
-              <LockOutlinedIcon />
+            <ListItemIcon className={classes.menuIcon}>
+              <FontAwesomeIcon icon="unlock-alt" />
             </ListItemIcon>
-            <LogInModal toggleDrawer={toggleDrawer(side, false)} />
+            <ListItemText className={classes.listItemText}>
+              <LogInModal toggleDrawer={toggleDrawer(side, false)} />
+            </ListItemText>
           </ListItem>
         </Fragment>
       )}

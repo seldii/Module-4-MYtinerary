@@ -24,6 +24,14 @@ import {
   removeFavorite
 } from "../../../store/actions/favoriteActions";
 import { loadUser } from "../../../store/actions/authActions";
+import { withStyles } from "@material-ui/core/styles/";
+
+const styles = theme => ({
+  expandText: {
+    color: theme.palette.secondary.main,
+    textDecoration: "underline"
+  }
+});
 
 class ItineraryCard extends Component {
   constructor(props) {
@@ -31,7 +39,7 @@ class ItineraryCard extends Component {
     this.state = {
       expanded: false
     };
-
+    console.log(props);
     this.handleExpandClick = this.handleExpandClick.bind(this);
   }
 
@@ -91,7 +99,7 @@ class ItineraryCard extends Component {
                 style={{
                   color: this.props.auth.isAuthenticated
                     ? this.props.auth.user.favorites.includes(itinerary._id)
-                      ? "#FF6347"
+                      ? "#ff6d00"
                       : "rgb(220,220,220)"
                     : "rgb(220,220,220, 0.2)"
                 }}
@@ -163,7 +171,7 @@ class ItineraryCard extends Component {
             aria-expanded={expanded}
             aria-label="Show more"
           >
-            <Typography style={{ color: "blue" }}>
+            <Typography className={this.props.classes.expandText}>
               {!expanded ? "Show More" : "Show Less"}
             </Typography>
           </IconButton>
@@ -193,4 +201,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { updateItinerary, addFavorite, removeFavorite, loadUser }
-)(ItineraryCard);
+)(withStyles(styles, { withTheme: true })(ItineraryCard));

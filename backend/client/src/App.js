@@ -33,7 +33,10 @@ import {
   faTrashAlt,
   faEdit,
   faClipboardList,
-  faPaperPlane
+  faPaperPlane,
+  faUnlockAlt,
+  faSignOutAlt,
+  faArrowAltCircleLeft
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -48,7 +51,10 @@ library.add(
   faTrashAlt,
   faEdit,
   faClipboardList,
-  faPaperPlane
+  faPaperPlane,
+  faUnlockAlt,
+  faSignOutAlt,
+  faArrowAltCircleLeft
 );
 
 class App extends Component {
