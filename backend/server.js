@@ -13,6 +13,8 @@ app.use("/itineraries", require("./routes/itineraries"));
 
 app.use("/users", require("./routes/users"));
 
+app.use("/google", require("./routes/google"));
+
 app.use("/auth", require("./routes/auth"));
 
 //DB Config

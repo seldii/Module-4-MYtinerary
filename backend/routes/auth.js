@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
     return res.status(400).json({ msg: "Please fill out all fields" });
   }
   //Check for existing user
-  User.findOne({ email }).then(user => {
+  User.findOne({ email: email }).then(user => {
     if (!user) return res.status(400).json({ msg: "User not found" });
 
     //validating password

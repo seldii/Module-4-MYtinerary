@@ -60,6 +60,12 @@ class RegisterPage extends Component {
         this.setState({ msg: null });
       }
     }
+    // If authenticated, close modal
+    if (this.state.open) {
+      if (isAuthenticated) {
+        this.toggle();
+      }
+    }
   }
 
   toggle = () => {

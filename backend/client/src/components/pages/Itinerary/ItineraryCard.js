@@ -156,7 +156,7 @@ class ItineraryCard extends Component {
             </Grid>
             <Box display="flex" flexDirection="row" flexWrap="wrap">
               {itinerary.hashtag.length > 0 ? (
-                itinerary.hashtag[0].split("," || " ").map((h, index) => (
+                itinerary.hashtag[0].split("," || "").map((h, index) => (
                   <Typography key={index} variant="body2">
                     #{h}
                   </Typography>

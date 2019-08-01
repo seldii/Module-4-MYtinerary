@@ -44,7 +44,6 @@ export const register = ({ name, email, password, image }) => dispatch => {
   //Request body
 
   const body = JSON.stringify({ name, email, password, image });
-  console.log(body);
 
   axios
     .post("/users", body, config)
@@ -118,4 +117,50 @@ export const tokenConfig = getState => {
   }
 
   return config;
+};
+
+export const oauthGoogle = data => {
+  return async dispatch => {
+    console.log("we received", data.accessToken);
+    const res = await axios.post("/users/oauth/google", {
+      access_token: data.accessToken
+    });
+    console.log("res", res);
+  };
+};
+
+export const googleSignIn = response => dispatch => {
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  //Request body
+
+  const body = {
+    name: response.profileObj.givenName,
+    email: response.profileObj.email,
+    image: response.profileObj.imageUrl,
+    googleId: response.googleId,
+    accessToken: response.accessToken
+  };
+
+  axios
+    .post("/google", body, config)
+    .then(res => {
+      console.log(res);
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch(
+        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
+      );
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
 };

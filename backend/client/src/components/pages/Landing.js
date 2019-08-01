@@ -8,6 +8,7 @@ import { FaSearch } from "react-icons/fa";
 import LogInModal from "../Auth/LogInModal";
 import RegisterationModal from "../Auth/RegisterationModal";
 import { makeStyles } from "@material-ui/core/styles";
+import GoogleLogin from "../Auth/GoogleLoginButton";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,7 +87,6 @@ function Landing() {
           <Grid container direction="column" justify="center">
             <Grid item xs={12}>
               <Fab
-                fullWidth
                 variant="extended"
                 component="button"
                 className={classes.button}
@@ -98,6 +98,9 @@ function Landing() {
               <Fab variant="extended" className={classes.button}>
                 <RegisterationModal />
               </Fab>
+            </Grid>
+            <Grid item xs={12}>
+              <GoogleLogin />
             </Grid>
           </Grid>
         </Grid>

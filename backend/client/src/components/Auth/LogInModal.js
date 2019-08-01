@@ -79,7 +79,9 @@ class LogInModal extends Component {
         this.setState({
           open: !this.state.open
         });
-        this.props.toggleDrawer();
+        if (this.props.toggleDrawer) {
+          this.props.toggleDrawer();
+        }
       }
     }
   };
@@ -194,7 +196,6 @@ class LogInModal extends Component {
                     component={RegistrationPage}
                     variant="body2"
                     className={this.props.classes.link}
-                    onClick={this.props.toggleDrawer}
                   >
                     {"Don't have an account? Sign Up"}
                   </Link>

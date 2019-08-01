@@ -35,50 +35,51 @@ export class MyItineraries extends Component {
   render() {
     const classes = this.props.classes;
     let itineraryList;
-    let notFoundText;
     console.log(this.props.auth.user.favorites);
 
-    itineraryList = this.props.auth.user.favorites.map(i => {
-      return <ItineraryCard key={i._id} itinerary={i} />;
-    });
-
-    notFoundText = (
-      <Container
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          /* bring your own prefixes */
-          transform: `translate(${-50}%, ${-50}%)`
-        }}
-      >
-        <Grid container direction="column">
-          <Grid item xs={12}>
-            <Typography className={classes.notfound}>
-              You've not favorited any itinerary yet
-            </Typography>
+    if (this.props.auth.user.favorites.length) {
+      itineraryList = this.props.auth.user.favorites.map(i => {
+        return <ItineraryCard key={i._id} itinerary={i} />;
+      });
+    } else {
+      itineraryList = (
+        <Container
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            /* bring your own prefixes */
+            transform: `translate(${-50}%, ${-50}%)`
+          }}
+        >
+          <Grid container direction="column">
+            <Grid item xs={12}>
+              <Typography className={classes.notfound}>
+                You've not favorited any itinerary yet
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <img style={{ maxWidth: "100%" }} src={notfound} alt="not found" />
-        </Grid>
-        <Grid item xs={12}>
-          <Link to="/itinerary-creator">
-            <Typography className={classes.notfound}>
-              You might've not found your favorite itinerary yet, then{" "}
-              <span style={{ textDecoration: "underline" }}>
-                create your own?
-              </span>
-            </Typography>
-          </Link>
-        </Grid>
-      </Container>
-    );
+          <Grid item xs={12}>
+            <img style={{ maxWidth: "100%" }} src={notfound} alt="not found" />
+          </Grid>
+          <Grid item xs={12}>
+            <Link to="/itinerary-creator">
+              <Typography className={classes.notfound}>
+                You might've not found your favorite itinerary yet, then{" "}
+                <span style={{ textDecoration: "underline" }}>
+                  create your own?
+                </span>
+              </Typography>
+            </Link>
+          </Grid>
+        </Container>
+      );
+    }
 
     return (
       <React.Fragment>
         <Divider />
-        {this.props.auth.user.favorites.length ? itineraryList : notFoundText}
+        {itineraryList}
         <Footer />
       </React.Fragment>
     );
