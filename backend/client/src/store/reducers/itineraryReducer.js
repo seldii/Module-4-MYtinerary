@@ -58,6 +58,12 @@ export default function(state = initialState, action) {
             itinerary => itinerary._id !== action.payload._id
           )
         ],
+        itinerariesByUser: [
+          action.payload,
+          ...state.itinerariesByUser.filter(
+            itinerary => itinerary._id !== action.payload._id
+          )
+        ],
         loading: false
       };
     case DELETE_ITINERARY:

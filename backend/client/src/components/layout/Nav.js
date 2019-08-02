@@ -4,11 +4,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemAvatar,
+  Avatar
+} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LogOut from "../Auth/LogOut";
@@ -136,7 +141,14 @@ const TemporaryDrawer = props => {
                 </ListItemText>
               </ListItem>
             </Link>
-            <ListItem button>{user ? `Welcome ${user.name} !` : ""}</ListItem>
+            <ListItem button>
+              <ListItemText>
+                {user ? `Welcome ${user.name} !` : ""}
+              </ListItemText>
+              <ListItemAvatar>
+                <Avatar alt={user.name} src={user.image} />
+              </ListItemAvatar>
+            </ListItem>
             <ListItem button>
               <ListItemIcon className={classes.menuIcon}>
                 <FontAwesomeIcon icon="sign-out-alt" />
@@ -178,6 +190,10 @@ const TemporaryDrawer = props => {
       </Drawer>
     </div>
   );
+};
+
+TemporaryDrawer.propTypes = {
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

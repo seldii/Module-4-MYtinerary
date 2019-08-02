@@ -3,14 +3,25 @@ import { Link } from "react-router-dom";
 import CityCreatorCard from "./CityCreatorCard";
 import { getCities } from "../../store/actions/cityActions";
 import SaveIcon from "@material-ui/icons/Save";
-import TextField from "@material-ui/core/TextField";
+import { TextField, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { addCity, updateCity } from "../../store/actions/cityActions";
 import { setError } from "../../store/actions/errorActions";
 import ErrorMessage from "../common/ErrorMessage";
 import PropTypes from "prop-types";
 import LogInModal from "../Auth/LogInModal";
+
+const styles = theme => ({
+  button: {
+    color: theme.palette.secondary.main
+  },
+  title: {
+    color: theme.palette.secondary.main,
+    textAlign: "center"
+  }
+});
 
 class CityCreator extends Component {
   constructor(props) {
@@ -26,10 +37,7 @@ class CityCreator extends Component {
     this.displayCity = this.displayCity.bind(this);
     this.update = this.update.bind(this);
   }
-  componentWillMount() {
-    if (!this.props.auth.isAuthenticated) {
-    }
-  }
+
   componentDidMount() {
     this.props.getCities();
   }
@@ -72,7 +80,6 @@ class CityCreator extends Component {
     });
   }
   onChange(e) {
-    console.log(this.state.city);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -97,7 +104,9 @@ class CityCreator extends Component {
     });
     return this.props.auth.isAuthenticated ? (
       <div>
-        <h2>City Creator</h2>
+        <Typography variant="h4" className={this.props.classes.title}>
+          City Creator
+        </Typography>
         <ErrorMessage />
         <form
           id="city-creator"
@@ -159,6 +168,7 @@ class CityCreator extends Component {
             variant="contained"
             size="small"
             type="submit"
+            className={this.props.classes.button}
           >
             <SaveIcon style={{ color: "#FF6347" }} />
             Save
@@ -191,4 +201,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { addCity, getCities, setError, updateCity }
-)(CityCreator);
+)(withStyles(styles, { withTheme: true })(CityCreator));

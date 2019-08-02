@@ -1,8 +1,7 @@
 import React from "react";
 import logo from "../layout/logooo.png";
 import start from "../layout/start.png";
-import { Grid, Button, Typography, Fab } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import { Grid, Typography, Fab } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import LogInModal from "../Auth/LogInModal";

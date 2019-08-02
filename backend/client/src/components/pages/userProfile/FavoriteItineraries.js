@@ -4,7 +4,6 @@ import { loadUser } from "../../../store/actions/authActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Footer from "../../layout/Footer";
@@ -35,7 +34,6 @@ export class MyItineraries extends Component {
   render() {
     const classes = this.props.classes;
     let itineraryList;
-    console.log(this.props.auth.user.favorites);
 
     if (this.props.auth.user.favorites.length) {
       itineraryList = this.props.auth.user.favorites.map(i => {
@@ -54,7 +52,7 @@ export class MyItineraries extends Component {
         >
           <Grid container direction="column">
             <Grid item xs={12}>
-              <Typography className={classes.notfound}>
+              <Typography variant="body2" className={classes.notfound}>
                 You've not favorited any itinerary yet
               </Typography>
             </Grid>
@@ -64,7 +62,7 @@ export class MyItineraries extends Component {
           </Grid>
           <Grid item xs={12}>
             <Link to="/itinerary-creator">
-              <Typography className={classes.notfound}>
+              <Typography variant="body2" className={classes.notfound}>
                 You might've not found your favorite itinerary yet, then{" "}
                 <span style={{ textDecoration: "underline" }}>
                   create your own?

@@ -4,15 +4,13 @@ import {
   CardHeader,
   CardContent,
   IconButton,
-  CardActions,
-  Divider
+  CardActions
 } from "@material-ui/core/";
 
 import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-
 import { Box } from "@material-ui/core";
 import Activity from "./Activity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -77,9 +75,13 @@ class ItineraryCard extends Component {
   render() {
     const { expanded } = this.state;
     const itinerary = this.props.itinerary;
-    const favIds = this.props.auth.user.favorites.map(fav => {
-      return fav._id;
-    });
+    let favIds = [];
+
+    if (this.props.auth.isAuthenticated) {
+      favIds = this.props.auth.user.favorites.map(fav => {
+        return fav._id;
+      });
+    }
 
     return (
       <Card>
@@ -95,7 +97,7 @@ class ItineraryCard extends Component {
                   ? favIds.includes(itinerary._id)
                     ? this.removeFavorite
                     : this.addFavorite
-                  : ""
+                  : null
               }
             >
               <FontAwesomeIcon
@@ -140,6 +142,8 @@ class ItineraryCard extends Component {
                 {(() => {
                   const x = itinerary.price;
                   switch (true) {
+                    case x === null:
+                      return "No price info";
                     case x === 0:
                       return "Free";
                     case x < 15:
@@ -148,6 +152,8 @@ class ItineraryCard extends Component {
                       return "$$";
                     case x < 60:
                       return "$$$";
+                    case x > 60:
+                      return "$$$$";
                     default:
                       return "";
                   }

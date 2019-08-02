@@ -1,7 +1,4 @@
 import axios from "axios";
-import { REMOVE_FAVORITE, ADD_FAVORITE } from "./types";
-import { setError } from "./errorActions";
-import { tokenConfig } from "./authActions";
 import { loadUser } from "./authActions";
 
 export const addFavorite = favorite => dispatch => {

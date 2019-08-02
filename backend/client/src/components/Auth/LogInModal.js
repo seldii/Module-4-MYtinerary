@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
@@ -6,8 +6,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  Link as NavLink
+  DialogContentText
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";

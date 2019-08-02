@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
-import { amber, green } from "@material-ui/core/colors";
+import { amber } from "@material-ui/core/colors";
 import WarningIcon from "@material-ui/icons/Warning";
 
 const useStyles = makeStyles(theme => ({

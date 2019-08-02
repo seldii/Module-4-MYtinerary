@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/authActions";
-import { NavLink } from "reactstrap";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 export class LogOut extends Component {
   static propTypes = {

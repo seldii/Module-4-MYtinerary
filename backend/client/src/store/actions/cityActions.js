@@ -9,7 +9,6 @@ import {
 } from "./types";
 import { setError } from "./errorActions";
 import { tokenConfig } from "./authActions";
-import { returnErrors } from "./authErrActions";
 
 export const getCities = () => async dispatch => {
   dispatch(setCitiesLoading());

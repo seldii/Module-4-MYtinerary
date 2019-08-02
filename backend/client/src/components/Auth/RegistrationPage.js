@@ -7,7 +7,6 @@ import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
 import Footer from "../layout/Footer";
 import Typography from "@material-ui/core/Typography";
-import ErrorMessage from "../common/ErrorMessage";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import LogInModal from "./LogInModal";
@@ -29,7 +28,7 @@ class RegisterPage extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { error, isAuthenticated } = this.props;
+    const { error } = this.props;
     if (error !== prevProps.error) {
       if (error.id === "REGISTER_FAIL") {
         this.setState({ msg: error.msg.msg });

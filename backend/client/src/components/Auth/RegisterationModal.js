@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -100,7 +99,7 @@ class RegisterPage extends Component {
     return (
       <Container>
         <div style={{ width: "100%" }} onClick={this.toggle}>
-          Register
+          Sign Up
         </div>
         <Dialog
           fullScreen

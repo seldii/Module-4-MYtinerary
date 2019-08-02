@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: "2"
   },
   icon: {
-    color: "#FF6347"
+    color: theme.palette.secondary.light
   }
 }));
 

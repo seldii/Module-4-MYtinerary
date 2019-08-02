@@ -1,18 +1,14 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-  updateItinerary,
-  getItinerary
-} from "../../../store/actions/itineraryAction";
+import { updateItinerary } from "../../../store/actions/itineraryAction";
 import TextField from "@material-ui/core/TextField";
 import { getCurrentDate } from "../../utility/GetCurrentDate";
 import CommentsList from "./CommentsList";
 import { withStyles } from "@material-ui/core/styles/";
-import { withTheme } from "@material-ui/styles";
 
 const styles = theme => ({
   sent: {

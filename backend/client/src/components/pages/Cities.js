@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 import { getCities } from "../../store/actions/cityActions";
 import PropTypes from "prop-types";
 import Footer from "../layout/Footer";
-import _ from "lodash";
 
 const styles = theme => ({
   cardTitle: {
@@ -36,11 +35,14 @@ const styles = theme => ({
 export class Cities extends Component {
   constructor() {
     super();
-    this.state = { searchCity: "" };
+    this.state = { searchCity: "", isLoading: true };
   }
 
   componentDidMount() {
     this.props.getCities();
+    this.setState({
+      isLoading: false
+    });
   }
 
   filterCity = event => {
@@ -54,7 +56,7 @@ export class Cities extends Component {
       let cityName = city.name.toLowerCase();
       return cityName.indexOf(this.state.searchCity) !== -1;
     });
-    if (filteredCities) {
+    if (!this.state.isLoading) {
       cityList = filteredCities.map((city, _id) => {
         return (
           <Link

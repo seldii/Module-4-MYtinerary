@@ -5,7 +5,7 @@ import { loadUser } from "../../../store/actions/authActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
-import { Typography, Box, Container, Divider, Grid } from "@material-ui/core/";
+import { Typography, Container, Divider, Grid } from "@material-ui/core/";
 import Footer from "../../layout/Footer";
 import { withStyles } from "@material-ui/core/styles";
 import notfound from "../../layout/notfound.png";
@@ -23,8 +23,13 @@ const styles = theme => ({
 });
 
 export class MyItineraries extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true
+    };
+  }
   componentDidMount() {
-    console.log(this.props.auth.user.name);
     const userName = this.props.auth.user.name;
     this.props.getItinerariesByUser(userName);
   }

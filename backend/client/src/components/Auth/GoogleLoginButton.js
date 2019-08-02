@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { GoogleLogin } from "react-google-login";
-import { GoogleIcon } from "../../../src/search.png";
 import { Fab } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import { withTheme } from "@material-ui/styles";
 import { googleSignIn } from "../../store/actions/authActions";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { clientId } from "../../apiKeys";
 
 const styles = theme => ({
   button: {
@@ -32,32 +30,6 @@ class GoogleLoginButton extends Component {
     };
   }
 
-  /* signup(res) {
-    let postData;
-    postData = {
-      name: res.profileObj.name,
-      email: res.profileObj.email,
-      password: res.w3.Eea,
-      image: res.profileObj.imageUrl
-    };
-
-    if (postData) {
-      this.props.postData(postData);
-    }
-  }
-
-  login(res) {
-    let postData;
-    postData = {
-      email: res.profileObj.email,
-      password: res.w3.Eea
-    };
-
-    if (postData) {
-      this.props.login(postData);
-    }
-  } */
-
   responseGoogle(response) {
     console.log("responseGoogle", response);
     this.props.googleSignIn(response);
@@ -68,7 +40,7 @@ class GoogleLoginButton extends Component {
 
     return (
       <GoogleLogin
-        clientId="389070354277-444pehrr8l1gh7ioki1cvaia3rvbdkiu.apps.googleusercontent.com"
+        clientId={clientId}
         render={renderProps => (
           <Fab
             onClick={renderProps.onClick}
@@ -98,7 +70,7 @@ class GoogleLoginButton extends Component {
               />
             </SvgIcon>
 
-            <span>Sign in with Google</span>
+            <span>Continue with Google</span>
           </Fab>
         )}
         buttonText="Login"

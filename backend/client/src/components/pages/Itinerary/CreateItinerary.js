@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
   getItinerariesByUser,
   createItinerary,
@@ -9,12 +9,21 @@ import ErrorMessage from "../../common/ErrorMessage";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ItineraryCreatorCard from "./ItineraryCreatorCard";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
+import { TextField, Typography, Button, Divider } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import ActivityInputs from "./ActivityInputs";
 import LogInModal from "../../Auth/LogInModal";
 import { Link } from "react-router-dom";
+
+const styles = theme => ({
+  button: {
+    color: theme.palette.primary.main
+  },
+  title: {
+    color: theme.palette.secondary.main,
+    textAlign: "center"
+  }
+});
 
 export class CreateItinerary extends Component {
   constructor(props) {
@@ -25,6 +34,7 @@ export class CreateItinerary extends Component {
       city: "",
       duration: null,
       price: null,
+      currentItinerary: null,
       activities: [{ description: "", image: "" }]
     };
 
@@ -40,11 +50,11 @@ export class CreateItinerary extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  /* componentWillReceiveProps(nextProps) {
     if (this.props.match.params !== nextProps.match.params) {
       this.props.getItinerariesByUser(nextProps.match.params);
     }
-  }
+  } */
   onSubmit(e) {
     e.preventDefault();
 
@@ -66,7 +76,7 @@ export class CreateItinerary extends Component {
       hashtag: [],
       title: "",
       city: "",
-      currentItinerary: "",
+
       duration: null,
       price: null,
       activities: [{ description: "", image: "" }]
@@ -110,7 +120,6 @@ export class CreateItinerary extends Component {
 
   displayItinerary(property) {
     this.setState({
-      itinerary: property,
       hashtag: property.hashtag,
       title: property.title,
       city: property.city,
@@ -121,9 +130,10 @@ export class CreateItinerary extends Component {
   }
   render() {
     let itineraryList;
+    let itineraries = this.props.itinerariesByUser;
 
-    if (this.props.itinerariesByUser) {
-      itineraryList = this.props.itinerariesByUser.map((itinerary, _id) => {
+    if (itineraries) {
+      itineraryList = itineraries.map((itinerary, _id) => {
         return (
           <ItineraryCreatorCard
             key={_id}
@@ -140,7 +150,9 @@ export class CreateItinerary extends Component {
 
     return this.props.auth.isAuthenticated ? (
       <div>
-        <h2>Itinerary Creator</h2>
+        <Typography variant="h4" className={this.props.classes.title}>
+          Itinerary Creator
+        </Typography>
         <ErrorMessage />
         <form
           id="itinerary-creator"
@@ -204,7 +216,7 @@ export class CreateItinerary extends Component {
             onClick={this.addActivity}
             variant="contained"
             size="medium"
-            style={{ color: "#FF6347" }}
+            className={this.props.classes.button}
           >
             Add new activity
           </Button>
@@ -214,10 +226,8 @@ export class CreateItinerary extends Component {
             form="itinerary-creator"
             fullWidth
             variant="contained"
-            size="small"
-            variant="contained"
             size="medium"
-            style={{ color: "#FF6347" }}
+            className={this.props.classes.button}
           >
             Submit
           </Button>
@@ -236,7 +246,6 @@ CreateItinerary.propTypes = {
   createItinerary: PropTypes.func.isRequired,
   getItinerariesByUser: PropTypes.func.isRequired,
   itinerariesByUser: PropTypes.arrayOf(PropTypes.object).isRequired,
-
   auth: PropTypes.object.isRequired,
   updateItinerary: PropTypes.func.isRequired
 };
@@ -250,4 +259,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getItinerariesByUser, createItinerary, setError, updateItinerary }
-)(CreateItinerary);
+)(withStyles(styles, { withTheme: true })(CreateItinerary));
