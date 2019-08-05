@@ -9,7 +9,7 @@ const Itinerary = require("../models/Itinerary");
 const itineraryValidation = require("../validation/itinerary");
 const { validationResult } = require("express-validator/check");
 
-const auth = require("../../backend/middleware/auth");
+const auth = require("../middleware/auth");
 
 //Create
 router.post("/", itineraryValidation, auth, async (req, res) => {

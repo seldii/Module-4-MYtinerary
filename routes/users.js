@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 //City Model
 const User = require("../models/User");
 
-const auth = require("../../backend/middleware/auth");
+const auth = require("../middleware/auth");
 
 //@router  POST /users
 //@desc Register new user

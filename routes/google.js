@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 //City Model
 const User = require("../models/User");
 
-const auth = require("../../backend/middleware/auth");
+const auth = require("../middleware/auth");
 
 router.post("/", (req, res) => {
   const { name, email, googleId, image } = req.body;

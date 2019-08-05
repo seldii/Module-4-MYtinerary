@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import logo from "../layout/logooo.png";
-import start from "../layout/start.png";
 import { Grid, Fab, ButtonBase } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import LogInModal from "../Auth/LogInModal";
 import RegisterationModal from "../Auth/RegisterationModal";
-import { withStyles, withTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import GoogleLogin from "../Auth/GoogleLoginButton";
 import { getCities } from "../../store/actions/cityActions";
 import MobileStepper from "@material-ui/core/MobileStepper";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
@@ -19,8 +16,10 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 const styles = theme => ({
   root: {
+    maxWidth: "100%",
     flexGrow: 1
   },
+
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
@@ -43,10 +42,7 @@ const styles = theme => ({
   search: {
     color: theme.palette.primary.main
   },
-  root: {
-    maxWidth: "100%",
-    flexGrow: 1
-  },
+
   header: {
     backgroundColor: theme.palette.secondary.light,
     color: "black",
@@ -176,14 +172,17 @@ class Landing extends Component {
           spacing={2}
         >
           <Grid item xs={12}>
-            <img style={{ maxWidth: "100%" }} src={logo} alt="logo" />
+            <img
+              style={{ maxWidth: "100%" }}
+              src="/images/logooo.png"
+              alt="logo"
+            />
             <Grid item xs={12}>
               <Grid
                 container
                 justify="space-between"
                 alignItems="center"
                 direction="column"
-                style={{ background: { start } }}
               >
                 <Grid item xs={12}>
                   <Typography className={classes.paper} variant="body2">

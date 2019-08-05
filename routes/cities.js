@@ -8,7 +8,7 @@ const { validationResult } = require("express-validator/check");
 //City Model
 const City = require("../models/City");
 
-const auth = require("../../backend/middleware/auth");
+const auth = require("../middleware/auth");
 
 //Create
 router.post("/", cityValidation, auth, async (req, res) => {
