@@ -130,6 +130,7 @@ export const oauthGoogle = data => {
 };
 
 export const googleSignIn = response => dispatch => {
+  console.log(response);
   // Headers
   const config = {
     headers: {
