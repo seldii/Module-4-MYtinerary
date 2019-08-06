@@ -5,7 +5,6 @@ import { withStyles } from "@material-ui/core/styles";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { googleSignIn } from "../../store/actions/authActions";
 import { connect } from "react-redux";
-import { clientId } from "../../apiKeys";
 
 const styles = theme => ({
   button: {
@@ -31,7 +30,6 @@ class GoogleLoginButton extends Component {
   }
 
   responseGoogle(response) {
-    console.log("responseGoogle", response);
     this.props.googleSignIn(response);
   }
 
@@ -40,7 +38,7 @@ class GoogleLoginButton extends Component {
 
     return (
       <GoogleLogin
-        clientId={clientId}
+        clientId="389070354277-444pehrr8l1gh7ioki1cvaia3rvbdkiu.apps.googleusercontent.com"
         render={renderProps => (
           <Fab
             onClick={renderProps.onClick}
