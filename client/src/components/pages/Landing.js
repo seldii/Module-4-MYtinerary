@@ -208,8 +208,6 @@ class Landing extends Component {
               <div className={classes.root}>
                 <div className={classes.buttonbase}>
                   <ButtonBase
-                    href={`/cities/${this.props.cities[activeStep].name}`}
-                    params={{ cityName: this.props.cities[activeStep].name }}
                     focusRipple
                     key={this.props.cities[activeStep].name}
                     className={classes.image}
@@ -218,20 +216,29 @@ class Landing extends Component {
                       width: this.props.cities[activeStep].image.width
                     }}
                   >
-                    <span
-                      className={classes.imageSrc}
-                      style={{
-                        backgroundImage: `url(${
-                          this.props.cities[activeStep].image
-                        })`
+                    <Link
+                      to={{
+                        pathname: `/cities/${
+                          this.props.cities[activeStep].name
+                        }`
                       }}
-                    />
-                    <span className={classes.imageBackdrop} />
-                    <span className={classes.imageButton}>
-                      <Typography className={classes.imageTitle}>
-                        {this.props.cities[activeStep].name}
-                      </Typography>
-                    </span>
+                      params={{ cityName: this.props.cities[activeStep].name }}
+                    >
+                      <span
+                        className={classes.imageSrc}
+                        style={{
+                          backgroundImage: `url(${
+                            this.props.cities[activeStep].image
+                          })`
+                        }}
+                      />
+                      <span className={classes.imageBackdrop} />
+                      <span className={classes.imageButton}>
+                        <Typography className={classes.imageTitle}>
+                          {this.props.cities[activeStep].name}
+                        </Typography>
+                      </span>
+                    </Link>
                   </ButtonBase>
                 </div>
                 <MobileStepper
