@@ -34,7 +34,6 @@ export class CreateItinerary extends Component {
       city: "",
       duration: null,
       price: null,
-      currentItinerary: null,
       activities: [{ description: "", image: "" }]
     };
 
@@ -55,7 +54,7 @@ export class CreateItinerary extends Component {
       this.props.getItinerariesByUser(nextProps.match.params);
     }
   } */
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
 
     const newItinerary = {
@@ -69,21 +68,20 @@ export class CreateItinerary extends Component {
     };
 
     //Add Itinerary via createItinerary action
-    this.props.createItinerary(newItinerary);
+    await this.props.createItinerary(newItinerary);
 
     //Clear form
-    this.setState({
+    await this.setState({
       hashtag: [],
       title: "",
       city: "",
-
       duration: null,
       price: null,
       activities: [{ description: "", image: "" }]
     });
   }
 
-  update(e) {
+  async update(e) {
     e.preventDefault();
 
     const id = this.props.itinerary._id;
@@ -98,7 +96,15 @@ export class CreateItinerary extends Component {
     };
 
     //Update Itinerary via updateItinerary action
-    this.props.updateItinerary(id, newItinerary);
+    await this.props.updateItinerary(id, newItinerary);
+    await this.setState({
+      hashtag: [],
+      title: "",
+      city: "",
+      duration: null,
+      price: null,
+      activities: [{ description: "", image: "" }]
+    });
   }
 
   handleChange = e => {
@@ -205,7 +211,7 @@ export class CreateItinerary extends Component {
             type="text"
             name="hashtag"
             value={hashtag || ""}
-            helperText=""
+            helperText="#cityname"
             fullWidth
             style={{ marginBottom: 8 }}
           />

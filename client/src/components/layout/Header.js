@@ -1,10 +1,16 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Nav from "./Nav";
+import { makeStyles } from "@material-ui/core/styles";
 
-function Header() {
+const useStyles = makeStyles(theme => ({
+  header: {}
+}));
+
+const Header = () => {
+  const classes = useStyles();
   return (
-    <header className="App-header">
+    <header className={classes.header}>
       <Container>
         <Row style={{ flexWrap: "nowrap" }}>
           <Col xs style={{ margin: "auto" }} />
@@ -15,6 +21,6 @@ function Header() {
       </Container>
     </header>
   );
-}
+};
 
 export default Header;

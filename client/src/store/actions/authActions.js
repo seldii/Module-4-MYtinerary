@@ -11,6 +11,8 @@ import {
   REGISTER_FAIL
 } from "./types";
 
+import { setError } from "./errorActions";
+
 export const loadUser = () => (dispatch, getState) => {
   //User Loading
   dispatch({ type: USER_LOADING });
@@ -18,7 +20,6 @@ export const loadUser = () => (dispatch, getState) => {
   axios
     .get("/auth/user", tokenConfig(getState))
     .then(res => {
-      console.log(res);
       dispatch({
         type: USER_LOADED,
         payload: res.data
@@ -48,16 +49,16 @@ export const register = ({ name, email, password, image }) => dispatch => {
   axios
     .post("/users", body, config)
     .then(res => {
-      console.log(res);
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
       });
     })
     .catch(err => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
-      );
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach(error => dispatch(setError(error.msg)));
+      }
       dispatch({
         type: REGISTER_FAIL
       });
@@ -78,7 +79,6 @@ export const login = ({ email, password }) => dispatch => {
   axios
     .post("/auth", body, config)
     .then(res => {
-      console.log(res);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -119,18 +119,7 @@ export const tokenConfig = getState => {
   return config;
 };
 
-export const oauthGoogle = data => {
-  return async dispatch => {
-    console.log("we received", data.accessToken);
-    const res = await axios.post("/users/oauth/google", {
-      access_token: data.accessToken
-    });
-    console.log("res", res);
-  };
-};
-
 export const googleSignIn = response => dispatch => {
-  console.log(response);
   // Headers
   const config = {
     headers: {
@@ -150,7 +139,6 @@ export const googleSignIn = response => dispatch => {
   axios
     .post("/google", body, config)
     .then(res => {
-      console.log(res);
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data

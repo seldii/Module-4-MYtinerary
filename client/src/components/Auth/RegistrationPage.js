@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { connect } from "react-redux";
@@ -10,14 +11,31 @@ import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import LogInModal from "./LogInModal";
+import ErrorMessage from "../common/ErrorMessage";
+
+const styles = theme => ({
+  link: {
+    color: theme.palette.secondary.main
+  },
+  button: {
+    color: theme.palette.secondary.main,
+    marginTop: theme.spacing(2)
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: "1rem"
+  },
+  toolbar: {
+    marginTop: "2rem"
+  }
+});
 
 class RegisterPage extends Component {
   state = {
     name: "",
     email: "",
     image: "",
-    password: "",
-    msg: null
+    password: ""
   };
 
   static propTypes = {
@@ -38,19 +56,11 @@ class RegisterPage extends Component {
     }
   }
 
-  toggle = () => {
-    // Clear errors
-    this.props.clearErrors();
-    this.setState({
-      open: !this.state.open
-    });
-  };
-
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault();
 
     const { name, email, image, password } = this.state;
@@ -63,7 +73,10 @@ class RegisterPage extends Component {
     };
 
     //Attempt to register
-    this.props.register(newUser);
+    await this.props.register(newUser);
+    if (this.props.isAuthenticated) {
+      await this.props.history.push("/");
+    }
   };
 
   render() {
@@ -72,11 +85,7 @@ class RegisterPage extends Component {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        {this.state.msg ? (
-          <Typography style={{ color: "red" }}>{this.state.msg}</Typography>
-        ) : (
-          <Typography>Please enter your registeration details</Typography>
-        )}
+        <ErrorMessage />
         <form onSubmit={this.onSubmit}>
           <TextField
             autoFocus
@@ -125,7 +134,12 @@ class RegisterPage extends Component {
             onChange={this.onChange}
             fullWidth
           />
-          <Button type="submit" fullWidth variant="contained" color="primary">
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            className={this.props.classes.button}
+          >
             Sign Up
           </Button>
           <Grid container justify="flex-end">
@@ -151,4 +165,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { register, clearErrors }
-)(RegisterPage);
+)(withStyles(styles, { withTheme: true })(RegisterPage));

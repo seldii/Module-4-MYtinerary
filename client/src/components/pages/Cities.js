@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 import Footer from "../layout/Footer";
 
 const styles = theme => ({
+  root: {},
   cardTitle: {
     textAlign: "center",
     width: "100%",
@@ -29,6 +30,18 @@ const styles = theme => ({
   cityList: {
     marginBottom: "60px",
     padding: 0
+  },
+  image: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    [theme.breakpoints.down("xs")]: {
+      width: "100% !important", // Overrides inline-style
+      height: 100
+    },
+    backgroundSize: "cover",
+    backgroundPosition: "center 40%"
   }
 });
 
@@ -65,7 +78,12 @@ export class Cities extends Component {
             params={{ cityName: city.name }}
           >
             <Card inverse key={_id}>
-              <CardImg width="100%" src={city.image} alt="Card image cap" />
+              <CardImg
+                className={this.props.classes.image}
+                width="100%"
+                src={city.image}
+                alt="Card image cap"
+              />
               <CardImgOverlay style={{ display: "flex" }}>
                 <CardTitle className={this.props.classes.cardTitle}>
                   <Typography variant="subtitle1">{city.name}</Typography>
@@ -79,7 +97,7 @@ export class Cities extends Component {
       cityList = <div>Loading..</div>;
     }
     return (
-      <Container fluid>
+      <Container fluid className={this.props.classes.root}>
         <Container fluid className={this.props.classes.cityList}>
           <Row>
             <Col xs="12">

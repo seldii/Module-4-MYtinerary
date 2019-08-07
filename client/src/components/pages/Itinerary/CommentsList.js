@@ -15,7 +15,13 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper
   },
   inline: {
-    display: "inline"
+    display: "inline",
+    color: theme.palette.secondary.main
+  },
+  date: {
+    display: "block",
+    color: theme.palette.secondary.light,
+    opacity: "0.8"
   }
 }));
 
@@ -34,14 +40,18 @@ const CommentsList = ({ comment }) => {
             <React.Fragment>
               <Typography
                 component="span"
-                variant="body2"
+                variant="caption"
                 className={classes.inline}
-                color="textPrimary"
               >
                 {comment.user.name}
               </Typography>{" "}
-              <br />
-              {comment.date}
+              <Typography
+                component="span"
+                variant="caption"
+                className={classes.date}
+              >
+                {comment.date}
+              </Typography>
             </React.Fragment>
           }
         />

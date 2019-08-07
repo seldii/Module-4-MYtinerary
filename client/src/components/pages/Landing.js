@@ -72,6 +72,7 @@ const styles = theme => ({
   image: {
     position: "relative",
     height: 200,
+    width: "100%",
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
       height: 100
@@ -207,6 +208,8 @@ class Landing extends Component {
               <div className={classes.root}>
                 <div className={classes.buttonbase}>
                   <ButtonBase
+                    href={`/cities/${this.props.cities[activeStep].name}`}
+                    params={{ cityName: this.props.cities[activeStep].name }}
                     focusRipple
                     key={this.props.cities[activeStep].name}
                     className={classes.image}

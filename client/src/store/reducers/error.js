@@ -21,7 +21,6 @@ export default function(state = initialState, action) {
         errors: [payload, ...state.errors]
       };
     case REMOVE_ERROR:
-      console.log(payload);
       return {
         ...state,
         errors: []

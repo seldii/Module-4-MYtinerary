@@ -164,7 +164,7 @@ class ItineraryCard extends Component {
               {itinerary.hashtag.length > 0 ? (
                 itinerary.hashtag[0].split("," || "").map((h, index) => (
                   <Typography key={index} variant="body2">
-                    #{h}
+                    {h}
                   </Typography>
                 ))
               ) : (

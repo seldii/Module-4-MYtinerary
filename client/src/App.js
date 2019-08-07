@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles/";
 import { loadUser } from "../src/store/actions/authActions";
 import {
   BrowserRouter as Router,
@@ -58,6 +59,14 @@ library.add(
   faArrowAltCircleLeft
 );
 
+const styles = theme => ({
+  root: {
+    [theme.breakpoints.up("sm")]: {
+      width: "60% !important"
+    }
+  }
+});
+
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
@@ -66,7 +75,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <Container>
+          <Container className={this.props.classes.root}>
             <Header />
             <Switch>
               <Route exact path="/" component={Landing} />
@@ -99,4 +108,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter(withStyles(styles, { withTheme: true })(App));

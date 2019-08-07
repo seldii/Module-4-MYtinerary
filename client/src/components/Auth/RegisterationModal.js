@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import ErrorMessage from "../common/ErrorMessage";
 import TextField from "@material-ui/core/TextField";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -17,9 +17,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Container } from "@material-ui/core";
 
 const styles = theme => ({
-  link: {
-    color: theme.palette.secondary.main
-  },
   button: {
     color: theme.palette.secondary.main,
     marginTop: theme.spacing(2)
@@ -122,14 +119,7 @@ class RegisterPage extends Component {
           </Toolbar>
 
           <DialogContent>
-            {this.state.msg ? (
-              <p style={{ color: "red" }}>{this.state.msg}</p>
-            ) : (
-              <DialogContentText>
-                Please enter your registeration details
-              </DialogContentText>
-            )}
-
+            <ErrorMessage />
             <form onSubmit={this.onSubmit} className={this.props.classes.form}>
               <TextField
                 autoFocus

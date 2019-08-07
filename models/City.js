@@ -12,6 +12,9 @@ const CitySchema = new Schema({
   image: {
     type: String,
     required: true
+  },
+  user: {
+    type: Object
   }
 });
 module.exports = City = mongoose.model("city", CitySchema);

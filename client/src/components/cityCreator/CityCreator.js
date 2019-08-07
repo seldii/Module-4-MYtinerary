@@ -47,7 +47,8 @@ class CityCreator extends Component {
     const newCity = {
       name: this.state.name,
       country: this.state.country,
-      image: this.state.image
+      image: this.state.image,
+      user: this.props.auth.user
     };
 
     //Add City via addCity action
@@ -96,7 +97,13 @@ class CityCreator extends Component {
 
   render() {
     let cityList;
-    const { cities } = this.props.cities;
+    const cities = this.props.cities.cities.filter(city => {
+      if (city.user) {
+        return city.user._id === this.props.auth.user._id;
+      } else {
+        return "";
+      }
+    });
     cityList = cities.map((city, _id) => {
       return (
         <CityCreatorCard key={_id} city={city} displayCity={this.displayCity} />

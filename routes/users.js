@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 
 //validation
 
+const userValidation = require("../validation/user");
+const { validationResult } = require("express-validator/check");
+
 //City Model
 const User = require("../models/User");
 
@@ -14,7 +17,11 @@ const auth = require("../middleware/auth");
 //@desc Register new user
 // @access Public
 
-router.post("/", (req, res) => {
+router.post("/", userValidation, (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { name, email, password, image } = req.body;
   //Validation
   if (!name || !email || !password) {
