@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUser } from "../../../store/actions/authActions";
+import { getItinerariesByUser } from "../../../store/actions/itineraryAction";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
@@ -14,21 +15,34 @@ const styles = theme => ({
   notfound: {
     color: theme.palette.secondary.main,
     textAlign: "center"
+  },
+  root: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    /* bring your own prefixes */
+    transform: `translate(${-50}%, ${-50}%)`,
+    [theme.breakpoints.up("sm")]: {
+      width: "60% !important"
+    },
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "100% !important"
+    }
   }
 });
 export class MyItineraries extends Component {
   componentDidMount() {
     this.props.loadUser();
+    const userName = this.props.auth.user.name;
+    this.props.getItinerariesByUser(userName);
   }
 
-  /* componentWillReceiveProps(nextProps) {
-      console.log(this.props.match);
-      console.log(nextProps);
-  
-      if (this.props.match.params !== nextProps.match.params) {
-        this.props.getItinerariesByUser(nextProps.match.params);
-      }
-    } */
+  componentDidUpdate(nextProps) {
+    console.log(nextProps);
+    if (this.props.auth.user._id !== nextProps.auth.user._id) {
+      this.props.getItinerariesByUser(nextProps.auth.user.name);
+    }
+  }
 
   render() {
     const classes = this.props.classes;
@@ -40,15 +54,7 @@ export class MyItineraries extends Component {
       });
     } else {
       itineraryList = (
-        <Container
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            /* bring your own prefixes */
-            transform: `translate(${-50}%, ${-50}%)`
-          }}
-        >
+        <Container className={classes.root}>
           <Grid container direction="column">
             <Grid item xs={12}>
               <Typography variant="body2" className={classes.notfound}>
@@ -98,6 +104,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadUser }
+    { loadUser, getItinerariesByUser }
   )(withStyles(styles, { withTheme: true })(MyItineraries))
 );

@@ -18,6 +18,19 @@ const styles = theme => ({
     color: theme.palette.secondary.main,
     textAlign: "center",
     textDecoration: "underline"
+  },
+  root: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    /* bring your own prefixes */
+    transform: `translate(${-50}%, ${-50}%)`,
+    [theme.breakpoints.up("sm")]: {
+      width: "60% !important"
+    },
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "100% !important"
+    }
   }
 });
 
@@ -33,14 +46,13 @@ export class MyItineraries extends Component {
     this.props.getItinerariesByUser(userName);
   }
 
-  /* componentWillReceiveProps(nextProps) {
-    console.log(this.props.match);
+  componentDidUpdate(nextProps) {
     console.log(nextProps);
 
-    if (this.props.match.params !== nextProps.match.params) {
-      this.props.getItinerariesByUser(nextProps.match.params);
+    if (this.props.auth.user._id !== nextProps.auth.user._id) {
+      this.props.getItinerariesByUser(nextProps.auth.user.name);
     }
-  } */
+  }
 
   render() {
     const classes = this.props.classes;
@@ -52,35 +64,27 @@ export class MyItineraries extends Component {
       });
     } else {
       itineraryList = (
-        <Container
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            /* bring your own prefixes */
-            transform: `translate(${-50}%, ${-50}%)`
-          }}
-        >
+        <Container className={classes.root}>
           <Grid container direction="column">
             <Grid item xs={12}>
               <Typography className={classes.notfound}>
                 You've not created any itinerary yet
               </Typography>
             </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <img
-              style={{ maxWidth: "100%" }}
-              src="/images/notfound.png"
-              alt="not found"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Link to="/itinerary-creator">
-              <Typography className={classes.link}>
-                Are you ready to create your own itinerary?
-              </Typography>
-            </Link>
+            <Grid item xs={12}>
+              <img
+                style={{ maxWidth: "100%" }}
+                src="/images/notfound.png"
+                alt="not found"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Link to="/itinerary-creator">
+                <Typography className={classes.link}>
+                  Are you ready to create your own itinerary?
+                </Typography>
+              </Link>
+            </Grid>
           </Grid>
         </Container>
       );
