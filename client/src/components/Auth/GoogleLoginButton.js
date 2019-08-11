@@ -16,7 +16,12 @@ const styles = theme => ({
     color: "white",
     font: theme.typography.button,
     width: "100%",
-    height: "2.5rem"
+
+    height: "2.5rem",
+
+    [theme.breakpoints.up("sm")]: {
+      height: "3rem"
+    }
   }
 });
 

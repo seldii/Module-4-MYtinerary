@@ -63,8 +63,8 @@ export class Comment extends Component {
   render() {
     const comments = this.state.comments
       .sort((a, b) => {
-        let x = a.date;
-        let y = b.date;
+        let x = new Date(a.date);
+        let y = new Date(b.date);
         if (x < y) {
           return -1;
         }

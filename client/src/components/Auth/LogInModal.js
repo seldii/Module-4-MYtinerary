@@ -22,6 +22,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import RegistrationPage from "../Auth/RegistrationPage";
 
 const styles = theme => ({
+  root: {},
   link: {
     color: theme.palette.secondary.main
   },
@@ -110,14 +111,16 @@ class LogInModal extends Component {
   };
 
   render() {
+    const fullScreenBool =
+      window.screen.availWidth < this.props.theme.breakpoints.values.sm;
     return (
       <Container style={{ padding: 0 }}>
         <div style={{ width: "100%", padding: 0 }} onClick={this.toggle}>
           Log in
         </div>
-
         <Dialog
-          fullScreen
+          fullScreen={fullScreenBool}
+          className={this.props.classes.root}
           open={this.state.open}
           onClose={this.toggle}
           aria-labelledby="form-dialog-title"

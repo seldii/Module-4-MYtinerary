@@ -54,7 +54,7 @@ export class MyItineraries extends Component {
       });
     } else {
       itineraryList = (
-        <Container className={classes.root}>
+        <div className={classes.root}>
           <Grid container direction="column">
             <Grid item xs={12}>
               <Typography variant="body2" className={classes.notfound}>
@@ -79,7 +79,7 @@ export class MyItineraries extends Component {
               </Typography>
             </Link>
           </Grid>
-        </Container>
+        </div>
       );
     }
 
