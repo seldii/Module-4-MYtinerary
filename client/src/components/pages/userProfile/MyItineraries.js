@@ -20,13 +20,14 @@ const styles = theme => ({
     textDecoration: "underline"
   },
   root: {
+    paddingTop: "10px",
     position: "fixed",
     top: "50%",
     left: "50%",
     /* bring your own prefixes */
     transform: `translate(${-50}%, ${-50}%)`,
     [theme.breakpoints.up("sm")]: {
-      width: "60% !important"
+      width: "40% !important"
     },
     [theme.breakpoints.down("xs")]: {
       maxWidth: "100% !important"
@@ -64,7 +65,7 @@ export class MyItineraries extends Component {
       });
     } else {
       itineraryList = (
-        <Container className={classes.root}>
+        <div className={classes.root}>
           <Grid container direction="column">
             <Grid item xs={12}>
               <Typography className={classes.notfound}>
@@ -86,7 +87,7 @@ export class MyItineraries extends Component {
               </Link>
             </Grid>
           </Grid>
-        </Container>
+        </div>
       );
     }
     return (

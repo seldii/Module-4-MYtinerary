@@ -8,7 +8,7 @@ import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Footer from "../../layout/Footer";
-import { Container, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -17,13 +17,14 @@ const styles = theme => ({
     textAlign: "center"
   },
   root: {
+    paddingTop: "10px",
     position: "fixed",
     top: "50%",
     left: "50%",
     /* bring your own prefixes */
     transform: `translate(${-50}%, ${-50}%)`,
     [theme.breakpoints.up("sm")]: {
-      width: "60% !important"
+      width: "40% !important"
     },
     [theme.breakpoints.down("xs")]: {
       maxWidth: "100% !important"

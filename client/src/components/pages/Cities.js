@@ -1,47 +1,85 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import {
-  Container,
-  Card,
-  CardTitle,
-  CardImg,
-  CardImgOverlay,
-  Row,
-  Col
-} from "reactstrap";
+import { Row, Col } from "reactstrap";
 import Input from "@material-ui/core/Input";
 import { withStyles } from "@material-ui/core/styles/";
-import { Typography } from "@material-ui/core/";
+import { Typography, ButtonBase, Grid } from "@material-ui/core/";
 import { connect } from "react-redux";
 import { getCities } from "../../store/actions/cityActions";
 import PropTypes from "prop-types";
 import Footer from "../layout/Footer";
 
 const styles = theme => ({
-  root: {},
-  cardTitle: {
-    textAlign: "center",
-    width: "100%",
-    alignSelf: "center",
-    backgroundColor: "rgba(255,145,0,0.5)",
-    marginBottom: "0px",
-    color: theme.palette.primary.contrastText
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    width: "100%"
   },
   cityList: {
     marginBottom: "60px",
     padding: 0
   },
   image: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    position: "relative",
+    height: 200,
+    width: "100%",
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
       height: 100
     },
+    "&:hover, &$focusVisible": {
+      zIndex: 1,
+      "& $imageBackdrop": {
+        opacity: 0
+      },
+
+      "& $imageTitle": {
+        border: "2px solid currentColor",
+        opacity: 1,
+        padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(
+          1
+        ) + 6}px`
+      }
+    }
+  },
+  focusVisible: {},
+  imageButton: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: theme.palette.common.white
+  },
+  imageSrc: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     backgroundSize: "cover",
     backgroundPosition: "center 40%"
+  },
+  imageBackdrop: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.2,
+    transition: theme.transitions.create("opacity")
+  },
+  imageTitle: {
+    backgroundColor: theme.palette.primary.main,
+    opacity: 0.6,
+    position: "relative",
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px ${theme.spacing(1) +
+      3}px`,
+    transition: theme.transitions.create("opacity")
   }
 });
 
@@ -63,6 +101,7 @@ export class Cities extends Component {
   };
 
   render() {
+    const classes = this.props.classes;
     let cityList;
     const { cities } = this.props.cities;
     let filteredCities = cities.filter(city => {
@@ -72,49 +111,74 @@ export class Cities extends Component {
     if (!this.state.isLoading) {
       cityList = filteredCities.map((city, _id) => {
         return (
-          <Link
-            key={_id}
-            to={{ pathname: `/cities/${city.name}` }}
-            params={{ cityName: city.name }}
-          >
-            <Card inverse key={_id}>
-              <CardImg
-                className={this.props.classes.image}
-                width="100%"
-                src={city.image}
-                alt="Card image cap"
-              />
-              <CardImgOverlay style={{ display: "flex" }}>
-                <CardTitle className={this.props.classes.cardTitle}>
-                  <Typography variant="subtitle1">{city.name}</Typography>
-                </CardTitle>
-              </CardImgOverlay>
-            </Card>
-          </Link>
+          <Grid item style={{ width: "100%" }}>
+            <div className={classes.root}>
+              <ButtonBase
+                focusRipple
+                key={city.name}
+                className={classes.image}
+                focusVisibleClassName={classes.focusVisible}
+                style={{
+                  width: city.image.width
+                }}
+              >
+                <span
+                  className={classes.imageSrc}
+                  style={{
+                    backgroundImage: `url(${city.image})`
+                  }}
+                />
+                <span className={classes.imageBackdrop} />
+                <Link
+                  key={_id}
+                  to={{ pathname: `/cities/${city.name}` }}
+                  params={{ cityName: city.name }}
+                >
+                  <span className={classes.imageButton}>
+                    <Typography
+                      component="span"
+                      variant="subtitle1"
+                      color="inherit"
+                      className={classes.imageTitle}
+                    >
+                      {city.name}
+                      <span className={classes.imageMarked} />
+                    </Typography>
+                  </span>
+                </Link>
+              </ButtonBase>
+            </div>
+          </Grid>
         );
       });
     } else {
       cityList = <div>Loading..</div>;
     }
     return (
-      <Container fluid className={this.props.classes.root}>
-        <Container fluid className={this.props.classes.cityList}>
-          <Row>
-            <Col xs="12">
-              <Input
-                style={{ width: "100%" }}
-                type="search"
-                value={this.state.searchCity}
-                placeholder="Search"
-                onChange={this.filterCity.bind(this)}
-              />
-            </Col>
-          </Row>
-
+      <div>
+        <Row>
+          <Col xs="12">
+            <Input
+              style={{ width: "100%" }}
+              type="search"
+              value={this.state.searchCity}
+              placeholder="Search"
+              onChange={this.filterCity.bind(this)}
+            />
+          </Col>
+        </Row>
+        <Grid
+          container
+          spacing={1}
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
           {cityList}
-        </Container>
+        </Grid>
+
         <Footer />
-      </Container>
+      </div>
     );
   }
 }
