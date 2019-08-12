@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: "1rem"
   },
   img: {
-    height: 255,
     maxWidth: "100%",
     overflow: "hidden",
     display: "block",

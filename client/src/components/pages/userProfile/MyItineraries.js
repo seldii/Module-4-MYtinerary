@@ -30,7 +30,7 @@ const styles = theme => ({
       width: "40% !important"
     },
     [theme.breakpoints.down("xs")]: {
-      maxWidth: "100% !important"
+      width: "80% !important"
     }
   }
 });
@@ -48,8 +48,6 @@ export class MyItineraries extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    console.log(nextProps);
-
     if (this.props.auth.user._id !== nextProps.auth.user._id) {
       this.props.getItinerariesByUser(nextProps.auth.user.name);
     }

@@ -111,7 +111,7 @@ export class Cities extends Component {
     if (!this.state.isLoading) {
       cityList = filteredCities.map((city, _id) => {
         return (
-          <Grid item style={{ width: "100%" }}>
+          <Grid key={_id} item style={{ width: "100%" }}>
             <div className={classes.root}>
               <ButtonBase
                 focusRipple

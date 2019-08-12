@@ -27,7 +27,7 @@ const styles = theme => ({
       width: "40% !important"
     },
     [theme.breakpoints.down("xs")]: {
-      maxWidth: "100% !important"
+      width: "80% !important"
     }
   }
 });

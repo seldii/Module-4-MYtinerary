@@ -5,11 +5,18 @@ import {
   updateItinerary
 } from "../../../store/actions/itineraryAction";
 import { setError } from "../../../store/actions/errorActions";
+import { getCities } from "../../../store/actions/cityActions";
 import ErrorMessage from "../../common/ErrorMessage";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ItineraryCreatorCard from "./ItineraryCreatorCard";
-import { TextField, Typography, Button, Divider } from "@material-ui/core";
+import {
+  TextField,
+  Typography,
+  Button,
+  Divider,
+  MenuItem
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import ActivityInputs from "./ActivityInputs";
 import LogInModal from "../../Auth/LogInModal";
@@ -47,6 +54,7 @@ export class CreateItinerary extends Component {
       const { user } = this.props.auth;
       this.props.getItinerariesByUser(user.name);
     }
+    this.props.getCities();
   }
 
   /* componentWillReceiveProps(nextProps) {
@@ -117,6 +125,9 @@ export class CreateItinerary extends Component {
       this.setState({ [e.target.name]: e.target.value });
     }
   };
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   addActivity = event => {
     this.setState(prevState => ({
@@ -177,13 +188,21 @@ export class CreateItinerary extends Component {
 
           <TextField
             label="City"
+            onChange={this.onChange.bind(this)}
+            select
             id="city"
-            type="text"
             name="city"
-            value={city || ""}
+            value={city}
             fullWidth
             style={{ marginBottom: 8 }}
-          />
+          >
+            {this.props.cities.map(city => (
+              <MenuItem key={city.name} value={city.name}>
+                {city.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
           <TextField
             label="Duration"
             id="Duration"
@@ -259,10 +278,17 @@ CreateItinerary.propTypes = {
 const mapStateToProps = state => ({
   itinerariesByUser: state.itineraries.itinerariesByUser,
   itinerary: state.itineraries.itinerary,
-  auth: state.auth
+  auth: state.auth,
+  cities: state.cities.cities
 });
 
 export default connect(
   mapStateToProps,
-  { getItinerariesByUser, createItinerary, setError, updateItinerary }
+  {
+    getItinerariesByUser,
+    createItinerary,
+    setError,
+    updateItinerary,
+    getCities
+  }
 )(withStyles(styles, { withTheme: true })(CreateItinerary));
