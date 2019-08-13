@@ -31,14 +31,26 @@ const styles = theme => ({
 });
 
 class RegisterPage extends Component {
-  state = {
-    open: false,
-    name: "",
-    email: "",
-    image: "",
-    password: "",
-    msg: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      name: "",
+      email: "",
+      image: "",
+      password: {
+        newPassword: null,
+        match: null,
+        confirmed: null
+      },
+      msg: null
+    };
+    this.handleNewPassword = this.handleNewPassword.bind(this);
+    this.handlePasswordMatch = this.handlePasswordMatch.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.handleConfirmedPassword = this.handleConfirmedPassword.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
 
   static propTypes = {
     isAuthenticated: PropTypes.bool,
@@ -79,7 +91,8 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, image, password } = this.state;
+    const { name, email, image } = this.state;
+    const password = this.state.password.newPassword;
 
     const newUser = {
       name,
@@ -89,8 +102,50 @@ class RegisterPage extends Component {
     };
 
     //Attempt to register
-    this.props.register(newUser);
+    this.handlePasswordMatch().then(({ success }) => {
+      if (success) {
+        this.props.register(newUser);
+      } else {
+        this.setState({
+          msg: "Password did not match"
+        });
+      }
+    });
   };
+
+  // handle storing the
+  // new password in state
+  handleNewPassword(e) {
+    let value = e.target.value;
+
+    let passwordObj = Object.assign({}, this.state.password);
+    passwordObj.newPassword = value;
+    this.setState({ password: passwordObj });
+  }
+
+  // handle storing the
+  // confirmed password in state
+  handleConfirmedPassword(e) {
+    if (e.target.value === this.state.password.newPassword) {
+      let passwordObj = Object.assign({}, this.state.password);
+      passwordObj.confirmed = e.target.value;
+      this.setState({ password: passwordObj });
+    }
+  }
+
+  async handlePasswordMatch() {
+    let { password } = this.state;
+    let passwordObj = Object.assign({}, this.state.password);
+    if (password.newPassword === password.confirmed) {
+      passwordObj.match = true;
+    } else {
+      passwordObj.match = false;
+    }
+    await this.setState({ password: passwordObj });
+    return {
+      success: this.state.password.match
+    };
+  }
 
   render() {
     return (
@@ -128,7 +183,6 @@ class RegisterPage extends Component {
                 name="name"
                 label="Name"
                 id="name"
-                placeholder="Name"
                 className="mb-3"
                 onChange={this.onChange}
                 fullWidth
@@ -139,7 +193,6 @@ class RegisterPage extends Component {
                 name="email"
                 label="Email"
                 id="email"
-                placeholder="Email"
                 className="mb-3"
                 onChange={this.onChange}
                 fullWidth
@@ -151,9 +204,21 @@ class RegisterPage extends Component {
                 name="password"
                 id="password"
                 label="Password"
-                placeholder="Password"
+                placeholder="Must contain at least 8 characters"
                 className="mb-3"
-                onChange={this.onChange}
+                onChange={this.handleNewPassword}
+                fullWidth
+              />
+              <TextField
+                error={this.state.msg ? true : false}
+                margin="dense"
+                type="password"
+                name="confirm"
+                id="password2"
+                label={this.state.msg ? this.state.msg : "Confirm"}
+                placeholder="Reenter the password above"
+                className="mb-3"
+                onChange={this.handleConfirmedPassword}
                 fullWidth
               />
               <TextField

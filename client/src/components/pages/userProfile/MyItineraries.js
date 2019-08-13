@@ -5,7 +5,7 @@ import { loadUser } from "../../../store/actions/authActions";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
-import { Typography, Container, Divider, Grid } from "@material-ui/core/";
+import { Typography, Divider, Grid } from "@material-ui/core/";
 import Footer from "../../layout/Footer";
 import { withStyles } from "@material-ui/core/styles";
 
