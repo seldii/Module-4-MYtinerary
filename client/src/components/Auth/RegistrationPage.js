@@ -38,12 +38,9 @@ class RegisterPage extends Component {
       name: "",
       email: "",
       image: "",
-      password: {
-        newPassword: null,
-        match: null,
-        confirmed: null,
-        msg: null
-      },
+      password: null,
+      confirm: null,
+      match: "empty",
       msg: null
     };
     this.handleNewPassword = this.handleNewPassword.bind(this);
@@ -123,10 +120,13 @@ class RegisterPage extends Component {
   // handle storing the
   // confirmed password in state
   handleConfirmedPassword(e) {
-    if (e.target.value === this.state.password.newPassword) {
-      let passwordObj = Object.assign({}, this.state.password);
-      passwordObj.confirmed = e.target.value;
-      this.setState({ password: passwordObj });
+    const { value } = e.target;
+    if (value === this.state.password) {
+      this.setState({ confirm: value, msg: "", match: true });
+    } else if (value != this.state.password && value != "") {
+      this.setState({ msg: "Password doesn't match", match: false });
+    } else if (value === "") {
+      this.setState({ msg: null, match: "empty" });
     }
   }
 
@@ -188,13 +188,14 @@ class RegisterPage extends Component {
             fullWidth
           />
           <TextField
-            error={this.state.password.msg ? true : false}
+            error={!this.state.match}
             margin="dense"
             type="password"
             name="confirm"
             id="password2"
-            label={this.state.msg ? this.state.msg : "Confirm"}
+            label="Confirm"
             placeholder="Reenter the password above"
+            helperText={this.state.msg ? this.state.msg : ""}
             className="mb-3"
             onChange={this.handleConfirmedPassword}
             fullWidth

@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  TextField,
+  Toolbar
+} from "@material-ui/core";
 import ErrorMessage from "../common/ErrorMessage";
-import TextField from "@material-ui/core/TextField";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
 import IconButton from "@material-ui/core/IconButton";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import { Container } from "@material-ui/core";
@@ -40,7 +42,7 @@ class RegisterPage extends Component {
       image: "",
       password: null,
       confirm: null,
-      match: null,
+      match: "empty",
       msg: null
     };
     this.handleNewPassword = this.handleNewPassword.bind(this);
@@ -118,9 +120,11 @@ class RegisterPage extends Component {
   handleConfirmedPassword(e) {
     const { value } = e.target;
     if (value === this.state.password) {
-      this.setState({ confirm: value, msg: "Password matches", match: true });
+      this.setState({ confirm: value, msg: "", match: true });
+    } else if (value != this.state.password && value != "") {
+      this.setState({ msg: "Password doesn't match", match: false });
     } else if (value === "") {
-      this.setState({ msg: null });
+      this.setState({ msg: null, match: "empty" });
     }
   }
 
@@ -140,13 +144,15 @@ class RegisterPage extends Component {
   }
 
   render() {
+    const isFullScreen =
+      window.screen.availWidth < this.props.theme.breakpoints.values.sm;
     return (
       <Container>
         <div style={{ width: "100%" }} onClick={this.toggle}>
           Sign Up
         </div>
         <Dialog
-          fullScreen
+          fullScreen={isFullScreen}
           open={this.state.open}
           onClose={this.toggle}
           aria-labelledby="form-dialog-title"
@@ -201,13 +207,14 @@ class RegisterPage extends Component {
                 fullWidth
               />
               <TextField
-                error={this.state.match ? false : true}
+                error={!this.state.match}
                 margin="dense"
                 type="password"
                 name="confirm"
                 id="password2"
-                label={this.state.msg ? this.state.msg : "Confirm"}
+                label="Confirm"
                 placeholder="Reenter the password above"
+                helperText={this.state.msg ? this.state.msg : ""}
                 className="mb-3"
                 onChange={this.handleConfirmedPassword}
                 fullWidth

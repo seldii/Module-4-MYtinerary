@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { updateItinerary } from "../../../store/actions/itineraryAction";
@@ -71,7 +71,6 @@ export class Comment extends Component {
         if (x > y) {
           return 1;
         }
-
         return 0;
       })
       .reverse();
@@ -106,7 +105,9 @@ export class Comment extends Component {
             </Grid>
           </Grid>
         </form>
-
+        <Typography variant="body2" color={this.props.secondary.main}>
+          Comments
+        </Typography>
         {commentList}
       </div>
     );
