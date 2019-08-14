@@ -38,11 +38,9 @@ class RegisterPage extends Component {
       name: "",
       email: "",
       image: "",
-      password: {
-        newPassword: null,
-        match: null,
-        confirmed: null
-      },
+      password: null,
+      confirm: null,
+      match: null,
       msg: null
     };
     this.handleNewPassword = this.handleNewPassword.bind(this);
@@ -91,8 +89,7 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, image } = this.state;
-    const password = this.state.password.newPassword;
+    const { name, email, image, password } = this.state;
 
     const newUser = {
       name,
@@ -105,10 +102,6 @@ class RegisterPage extends Component {
     this.handlePasswordMatch().then(({ success }) => {
       if (success) {
         this.props.register(newUser);
-      } else {
-        this.setState({
-          msg: "Password did not match"
-        });
       }
     });
   };
@@ -117,33 +110,32 @@ class RegisterPage extends Component {
   // new password in state
   handleNewPassword(e) {
     let value = e.target.value;
-
-    let passwordObj = Object.assign({}, this.state.password);
-    passwordObj.newPassword = value;
-    this.setState({ password: passwordObj });
+    this.setState({ password: value });
   }
 
   // handle storing the
   // confirmed password in state
   handleConfirmedPassword(e) {
-    if (e.target.value === this.state.password.newPassword) {
-      let passwordObj = Object.assign({}, this.state.password);
-      passwordObj.confirmed = e.target.value;
-      this.setState({ password: passwordObj });
+    const { value } = e.target;
+    if (value === this.state.password) {
+      this.setState({ confirm: value, msg: "Password matches", match: true });
+    } else if (value === "") {
+      this.setState({ msg: null });
     }
   }
 
   async handlePasswordMatch() {
-    let { password } = this.state;
-    let passwordObj = Object.assign({}, this.state.password);
-    if (password.newPassword === password.confirmed) {
-      passwordObj.match = true;
+    let { password, confirm, match, msg } = this.state;
+
+    if (password === confirm) {
+      match = true;
     } else {
-      passwordObj.match = false;
+      match = false;
+      msg = "Password did not match";
     }
-    await this.setState({ password: passwordObj });
+    await this.setState({ match, msg });
     return {
-      success: this.state.password.match
+      success: this.state.match
     };
   }
 
@@ -172,7 +164,6 @@ class RegisterPage extends Component {
               Sign Up
             </Typography>
           </Toolbar>
-
           <DialogContent>
             <ErrorMessage />
             <form onSubmit={this.onSubmit} className={this.props.classes.form}>
@@ -210,7 +201,7 @@ class RegisterPage extends Component {
                 fullWidth
               />
               <TextField
-                error={this.state.msg ? true : false}
+                error={this.state.match ? false : true}
                 margin="dense"
                 type="password"
                 name="confirm"

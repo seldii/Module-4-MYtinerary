@@ -41,7 +41,8 @@ class RegisterPage extends Component {
       password: {
         newPassword: null,
         match: null,
-        confirmed: null
+        confirmed: null,
+        msg: null
       },
       msg: null
     };
@@ -85,7 +86,8 @@ class RegisterPage extends Component {
   };
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   };
 
   onSubmit = e => {
@@ -105,10 +107,6 @@ class RegisterPage extends Component {
     this.handlePasswordMatch().then(({ success }) => {
       if (success) {
         this.props.register(newUser);
-      } else {
-        this.setState({
-          msg: "Password did not match"
-        });
       }
     });
   };
@@ -117,7 +115,6 @@ class RegisterPage extends Component {
   // new password in state
   handleNewPassword(e) {
     let value = e.target.value;
-
     let passwordObj = Object.assign({}, this.state.password);
     passwordObj.newPassword = value;
     this.setState({ password: passwordObj });
@@ -139,6 +136,7 @@ class RegisterPage extends Component {
     if (password.newPassword === password.confirmed) {
       passwordObj.match = true;
     } else {
+      passwordObj.msg = "Password did not match";
       passwordObj.match = false;
     }
     await this.setState({ password: passwordObj });
@@ -158,7 +156,7 @@ class RegisterPage extends Component {
           <TextField
             autoFocus
             margin="dense"
-            type="name"
+            type="text"
             name="name"
             label="Name"
             id="name"
@@ -184,13 +182,13 @@ class RegisterPage extends Component {
             name="password"
             id="password"
             label="Password"
-            placeholder="Must contain at least 8 characters"
+            placeholder="Must be at least 8 character long"
             className="mb-3"
             onChange={this.handleNewPassword}
             fullWidth
           />
           <TextField
-            error={this.state.msg ? true : false}
+            error={this.state.password.msg ? true : false}
             margin="dense"
             type="password"
             name="confirm"
