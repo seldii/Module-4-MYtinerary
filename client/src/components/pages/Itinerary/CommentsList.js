@@ -1,11 +1,19 @@
 import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { deleteComment } from "../../../store/actions/commentActions";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
+import {
+  ListItemText,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  Avatar
+} from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CommentsList = ({ comment }) => {
+const CommentsList = ({ comment, auth, handleDelete }) => {
   const classes = useStyles();
 
   return (
@@ -54,10 +62,34 @@ const CommentsList = ({ comment }) => {
             </React.Fragment>
           }
         />
+        <ListItemSecondaryAction>
+          {auth.user && auth.user._id === comment.user._id ? (
+            <Chip
+              variant="outlined"
+              color="secondary"
+              size="small"
+              onClick={handleDelete}
+              icon={<DeleteIcon />}
+            />
+          ) : (
+            ""
+          )}
+        </ListItemSecondaryAction>
       </ListItem>
       <Divider />
     </List>
   );
 };
 
-export default CommentsList;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+Comment.propTypes = {
+  deleteComment: PropTypes.func.isRequired
+};
+
+export default connect(
+  mapStateToProps,
+  { deleteComment }
+)(CommentsList);

@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { updateItinerary } from "../../../store/actions/itineraryAction";
+import {
+  addComment,
+  deleteComment
+} from "../../../store/actions/commentActions";
+import { getItinerary } from "../../../store/actions/itineraryAction";
 import TextField from "@material-ui/core/TextField";
 import { getCurrentDate } from "../../utility/GetCurrentDate";
 import CommentsList from "./CommentsList";
@@ -20,21 +24,22 @@ export class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
       comment: "",
       comments: this.props.itinerary.comments
     };
 
-    this.update = this.update.bind(this);
+    this.addComment = this.addComment.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+  componentWillMount() {
+    this.props.getItinerary(this.props.itinerary._id);
+  }
+  componentDidMount() {}
 
-  update(e) {
+  addComment(e) {
     e.preventDefault();
 
     const id = this.props.itinerary._id;
-    const prevItinerary = this.props.itinerary;
-    const prevComments = this.props.itinerary.comments;
     const newDate = getCurrentDate();
     const comment = {
       user: this.props.auth.user,
@@ -42,18 +47,29 @@ export class Comment extends Component {
       date: newDate
     };
 
+    //Add comment via addComment action
+    this.props.addComment(id, comment);
+    const prevComments = this.props.itinerary.comments;
     const comments = [...prevComments, comment];
-    const itinerary = {
-      ...prevItinerary,
-      comments
-    };
+    this.setState({
+      comment: "",
+      comments: comments
+    });
+  }
 
-    //Update City via updateCity action
-    this.props.updateItinerary(id, itinerary);
+  handleDelete(comment) {
+    console.log(comment);
+    const id = this.props.itinerary._id;
+    this.props.deleteComment(id, comment);
+    const prevComments = this.state.comments;
+    const comments = prevComments.filter(prevComment => {
+      return prevComment.comment != comment.comment;
+    });
     this.setState({
       comments
     });
   }
+
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -74,12 +90,19 @@ export class Comment extends Component {
         return 0;
       })
       .reverse();
+
     const commentList = comments.map((comment, idx) => {
-      return <CommentsList key={idx} comment={comment} />;
+      return (
+        <CommentsList
+          key={idx}
+          comment={comment}
+          handleDelete={() => this.handleDelete(comment)}
+        />
+      );
     });
     return (
       <div>
-        <form onSubmit={this.update} onChange={this.onChange}>
+        <form onSubmit={this.addComment} onChange={this.onChange}>
           <Grid container spacing={1} alignItems="center">
             <Grid item xs={10}>
               <TextField
@@ -105,7 +128,7 @@ export class Comment extends Component {
             </Grid>
           </Grid>
         </form>
-        <Typography variant="body2" color={this.props.secondary.main}>
+        <Typography variant="body2" color="secondary">
           Comments
         </Typography>
         {commentList}
@@ -115,14 +138,17 @@ export class Comment extends Component {
 }
 
 Comment.propTypes = {
-  updateItinerary: PropTypes.func.isRequired
+  addComment: PropTypes.func.isRequired,
+  deleteComment: PropTypes.func.isRequired,
+  getItinerary: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  itineraryRed: state.itineraries.itinerary
 });
 
 export default connect(
   mapStateToProps,
-  { updateItinerary }
+  { addComment, deleteComment, getItinerary }
 )(withStyles(styles, { withTheme: true })(Comment));

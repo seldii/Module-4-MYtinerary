@@ -27,7 +27,10 @@ export const getItinerary = id => async dispatch => {
       payload: res.data
     });
   } catch (err) {
-    console.log(err.response.data);
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setError(error.msg)));
+    }
   }
 };
 
@@ -39,7 +42,10 @@ export const getItinerariesByCity = cityName => async dispatch => {
       payload: res.data
     });
   } catch (err) {
-    console.log(err.response.data);
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setError(error.msg)));
+    }
   }
 };
 
@@ -53,6 +59,10 @@ export const getItinerariesByUser = userName => async dispatch => {
       payload: res.data
     });
   } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setError(error.msg)));
+    }
     console.log(err.response.data);
   }
 };

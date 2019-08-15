@@ -16,7 +16,10 @@ import Activity from "./Activity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { updateItinerary } from "../../../store/actions/itineraryAction";
+import {
+  updateItinerary,
+  getItinerary
+} from "../../../store/actions/itineraryAction";
 import {
   addFavorite,
   removeFavorite
@@ -51,7 +54,6 @@ class ItineraryCard extends Component {
   };
 
   addFavorite = () => {
-    console.log("add");
     const favorite = {
       favorite: this.props.itinerary,
       user: this.props.auth.user
@@ -199,7 +201,8 @@ ItineraryCard.propTypes = {
   updateItinerary: PropTypes.func.isRequired,
   addFavorite: PropTypes.func.isRequired,
   removeFavorite: PropTypes.func.isRequired,
-  loadUser: PropTypes.func.isRequired
+  loadUser: PropTypes.func.isRequired,
+  getItinerary: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -209,5 +212,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateItinerary, addFavorite, removeFavorite, loadUser }
+  { getItinerary, updateItinerary, addFavorite, removeFavorite, loadUser }
 )(withStyles(styles, { withTheme: true })(ItineraryCard));

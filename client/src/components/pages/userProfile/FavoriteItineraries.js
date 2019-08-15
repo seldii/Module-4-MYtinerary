@@ -39,7 +39,6 @@ export class MyItineraries extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    console.log(nextProps);
     if (this.props.auth.user._id !== nextProps.auth.user._id) {
       this.props.getItinerariesByUser(nextProps.auth.user.name);
     }

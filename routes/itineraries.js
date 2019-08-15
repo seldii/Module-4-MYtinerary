@@ -49,6 +49,49 @@ router.patch("/:id", itineraryValidation, auth, async (req, res) => {
   }
 });
 
+//@router  PATCH /itineraries
+//@desc Add a new comment to the itinerary
+// @access Private
+
+router.patch("/itinerary/:id", (req, res) => {
+  console.log(req.params);
+  const newComment = req.body;
+  const id = req.params.id;
+  Itinerary.findById(id, (err, itinerary) => {
+    itinerary.comments.push(newComment);
+    itinerary.save((err, itinerary) => {
+      if (err) throw err;
+      res.json(itinerary);
+    });
+  });
+});
+
+//@router  DELETE /itineraries
+//@desc Delete a  comment from the itinerary
+//@access Private
+
+router.delete("/itinerary/:id", async (req, res) => {
+  const comment = req.body.comment;
+  const id = req.params.id;
+
+  const itinerary = await Itinerary.findByIdAndUpdate(
+    { _id: id },
+    {
+      $pull: {
+        comments: {
+          comment: comment
+        }
+      }
+    }
+  );
+  if (itinerary)
+    itinerary.save(function(err, itinerary) {
+      if (err) throw err;
+
+      res.json(itinerary);
+    });
+});
+
 //Read
 //all
 router.get("/", async (req, res) => {
