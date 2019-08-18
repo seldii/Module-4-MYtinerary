@@ -41,7 +41,6 @@ router.post("/", (req, res) => {
     const newUser = new User({
       name: name,
       email: email,
-      googleId: googleId,
       image: image,
       password: googleId
     });

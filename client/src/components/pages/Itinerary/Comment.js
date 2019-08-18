@@ -36,37 +36,41 @@ export class Comment extends Component {
   }
   componentDidMount() {}
 
-  addComment(e) {
+  async addComment(e) {
     e.preventDefault();
-
+    const uuidv4 = require("uuid/v4");
     const id = this.props.itinerary._id;
     const newDate = getCurrentDate();
     const comment = {
-      user: this.props.auth.user,
+      user: {
+        name: this.props.auth.user.name,
+        image: this.props.auth.user.image,
+        _id: this.props.auth.user._id
+      },
       comment: this.state.comment,
-      date: newDate
+      date: newDate,
+      id: uuidv4()
     };
 
     //Add comment via addComment action
-    this.props.addComment(id, comment);
-    const prevComments = this.props.itinerary.comments;
-    const comments = [...prevComments, comment];
+    await this.props.addComment(id, comment);
+
+    await getItinerary(this.props.itinerary._id);
+
     this.setState({
       comment: "",
-      comments: comments
+      comments: this.props.itineraryRed.comments
     });
   }
 
-  handleDelete(comment) {
-    console.log(comment);
+  async handleDelete(comment) {
     const id = this.props.itinerary._id;
-    this.props.deleteComment(id, comment);
-    const prevComments = this.state.comments;
-    const comments = prevComments.filter(prevComment => {
-      return prevComment.comment != comment.comment;
-    });
+    await this.props.deleteComment(id, comment);
+    await getItinerary(this.props.itinerary._id);
+
     this.setState({
-      comments
+      comment: "",
+      comments: this.props.itineraryRed.comments
     });
   }
 
@@ -77,19 +81,37 @@ export class Comment extends Component {
   }
 
   render() {
-    const comments = this.state.comments
-      .sort((a, b) => {
-        let x = new Date(a.date);
-        let y = new Date(b.date);
-        if (x < y) {
-          return -1;
-        }
-        if (x > y) {
-          return 1;
-        }
-        return 0;
-      })
-      .reverse();
+    let comments;
+
+    if (this.props.itineraryRed) {
+      comments = this.props.itineraryRed.comments
+        .sort((a, b) => {
+          let x = new Date(a.date);
+          let y = new Date(b.date);
+          if (x < y) {
+            return -1;
+          }
+          if (x > y) {
+            return 1;
+          }
+          return 0;
+        })
+        .reverse();
+    } else {
+      comments = this.state.comments
+        .sort((a, b) => {
+          let x = new Date(a.date);
+          let y = new Date(b.date);
+          if (x < y) {
+            return -1;
+          }
+          if (x > y) {
+            return 1;
+          }
+          return 0;
+        })
+        .reverse();
+    }
 
     const commentList = comments.map((comment, idx) => {
       return (
