@@ -8,7 +8,6 @@ import {
   Switch
 } from "react-router-dom";
 import Header from "./components/layout/Header";
-import "./App.css";
 import Landing from "./components/pages/Landing";
 import { Container } from "reactstrap";
 import Cities from "./components/pages/Cities";

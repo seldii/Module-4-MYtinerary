@@ -19,7 +19,6 @@ export const addComment = (id, comment) => async (dispatch, getState) => {
   }
 };
 export const deleteComment = (id, comment) => async (dispatch, getState) => {
-  console.log(comment.comment);
   try {
     await axios(
       { method: "DELETE", url: `/itineraries/itinerary/${id}`, data: comment },

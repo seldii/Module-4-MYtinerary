@@ -38,7 +38,8 @@ class ItineraryCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
+      favorite: true
     };
 
     this.handleExpandClick = this.handleExpandClick.bind(this);
@@ -51,27 +52,43 @@ class ItineraryCard extends Component {
   };
   componentDidMount = () => {
     this.props.loadUser();
+
+    let favIds;
+    if (this.props.auth.isAuthenticated) {
+      favIds = this.props.auth.user.favorites.map(fav => {
+        return fav._id;
+      });
+    }
+    if (favIds.includes(this.props.itinerary._id)) {
+      this.setState({ favorite: true });
+    }
   };
 
-  addFavorite = () => {
+  addFavorite = async () => {
     const favorite = {
       favorite: this.props.itinerary,
       user: this.props.auth.user
     };
 
-    this.props.addFavorite(favorite);
-    this.props.loadUser();
+    await this.props.addFavorite(favorite);
+    await this.props.loadUser();
+    this.setState({ favorite: true }, () => {
+      console.log(this.state.favorite);
+    });
   };
 
-  removeFavorite = () => {
+  removeFavorite = async () => {
     console.log("remove");
     const favorite = {
       favorite: this.props.itinerary,
       user: this.props.auth.user._id
     };
 
-    this.props.removeFavorite(favorite);
-    this.props.loadUser();
+    await this.props.removeFavorite(favorite);
+    await this.props.loadUser();
+    this.setState({ favorite: false }, () => {
+      console.log(this.state.favorite);
+    });
   };
 
   render() {
@@ -96,7 +113,7 @@ class ItineraryCard extends Component {
               aria-label="Settings"
               onClick={
                 this.props.auth.isAuthenticated
-                  ? favIds.includes(itinerary._id)
+                  ? this.state.favorite
                     ? this.removeFavorite
                     : this.addFavorite
                   : null
@@ -105,7 +122,7 @@ class ItineraryCard extends Component {
               <FontAwesomeIcon
                 style={{
                   color: this.props.auth.isAuthenticated
-                    ? favIds.includes(itinerary._id)
+                    ? this.state.favorite
                       ? "#ff6d00"
                       : "rgb(220,220,220)"
                     : "rgb(220,220,220, 0.2)"

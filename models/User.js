@@ -44,7 +44,7 @@ UserSchema.pre("save", async function(next) {
     const passwordHash = await bcrypt.hash(this.password, salt);
     // Re-assign hashed version over original, plain text password
     this.password = passwordHash;
-    console.log("exited");
+
     next();
   } catch (error) {
     next(error);
