@@ -33,12 +33,18 @@ const styles = theme => ({
 });
 
 class LogInModal extends Component {
-  state = {
-    open: false,
-    email: "",
-    password: "",
-    msg: null
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+      email: "",
+      password: "",
+      msg: null
+    };
+
+    this.handleClose = this.handleClose.bind(this);
+  }
 
   static propTypes = {
     isAuthenticated: PropTypes.bool,
@@ -129,7 +135,7 @@ class LogInModal extends Component {
             <IconButton
               edge="start"
               color="inherit"
-              onClick={this.handleClose.bind(this)}
+              onClick={this.handleClose}
               aria-label="close"
             >
               <CloseIcon />
@@ -198,6 +204,7 @@ class LogInModal extends Component {
                     component={RegistrationPage}
                     variant="body2"
                     className={this.props.classes.link}
+                    onClick={this.handleClose}
                   >
                     {"Don't have an account? Sign Up"}
                   </Link>

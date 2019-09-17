@@ -61,6 +61,8 @@ class ItineraryCard extends Component {
     }
     if (favIds.includes(this.props.itinerary._id)) {
       this.setState({ favorite: true });
+    } else {
+      this.setState({ favorite: false });
     }
   };
 
@@ -72,13 +74,10 @@ class ItineraryCard extends Component {
 
     await this.props.addFavorite(favorite);
     await this.props.loadUser();
-    this.setState({ favorite: true }, () => {
-      console.log(this.state.favorite);
-    });
+    this.setState({ favorite: true });
   };
 
   removeFavorite = async () => {
-    console.log("remove");
     const favorite = {
       favorite: this.props.itinerary,
       user: this.props.auth.user._id
@@ -86,21 +85,12 @@ class ItineraryCard extends Component {
 
     await this.props.removeFavorite(favorite);
     await this.props.loadUser();
-    this.setState({ favorite: false }, () => {
-      console.log(this.state.favorite);
-    });
+    this.setState({ favorite: false });
   };
 
   render() {
     const { expanded } = this.state;
     const itinerary = this.props.itinerary;
-    let favIds = [];
-
-    if (this.props.auth.isAuthenticated) {
-      favIds = this.props.auth.user.favorites.map(fav => {
-        return fav._id;
-      });
-    }
 
     return (
       <Card>
