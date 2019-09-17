@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const config = require("config");
+const config = require("../config/default");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 //validation
@@ -23,7 +23,7 @@ router.post("/", (req, res) => {
       bcrypt.compare(googleId, user.password).then(isMatch => {
         if (!isMatch)
           return res.status(400).json({ msg: "Invalid credentials" });
-        jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
+        jwt.sign({ id: user.id }, config.jwtSecret, (err, token) => {
           if (err) throw err;
           res.json({
             token,
@@ -48,7 +48,7 @@ router.post("/", (req, res) => {
     newUser.save().then(user => {
       jwt.sign(
         { id: user.id },
-        config.get("jwtSecret"),
+        config.jwtSecret,
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;

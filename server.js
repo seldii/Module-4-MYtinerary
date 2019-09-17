@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
-const config = require("config");
+const config = require("./config/default");
 
 // BodyParser Middleware
 
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //DB Config
-const db = config.get("mongoURI");
+const db = config.mongoURI;
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
