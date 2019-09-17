@@ -120,7 +120,7 @@ export class CreateItinerary extends Component {
       let activities = [...this.state.activities];
       activities[e.target.dataset.id][e.target.dataset.fieldType] =
         e.target.value;
-      this.setState({ activities }, () => console.log(this.state.activities));
+      this.setState({ activities });
     } else {
       this.setState({ [e.target.name]: e.target.value });
     }

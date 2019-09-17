@@ -22,7 +22,7 @@ class Profile extends Component {
   };
   render() {
     const { user } = this.props.auth;
-    console.log(user);
+
     return (
       <div>
         <Grid container direction="row" justify="center" alignItems="center">

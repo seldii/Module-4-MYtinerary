@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 const ErrMessagesAuth = props => {
   const classes = useStyles();
-  console.log(props.errors);
+
   return props.errors.map(err => (
     <SnackbarContent
       key={err.id}

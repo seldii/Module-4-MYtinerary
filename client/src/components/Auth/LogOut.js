@@ -9,7 +9,6 @@ export class LogOut extends Component {
     logout: PropTypes.func.isRequired
   };
   handleOnClick = async () => {
-    console.log(this.props.history);
     await this.props.history.push("/");
     this.props.logout();
   };
