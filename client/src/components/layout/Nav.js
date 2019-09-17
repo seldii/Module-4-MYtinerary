@@ -16,7 +16,6 @@ import Divider from "@material-ui/core/Divider";
 
 import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import LogOut from "../Auth/LogOut";
 import LogInModal from "../Auth/LogInModal";
 
 const useStyles = makeStyles(theme => ({
@@ -83,7 +82,7 @@ const TemporaryDrawer = props => {
       <Divider />
       {isAuthenticated ? (
         <Fragment>
-          <Link to={{ pathname: `/profile/${user.name}/favoriteitineraries` }}>
+          <Link to={{ pathname: `/${user.name}/favoriteitineraries` }}>
             <ListItem
               button
               onClick={toggleDrawer(side, false)}
@@ -97,7 +96,7 @@ const TemporaryDrawer = props => {
               </ListItemText>
             </ListItem>
           </Link>
-          <Link to={{ pathname: `/profile/${user.name}/myitineraries` }}>
+          <Link to={{ pathname: `/${user.name}/myitineraries` }}>
             <ListItem
               button
               onClick={toggleDrawer(side, false)}
@@ -149,14 +148,20 @@ const TemporaryDrawer = props => {
                 <Avatar alt={user.name} src={user.image} />
               </ListItemAvatar>
             </ListItem>
-            <ListItem button>
-              <ListItemIcon className={classes.menuIcon}>
-                <FontAwesomeIcon icon="sign-out-alt" />
-              </ListItemIcon>
-              <ListItemText className={classes.listItemText}>
-                <LogOut />
-              </ListItemText>
-            </ListItem>
+            <Link to="/profile">
+              <ListItem
+                button
+                onClick={toggleDrawer(side, false)}
+                onKeyDown={toggleDrawer(side, false)}
+              >
+                <ListItemIcon className={classes.menuIcon}>
+                  <FontAwesomeIcon icon="user-alt" />
+                </ListItemIcon>
+                <ListItemText className={classes.listItemText}>
+                  Profile
+                </ListItemText>
+              </ListItem>
+            </Link>
           </List>
         </Fragment>
       ) : (

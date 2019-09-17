@@ -50,6 +50,8 @@ function Footer({ history }) {
         icon={<FontAwesomeIcon icon="igloo" className={classes.icon} />}
       />
       <BottomNavigationAction
+        component={Link}
+        to={"/profile"}
         icon={<FontAwesomeIcon icon="user-alt" className={classes.icon} />}
       />
     </BottomNavigation>
