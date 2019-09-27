@@ -3,6 +3,9 @@
 # config
 /config/dev.js
 
+#images
+/profilePics
+
 
 # dependencies
 /node_modules
