@@ -2,8 +2,31 @@ const express = require("express");
 const router = express.Router();
 const config = require("../config/default");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+//where sould the upcoming file be stored
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "./profilePics");
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  }
+});
+//file filters accept or deny the file
 
-//validation
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png")
+    cb(null, true);
+  else cb(new Error("Image should be in png or jpeg format"), false);
+};
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
+//validationnpm
 
 const userValidation = require("../validation/user");
 const { validationResult } = require("express-validator/check");
@@ -17,12 +40,12 @@ const auth = require("../middleware/auth");
 //@desc Register new user
 // @access Public
 
-router.post("/", userValidation, (req, res) => {
+router.post("/", upload.single("profileImage"), (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { name, email, password, image } = req.body;
+  const { name, email, password } = req.body;
   //Validation
   if (!name || !email || !password) {
     return res.status(400).json({ msg: "Please fill out all fields" });
@@ -34,7 +57,7 @@ router.post("/", userValidation, (req, res) => {
       name: name,
       email: email,
       password: password,
-      image: image
+      profileImage: req.file.path
     });
 
     newUser.save().then(user => {
@@ -50,7 +73,7 @@ router.post("/", userValidation, (req, res) => {
               id: user.id,
               name: user.name,
               email: user.email,
-              image: user.image
+              profileImage: user.profileImage
             }
           });
         }

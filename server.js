@@ -14,6 +14,8 @@ app.use("/itineraries", require("./routes/itineraries"));
 
 app.use("/users", require("./routes/users"));
 
+app.use("/profilePics", express.static("profilePics")); //to make the profile pictures public
+
 app.use("/google", require("./routes/google"));
 
 app.use("/auth", require("./routes/auth"));

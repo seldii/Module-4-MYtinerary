@@ -96,7 +96,10 @@ class ItineraryCard extends Component {
       <Card>
         <CardHeader
           avatar={
-            <Avatar alt={itinerary.user.name} src={itinerary.user.image} />
+            <Avatar
+              alt={itinerary.user.name}
+              src={itinerary.user.image || "/" + itinerary.user.profileImage}
+            />
           }
           action={
             <IconButton

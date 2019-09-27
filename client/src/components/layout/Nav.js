@@ -145,7 +145,10 @@ const TemporaryDrawer = props => {
                 {user ? `Welcome ${user.name} !` : ""}
               </ListItemText>
               <ListItemAvatar>
-                <Avatar alt={user.name} src={user.image} />
+                <Avatar
+                  alt={user.name}
+                  src={user.image || "/" + user.profileImage}
+                />
               </ListItemAvatar>
             </ListItem>
             <Link to="/profile">

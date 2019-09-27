@@ -26,7 +26,7 @@ const ProfileCard = ({ user }) => {
       >
         <Avatar
           alt={user.name}
-          src={user.image}
+          src={user.image || "/" + user.profileImage}
           className={classes.avatar}
         ></Avatar>
       </Grid>
