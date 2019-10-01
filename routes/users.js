@@ -40,16 +40,18 @@ const auth = require("../middleware/auth");
 //@desc Register new user
 // @access Public
 
-router.post("/", upload.single("profileImage"), (req, res) => {
+router.post("/", upload.single("file"), (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   const { name, email, password } = req.body;
+
   //Validation
   if (!name || !email || !password) {
     return res.status(400).json({ msg: "Please fill out all fields" });
   }
+
   //Check for existing user
   User.findOne({ email: email }).then(user => {
     if (user) return res.status(400).json({ msg: "User already exists" });

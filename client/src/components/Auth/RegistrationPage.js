@@ -35,9 +35,9 @@ class RegisterPage extends Component {
     super(props);
     this.state = {
       open: false,
-      name: "",
-      email: "",
-      image: "",
+      name: null,
+      email: null,
+      profileImage: null,
       password: null,
       confirm: null,
       match: "empty",
@@ -48,6 +48,7 @@ class RegisterPage extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.handleConfirmedPassword = this.handleConfirmedPassword.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.fileSelectedHandler = this.fileSelectedHandler.bind(this);
   }
 
   static propTypes = {
@@ -82,6 +83,11 @@ class RegisterPage extends Component {
     });
   };
 
+  fileSelectedHandler = e => {
+    console.log(e.target.files[0]);
+    this.setState({ profileImage: e.target.files[0] });
+  };
+
   onChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
@@ -90,13 +96,13 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, image } = this.state;
+    const { name, email, profileImage } = this.state;
     const password = this.state.password.newPassword;
 
     const newUser = {
       name,
       email,
-      image,
+      profileImage,
       password
     };
 
@@ -201,13 +207,14 @@ class RegisterPage extends Component {
             fullWidth
           />
           <TextField
-            type="url"
-            name="image"
+            type="file"
+            accept="image/png, image/jpeg"
+            name="profileImage"
             id="image"
             label="Image"
-            placeholder="Please enter a valid url"
+            placeholder="Please upload a profile picture"
             className="mb-3"
-            onChange={this.onChange}
+            onChange={this.fileSelectedHandler}
             fullWidth
           />
           <Button

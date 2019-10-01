@@ -35,19 +35,26 @@ export const loadUser = () => (dispatch, getState) => {
 
 //Register User
 
-export const register = ({ name, email, password, image }) => dispatch => {
+export const register = formData => dispatch => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "multipart/form-data"
     }
   };
+
+  /* console.log("name", name);
   //Request body
-
-  const body = JSON.stringify({ name, email, password, image });
-
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("password", password);
+  // Display the key/value pairs
+  console.log(...formData); */
+  console.log(...formData);
   axios
-    .post("/users", body, config)
+    .post("/users", formData, config)
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,

@@ -39,7 +39,7 @@ class RegisterPage extends Component {
       open: false,
       name: "",
       email: "",
-      image: "",
+      file: null,
       password: null,
       confirm: null,
       match: "empty",
@@ -50,6 +50,7 @@ class RegisterPage extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.handleConfirmedPassword = this.handleConfirmedPassword.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.fileSelectedHandler = this.fileSelectedHandler.bind(this);
   }
 
   static propTypes = {
@@ -83,6 +84,9 @@ class RegisterPage extends Component {
       open: !this.state.open
     });
   };
+  fileSelectedHandler = e => {
+    this.setState({ file: e.target.files[0] });
+  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -91,19 +95,19 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, image, password } = this.state;
+    const { name, email, password, file } = this.state;
 
-    const newUser = {
-      name,
-      email,
-      image,
-      password
-    };
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    console.log(formData);
 
     //Attempt to register
     this.handlePasswordMatch().then(({ success }) => {
       if (success) {
-        this.props.register(newUser);
+        this.props.register(formData);
       }
     });
   };
@@ -172,7 +176,11 @@ class RegisterPage extends Component {
           </Toolbar>
           <DialogContent>
             <ErrorMessage />
-            <form onSubmit={this.onSubmit} className={this.props.classes.form}>
+            <form
+              onSubmit={this.onSubmit}
+              className={this.props.classes.form}
+              encType="multipart/form-data"
+            >
               <TextField
                 autoFocus
                 margin="dense"
@@ -220,13 +228,13 @@ class RegisterPage extends Component {
                 fullWidth
               />
               <TextField
-                type="url"
-                name="image"
+                type="file"
+                accept="image/png, image/jpeg"
+                name="profileImage"
                 id="image"
                 label="Image"
-                placeholder="Please enter a valid url"
                 className="mb-3"
-                onChange={this.onChange}
+                onChange={this.fileSelectedHandler}
                 fullWidth
               />
 
