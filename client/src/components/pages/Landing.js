@@ -42,6 +42,9 @@ const styles = theme => ({
       height: "3rem"
     }
   },
+  buttonBase: {
+    width: "100%"
+  },
   search: {
     color: theme.palette.primary.main
   },
@@ -206,18 +209,14 @@ class Landing extends Component {
                   >
                     <Link
                       to={{
-                        pathname: `/cities/${
-                          this.props.cities[activeStep].name
-                        }`
+                        pathname: `/cities/${this.props.cities[activeStep].name}`
                       }}
                       params={{ cityName: this.props.cities[activeStep].name }}
                     >
                       <span
                         className={classes.imageSrc}
                         style={{
-                          backgroundImage: `url(${
-                            this.props.cities[activeStep].image
-                          })`
+                          backgroundImage: `url(${this.props.cities[activeStep].image})`
                         }}
                       />
                       <span className={classes.imageBackdrop} />
@@ -264,7 +263,7 @@ class Landing extends Component {
               </div>
             ) : (
               <Grid container direction="column" justify="center">
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.buttonBase}>
                   <Fab
                     variant="extended"
                     component="button"
@@ -273,12 +272,16 @@ class Landing extends Component {
                     <LogInModal />
                   </Fab>
                 </Grid>
-                <Grid item xs={12}>
-                  <Fab variant="extended" className={classes.button}>
+                <Grid item xs={12} className={classes.buttonBase}>
+                  <Fab
+                    variant="extended"
+                    component="button"
+                    className={classes.button}
+                  >
                     <RegisterationModal />
                   </Fab>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.buttonBase}>
                   <GoogleLogin />
                 </Grid>
               </Grid>

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import {
@@ -17,16 +17,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import { Container } from "@material-ui/core";
+import RegisterationForm from "./RegisterationForm";
 
 const styles = theme => ({
-  button: {
-    color: theme.palette.secondary.main,
-    marginTop: theme.spacing(2)
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: "1rem"
-  },
   toolbar: {
     marginTop: "2rem"
   }
@@ -39,7 +32,7 @@ class RegisterPage extends Component {
       open: false,
       name: "",
       email: "",
-      file: null,
+      profileImage: null,
       password: null,
       confirm: null,
       match: "empty",
@@ -85,7 +78,7 @@ class RegisterPage extends Component {
     });
   };
   fileSelectedHandler = e => {
-    this.setState({ file: e.target.files[0] });
+    this.setState({ profileImage: e.target.files[0] });
   };
 
   onChange = e => {
@@ -95,10 +88,10 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, file } = this.state;
+    const { name, email, password, profileImage } = this.state;
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("profileImage", profileImage);
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
@@ -151,10 +144,10 @@ class RegisterPage extends Component {
     const isFullScreen =
       window.screen.availWidth < this.props.theme.breakpoints.values.sm;
     return (
-      <Container>
-        <div style={{ width: "100%" }} onClick={this.toggle}>
-          Sign Up
-        </div>
+      <Fragment>
+        <span style={{ width: "100%", padding: 0 }} onClick={this.toggle}>
+          Create an Account
+        </span>
         <Dialog
           fullScreen={isFullScreen}
           open={this.state.open}
@@ -176,81 +169,18 @@ class RegisterPage extends Component {
           </Toolbar>
           <DialogContent>
             <ErrorMessage />
-            <form
+            <RegisterationForm
+              msg={this.state.msg}
+              match={this.state.match}
+              onChange={this.onChange}
               onSubmit={this.onSubmit}
-              className={this.props.classes.form}
-              encType="multipart/form-data"
-            >
-              <TextField
-                autoFocus
-                margin="dense"
-                type="name"
-                name="name"
-                label="Name"
-                id="name"
-                className="mb-3"
-                onChange={this.onChange}
-                fullWidth
-              />
-              <TextField
-                margin="dense"
-                type="email"
-                name="email"
-                label="Email"
-                id="email"
-                className="mb-3"
-                onChange={this.onChange}
-                fullWidth
-              />
-
-              <TextField
-                margin="dense"
-                type="password"
-                name="password"
-                id="password"
-                label="Password"
-                placeholder="Must contain at least 8 characters"
-                className="mb-3"
-                onChange={this.handleNewPassword}
-                fullWidth
-              />
-              <TextField
-                error={!this.state.match}
-                margin="dense"
-                type="password"
-                name="confirm"
-                id="password2"
-                label="Confirm"
-                placeholder="Reenter the password above"
-                helperText={this.state.msg ? this.state.msg : ""}
-                className="mb-3"
-                onChange={this.handleConfirmedPassword}
-                fullWidth
-              />
-              <TextField
-                type="file"
-                accept="image/png, image/jpeg"
-                name="profileImage"
-                id="image"
-                label="Image"
-                className="mb-3"
-                onChange={this.fileSelectedHandler}
-                fullWidth
-              />
-
-              <DialogActions>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className={this.props.classes.button}
-                >
-                  Sign Up
-                </Button>
-              </DialogActions>
-            </form>
+              handleNewPassword={this.handleNewPassword}
+              handleConfirmedPassword={this.handleConfirmedPassword}
+              fileSelectedHandler={this.fileSelectedHandler}
+            />
           </DialogContent>
         </Dialog>
-      </Container>
+      </Fragment>
     );
   }
 }

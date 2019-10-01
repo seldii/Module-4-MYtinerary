@@ -10,6 +10,9 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     backgroundColor: "#f2f2f2"
+  },
+  nameTag: {
+    textAlign: "center"
   }
 }));
 
@@ -18,6 +21,7 @@ const ProfileCard = ({ user }) => {
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid
+        item
         container
         xs={12}
         className={classes.container}
@@ -31,7 +35,7 @@ const ProfileCard = ({ user }) => {
         ></Avatar>
       </Grid>
 
-      <Grid textAlign="center">
+      <Grid className={classes.nameTag}>
         {" "}
         <Typography variant="h6" fontFamily="Roboto">
           {user.name}

@@ -1,8 +1,33 @@
 const express = require("express");
 const router = express.Router();
 
-//Itinerary Model
+//Activity Image upload
+const multer = require("multer");
+//where sould the upcoming file be stored
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "./profilePics");
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  }
+});
+//file filters accept or deny the file
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png")
+    cb(null, true);
+  else cb(new Error("Image should be in png or jpeg format"), false);
+};
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
+
+//Itinerary Model
 const Itinerary = require("../models/Itinerary");
 
 //validation
@@ -12,18 +37,25 @@ const { validationResult } = require("express-validator/check");
 const auth = require("../middleware/auth");
 
 //Create
-router.post("/", itineraryValidation, auth, async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+router.post(
+  "/",
+  itineraryValidation,
+  upload.single("image"),
+  async (req, res) => {
+    console.log(req.file);
+    console.log(req.body);
+    const errors = validationResult(req.body);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const newItinerary = await new Itinerary(req.body);
+      newItinerary.save().then(itinerary => res.send(itinerary));
+    } catch (err) {
+      res.status(500).send("Server Error");
+    }
   }
-  try {
-    const newItinerary = await new Itinerary(req.body);
-    newItinerary.save().then(itinerary => res.send(itinerary));
-  } catch (err) {
-    res.status(500).send("Server Error");
-  }
-});
+);
 
 //Update
 router.patch("/:id", itineraryValidation, auth, async (req, res) => {
@@ -51,7 +83,7 @@ router.patch("/:id", itineraryValidation, auth, async (req, res) => {
 
 //@router  PATCH /itineraries
 //@desc Add a new comment to the itinerary
-// @access Private
+//@access Private
 
 router.patch("/itinerary/:id", async (req, res) => {
   const newComment = req.body;

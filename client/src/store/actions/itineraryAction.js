@@ -88,11 +88,20 @@ export const updateItinerary = (id, itinerary) => async (
     }
   }
 };
-export const createItinerary = newItinerary => async (dispatch, getState) => {
+export const createItinerary = formData => async (dispatch, getState) => {
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  };
+
+  console.log(...formData);
   try {
     const res = await axios.post(
       "/itineraries",
-      newItinerary,
+      formData,
+      config,
       tokenConfig(getState)
     );
     dispatch({

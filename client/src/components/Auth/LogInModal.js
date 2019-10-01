@@ -120,10 +120,10 @@ class LogInModal extends Component {
     const fullScreenBool =
       window.screen.availWidth < this.props.theme.breakpoints.values.sm;
     return (
-      <Container style={{ padding: 0 }}>
-        <div style={{ width: "100%", padding: 0 }} onClick={this.toggle}>
+      <React.Fragment>
+        <span style={{ width: "100%", padding: 0 }} onClick={this.toggle}>
           Log in
-        </div>
+        </span>
         <Dialog
           fullScreen={fullScreenBool}
           className={this.props.classes.root}
@@ -213,7 +213,7 @@ class LogInModal extends Component {
             </form>
           </DialogContent>
         </Dialog>
-      </Container>
+      </React.Fragment>
     );
   }
 }

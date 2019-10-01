@@ -40,8 +40,11 @@ const auth = require("../middleware/auth");
 //@desc Register new user
 // @access Public
 
-router.post("/", upload.single("file"), (req, res) => {
-  const errors = validationResult(req);
+router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+  console.log("profile", req.profileImage);
+  const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }

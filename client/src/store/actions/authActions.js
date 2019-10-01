@@ -43,15 +43,6 @@ export const register = formData => dispatch => {
     }
   };
 
-  /* console.log("name", name);
-  //Request body
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("name", name);
-  formData.append("email", email);
-  formData.append("password", password);
-  // Display the key/value pairs
-  console.log(...formData); */
   console.log(...formData);
   axios
     .post("/users", formData, config)

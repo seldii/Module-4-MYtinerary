@@ -65,18 +65,23 @@ export class CreateItinerary extends Component {
   async onSubmit(e) {
     e.preventDefault();
 
-    const newItinerary = {
-      user: this.props.auth.user,
-      hashtag: this.state.hashtag,
-      title: this.state.title,
-      city: this.state.city,
-      duration: this.state.duration,
-      price: this.state.price,
-      activities: this.state.activities
-    };
+    const formData = new FormData();
+
+    formData.append("user", this.props.auth.user);
+    formData.append("hashtag", this.state.hashtag);
+    formData.append("title", this.state.title);
+    formData.append("city", this.state.city);
+    formData.append("duration", this.state.duration);
+    formData.append("price", this.state.price);
+    this.state.activities.forEach((activity, index) => {
+      formData.append("image" + index, activity.image);
+      formData.append("description" + index, activity.description);
+    });
+
+    console.log(...formData);
 
     //Add Itinerary via createItinerary action
-    await this.props.createItinerary(newItinerary);
+    await this.props.createItinerary(formData);
 
     //Clear form
     await this.setState({
@@ -116,16 +121,19 @@ export class CreateItinerary extends Component {
   }
 
   handleChange = e => {
-    if (["description", "image"].includes(e.target.dataset.fieldType)) {
-      let activities = [...this.state.activities];
+    let activities = [...this.state.activities];
+    if (e.target.dataset.fieldType === "image") {
+      activities[e.target.dataset.id][e.target.dataset.fieldType] =
+        e.target.files[0];
+    } else {
       activities[e.target.dataset.id][e.target.dataset.fieldType] =
         e.target.value;
-      this.setState({ activities });
-    } else {
-      this.setState({ [e.target.name]: e.target.value });
     }
+    console.log(activities);
+    this.setState({ activities });
   };
   onChange = e => {
+    console.log(e.target.name, e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -174,10 +182,10 @@ export class CreateItinerary extends Component {
         <form
           id="itinerary-creator"
           onSubmit={this.props.itinerary ? this.update : this.onSubmit}
-          onChange={this.handleChange}
         >
           <TextField
             label="Title"
+            onChange={this.onChange.bind(this)}
             id="Title"
             type="text"
             name="title"
@@ -188,7 +196,7 @@ export class CreateItinerary extends Component {
 
           <TextField
             label="City"
-            onChange={this.onChange.bind(this)}
+            onClick={this.onChange.bind(this)}
             select
             id="city"
             name="city"
@@ -212,6 +220,7 @@ export class CreateItinerary extends Component {
             helperText="How many hours?"
             fullWidth
             style={{ marginBottom: 8 }}
+            onChange={this.onChange.bind(this)}
           />
 
           <TextField
@@ -223,6 +232,7 @@ export class CreateItinerary extends Component {
             helperText="Please enter the cost in Euro"
             fullWidth
             style={{ marginBottom: 8 }}
+            onChange={this.onChange.bind(this)}
           />
           <TextField
             label="Hashtags"
@@ -233,6 +243,7 @@ export class CreateItinerary extends Component {
             helperText="#cityname"
             fullWidth
             style={{ marginBottom: 8 }}
+            onChange={this.onChange.bind(this)}
           />
 
           <Divider />
@@ -245,7 +256,10 @@ export class CreateItinerary extends Component {
           >
             Add new activity
           </Button>
-          <ActivityInputs activities={activities} />
+          <ActivityInputs
+            activities={activities}
+            handleChange={this.handleChange}
+          />
           <Button
             type="submit"
             form="itinerary-creator"

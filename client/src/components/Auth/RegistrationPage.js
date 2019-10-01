@@ -1,34 +1,14 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
 import Footer from "../layout/Footer";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
 import LogInModal from "./LogInModal";
 import ErrorMessage from "../common/ErrorMessage";
-
-const styles = theme => ({
-  link: {
-    color: theme.palette.secondary.main
-  },
-  button: {
-    color: theme.palette.secondary.main,
-    marginTop: theme.spacing(2)
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: "1rem"
-  },
-  toolbar: {
-    marginTop: "2rem"
-  }
-});
+import RegisterationForm from "./RegisterationForm";
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -37,7 +17,7 @@ class RegisterPage extends Component {
       open: false,
       name: null,
       email: null,
-      profileImage: null,
+      file: null,
       password: null,
       confirm: null,
       match: "empty",
@@ -85,7 +65,7 @@ class RegisterPage extends Component {
 
   fileSelectedHandler = e => {
     console.log(e.target.files[0]);
-    this.setState({ profileImage: e.target.files[0] });
+    this.setState({ file: e.target.files[0] });
   };
 
   onChange = e => {
@@ -96,20 +76,18 @@ class RegisterPage extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, profileImage } = this.state;
-    const password = this.state.password.newPassword;
+    const { name, email, password, file } = this.state;
 
-    const newUser = {
-      name,
-      email,
-      profileImage,
-      password
-    };
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
 
     //Attempt to register
     this.handlePasswordMatch().then(({ success }) => {
       if (success) {
-        this.props.register(newUser);
+        this.props.register(formData);
       }
     });
   };
@@ -158,81 +136,15 @@ class RegisterPage extends Component {
           Sign up
         </Typography>
         <ErrorMessage />
-        <form onSubmit={this.onSubmit}>
-          <TextField
-            autoFocus
-            margin="dense"
-            type="text"
-            name="name"
-            label="Name"
-            id="name"
-            className="mb-3"
-            onChange={this.onChange}
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            type="email"
-            name="email"
-            label="Email"
-            id="email"
-            className="mb-3"
-            onChange={this.onChange}
-            fullWidth
-          />
-
-          <TextField
-            margin="dense"
-            type="password"
-            name="password"
-            id="password"
-            label="Password"
-            placeholder="Must be at least 8 character long"
-            className="mb-3"
-            onChange={this.handleNewPassword}
-            fullWidth
-          />
-          <TextField
-            error={!this.state.match}
-            margin="dense"
-            type="password"
-            name="confirm"
-            id="password2"
-            label="Confirm"
-            placeholder="Reenter the password above"
-            helperText={this.state.msg ? this.state.msg : ""}
-            className="mb-3"
-            onChange={this.handleConfirmedPassword}
-            fullWidth
-          />
-          <TextField
-            type="file"
-            accept="image/png, image/jpeg"
-            name="profileImage"
-            id="image"
-            label="Image"
-            placeholder="Please upload a profile picture"
-            className="mb-3"
-            onChange={this.fileSelectedHandler}
-            fullWidth
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={this.props.classes.button}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link to="#" variant="body2">
-                Already have an account? <LogInModal />
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+        <RegisterationForm
+          msg={this.state.msg}
+          match={this.state.match}
+          onChange={this.onChange}
+          onSubmit={this.onSubmit}
+          handleNewPassword={this.handleNewPassword}
+          handleConfirmedPassword={this.handleConfirmedPassword}
+          fileSelectedHandler={this.fileSelectedHandler}
+        />
 
         <Footer />
       </div>
@@ -248,4 +160,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { register, clearErrors }
-)(withStyles(styles, { withTheme: true })(RegisterPage));
+)(withStyles({ withTheme: true })(RegisterPage));
