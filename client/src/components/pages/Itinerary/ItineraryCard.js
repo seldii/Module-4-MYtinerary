@@ -98,7 +98,7 @@ class ItineraryCard extends Component {
           avatar={
             <Avatar
               alt={itinerary.user.name}
-              src={itinerary.user.image || "/" + itinerary.user.profileImage}
+              src={"/" + itinerary.user.image}
             />
           }
           action={

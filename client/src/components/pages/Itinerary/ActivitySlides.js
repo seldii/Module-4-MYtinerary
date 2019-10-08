@@ -55,7 +55,7 @@ export default function ActivitySlides(props) {
       </Paper>
       <img
         className={classes.img}
-        src={props.itinerary.activities[activeStep].image}
+        src={"/" + props.itinerary.activities[activeStep].image}
         alt={props.itinerary.activities[activeStep].description}
       />
       <MobileStepper

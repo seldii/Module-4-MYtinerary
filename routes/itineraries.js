@@ -5,15 +5,12 @@ const router = express.Router();
 const multer = require("multer");
 //where sould the upcoming file be stored
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "./profilePics");
-  },
+  destination: `./uploads/activityPics`,
   filename: function(req, file, cb) {
-    cb(null, Date.now() + file.originalname);
+    cb(null, Date.now() + "-" + file.originalname);
   }
 });
 //file filters accept or deny the file
-
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png")
     cb(null, true);
@@ -25,7 +22,7 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5
   },
   fileFilter: fileFilter
-});
+}).any();
 
 //Itinerary Model
 const Itinerary = require("../models/Itinerary");
@@ -37,25 +34,59 @@ const { validationResult } = require("express-validator/check");
 const auth = require("../middleware/auth");
 
 //Create
-router.post(
-  "/",
-  itineraryValidation,
-  upload.single("image"),
-  async (req, res) => {
-    console.log(req.file);
-    console.log(req.body);
-    const errors = validationResult(req.body);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try {
-      const newItinerary = await new Itinerary(req.body);
-      newItinerary.save().then(itinerary => res.send(itinerary));
-    } catch (err) {
-      res.status(500).send("Server Error");
-    }
+router.post("/", upload, itineraryValidation, async (req, res) => {
+  console.log(req.files);
+  const {
+    userId,
+    userPic,
+    userName,
+    title,
+    city,
+    rating,
+    duration,
+    price,
+    hashtag,
+    comments,
+    description
+  } = req.body;
+  const user = {
+    _id: userId,
+    image: userPic,
+    name: userName
+  };
+
+  const descriptions = description.split(",");
+
+  let activities = [];
+
+  descriptions.forEach((d, i) => {
+    activities.push({
+      description: d,
+      image: req.files[i].path
+    });
+  });
+
+  const errors = validationResult(req.body);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-);
+  try {
+    const newItinerary = await new Itinerary({
+      user,
+      title,
+      city,
+      rating,
+      duration,
+      price,
+      hashtag,
+      comments,
+      activities
+    });
+    newItinerary.save().then(itinerary => res.send(itinerary));
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
 
 //Update
 router.patch("/:id", itineraryValidation, auth, async (req, res) => {
@@ -164,7 +195,7 @@ router.get("/itineraries/:city", async (req, res) => {
 
 router.get("/profile/:user", async (req, res) => {
   try {
-    const itinerary = await Itinerary.find({ "user.name": req.params.user });
+    const itinerary = await Itinerary.find({ "user._id": req.params.user });
     if (!itinerary) {
       return res.status(404).send("Itinerary not found");
     }

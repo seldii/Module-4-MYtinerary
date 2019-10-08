@@ -51,9 +51,9 @@ export const getItinerariesByCity = cityName => async dispatch => {
 
 //GET ITINERARIES BY USER
 
-export const getItinerariesByUser = userName => async dispatch => {
+export const getItinerariesByUser = userId => async dispatch => {
   try {
-    const res = await axios.get(`/itineraries/profile/${userName}`);
+    const res = await axios.get(`/itineraries/profile/${userId}`);
     dispatch({
       type: GET_ITINERARIES_BY_USER,
       payload: res.data
@@ -88,7 +88,10 @@ export const updateItinerary = (id, itinerary) => async (
     }
   }
 };
-export const createItinerary = formData => async (dispatch, getState) => {
+export const createItinerary = (formData, user) => async (
+  dispatch,
+  getState
+) => {
   // Headers
   const config = {
     headers: {
@@ -96,7 +99,6 @@ export const createItinerary = formData => async (dispatch, getState) => {
     }
   };
 
-  console.log(...formData);
   try {
     const res = await axios.post(
       "/itineraries",

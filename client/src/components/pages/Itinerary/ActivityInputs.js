@@ -20,15 +20,16 @@ const ActivityInputs = props => {
           onChange={props.handleChange}
         />
 
-        <TextField
+        <input
           htmlFor={imageId}
           type="file"
+          accept="image/png, image/jpeg"
           name={imageId}
           label="Image"
           key={imageId}
-          inputProps={{ "data-id": `${idx}`, "data-field-type": "image" }}
+          data-id={idx}
+          data-field-type="image"
           fullWidth
-          helperText="Please enter a valid url for the image"
           style={{ marginBottom: 8 }}
           onChange={props.handleChange}
         />

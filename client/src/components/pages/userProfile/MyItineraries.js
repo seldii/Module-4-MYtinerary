@@ -43,13 +43,13 @@ export class MyItineraries extends Component {
     };
   }
   componentDidMount() {
-    const userName = this.props.auth.user.name;
-    this.props.getItinerariesByUser(userName);
+    const userId = this.props.auth.user._id;
+    this.props.getItinerariesByUser(userId);
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.auth.user._id !== nextProps.auth.user._id) {
-      this.props.getItinerariesByUser(nextProps.auth.user.name);
+      this.props.getItinerariesByUser(nextProps.auth.user._id);
     }
   }
 

@@ -6,7 +6,7 @@ const multer = require("multer");
 //where sould the upcoming file be stored
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, "./profilePics");
+    cb(null, "./uploads/profilePics");
   },
   filename: function(req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -41,9 +41,6 @@ const auth = require("../middleware/auth");
 // @access Public
 
 router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
-  console.log("profile", req.profileImage);
   const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

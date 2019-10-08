@@ -41,7 +41,8 @@ export class CreateItinerary extends Component {
       city: "",
       duration: null,
       price: null,
-      activities: [{ description: "", image: "" }]
+      activities: [{ description: "", image: "" }],
+      itinerary: null //If this is not null Update Itinerary Action works
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -52,7 +53,7 @@ export class CreateItinerary extends Component {
   componentDidMount() {
     if (this.props.auth.user) {
       const { user } = this.props.auth;
-      this.props.getItinerariesByUser(user.name);
+      this.props.getItinerariesByUser(user._id);
     }
     this.props.getCities();
   }
@@ -67,18 +68,26 @@ export class CreateItinerary extends Component {
 
     const formData = new FormData();
 
-    formData.append("user", this.props.auth.user);
+    formData.append("userId", this.props.auth.user._id);
+    formData.append(
+      "userPic",
+      this.props.auth.user.image || this.props.auth.user.profileImage
+    );
+    formData.append("userName", this.props.auth.user.name);
     formData.append("hashtag", this.state.hashtag);
     formData.append("title", this.state.title);
     formData.append("city", this.state.city);
     formData.append("duration", this.state.duration);
     formData.append("price", this.state.price);
-    this.state.activities.forEach((activity, index) => {
-      formData.append("image" + index, activity.image);
-      formData.append("description" + index, activity.description);
-    });
+    let image = [];
+    let description = [];
+    for (const activity of this.state.activities) {
+      description.push(activity.description);
+      image.push(activity.image);
+    }
 
-    console.log(...formData);
+    formData.append("description", description);
+    image.forEach(i => formData.append("image", i[0]));
 
     //Add Itinerary via createItinerary action
     await this.props.createItinerary(formData);
@@ -124,16 +133,15 @@ export class CreateItinerary extends Component {
     let activities = [...this.state.activities];
     if (e.target.dataset.fieldType === "image") {
       activities[e.target.dataset.id][e.target.dataset.fieldType] =
-        e.target.files[0];
+        e.target.files;
     } else {
       activities[e.target.dataset.id][e.target.dataset.fieldType] =
         e.target.value;
     }
-    console.log(activities);
+
     this.setState({ activities });
   };
   onChange = e => {
-    console.log(e.target.name, e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -150,7 +158,8 @@ export class CreateItinerary extends Component {
       city: property.city,
       duration: property.duration,
       price: property.price,
-      activities: property.activities
+      activities: property.activities,
+      itinerary: property
     });
   }
   render() {
@@ -181,7 +190,7 @@ export class CreateItinerary extends Component {
         <ErrorMessage />
         <form
           id="itinerary-creator"
-          onSubmit={this.props.itinerary ? this.update : this.onSubmit}
+          onSubmit={this.state.itinerary ? this.update : this.onSubmit}
         >
           <TextField
             label="Title"
