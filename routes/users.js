@@ -89,6 +89,7 @@ router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
 // @access Private
 
 router.patch("/itinerary", (req, res) => {
+  console.log(req.body.favorite);
   const newFavorite = req.body.favorite;
   const id = req.body.user._id;
   User.findOne({ _id: id }, function(err, user) {

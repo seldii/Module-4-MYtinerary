@@ -66,14 +66,16 @@ export class MyItineraries extends Component {
   };
 
   render() {
-    const classes = this.props.classes;
+    const { classes } = this.props;
     let favItineraries = [];
     let itineraryList;
     const { auth } = this.props;
     if (this.state.itineraries) {
-      auth.user.favorites.map(i => {
-        if (this.state.itineraries.has(i._id)) {
-          favItineraries.push(i);
+      auth.user.favorites.map(fav => {
+        if (this.state.itineraries.has(fav)) {
+          for (let i of this.props.itineraries) {
+            if (i._id === fav) favItineraries.push(i);
+          }
         }
       });
 
