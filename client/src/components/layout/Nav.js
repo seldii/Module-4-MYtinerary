@@ -3,17 +3,16 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
 import {
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListItemAvatar,
-  Avatar
+  Avatar,
+  Drawer,
+  Divider
 } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
-
 import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LogInModal from "../Auth/LogInModal";
@@ -22,35 +21,34 @@ const useStyles = makeStyles(theme => ({
   list: {
     width: "auto"
   },
-
   icon: {
     margin: "auto",
     float: "right",
     fontSize: "3rem",
     color: theme.palette.primary.main
   },
-
   menuIcon: {
     color: theme.palette.secondary.main
   },
-
   listItemText: {
     color: theme.palette.secondary.light
   }
 }));
 
-const TemporaryDrawer = props => {
+const TemporaryDrawer = ({ auth }) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     right: false
   });
-
-  const { isAuthenticated, user } = props.auth;
+  let picture;
+  const { isAuthenticated, user } = auth;
+  if (user) {
+    user.image ? (picture = user.image) : (picture = "/" + user.profileImage);
+  }
 
   const toggleDrawer = (side, open) => event => {
     setState({ ...state, [side]: open });
   };
-
   const sideList = side => (
     <div className={classes.list} role="presentation">
       <List>
@@ -145,10 +143,7 @@ const TemporaryDrawer = props => {
                 {user ? `Welcome ${user.name} !` : ""}
               </ListItemText>
               <ListItemAvatar>
-                <Avatar
-                  alt={user.name}
-                  src={user.image || "/" + user.profileImage}
-                />
+                <Avatar alt={user.name} src={picture} />
               </ListItemAvatar>
             </ListItem>
             <Link to="/profile">

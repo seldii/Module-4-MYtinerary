@@ -92,15 +92,14 @@ class ItineraryCard extends Component {
     const { expanded } = this.state;
     const itinerary = this.props.itinerary;
 
+    const image = itinerary.user.image
+      ? itinerary.user.image
+      : "/" + itinerary.user.profileImage;
+
     return (
       <Card>
         <CardHeader
-          avatar={
-            <Avatar
-              alt={itinerary.user.name}
-              src={"/" + itinerary.user.image}
-            />
-          }
+          avatar={<Avatar alt={itinerary.user.name} src={image} />}
           action={
             <IconButton
               aria-label="Settings"

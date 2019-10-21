@@ -9,7 +9,6 @@ import {
   DialogContentText
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/errorActions";

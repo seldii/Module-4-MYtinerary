@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUser } from "../../../store/actions/authActions";
-import { getItinerariesByUser } from "../../../store/actions/itineraryAction";
+import {
+  getItinerariesByUser,
+  getItineraries
+} from "../../../store/actions/itineraryAction";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
@@ -32,6 +35,12 @@ const styles = theme => ({
   }
 });
 export class MyItineraries extends Component {
+  state = {
+    itineraries: null
+  };
+  componentWillMount() {
+    this.getItineraries();
+  }
   componentDidMount() {
     this.props.loadUser();
     const userName = this.props.auth.user.name;
@@ -44,43 +53,66 @@ export class MyItineraries extends Component {
     }
   }
 
+  getItineraries = async () => {
+    let itinerariesSet = new Set();
+    await this.props.getItineraries();
+    const itineraries = await this.props.itineraries;
+    for (let i of itineraries) {
+      itinerariesSet.add(i._id);
+    }
+    await this.setState({
+      itineraries: itinerariesSet
+    });
+  };
+
   render() {
     const classes = this.props.classes;
+    let favItineraries = [];
     let itineraryList;
-
-    if (this.props.auth.user.favorites.length) {
-      itineraryList = this.props.auth.user.favorites.map(i => {
-        return <ItineraryCard key={i._id} itinerary={i} />;
+    const { auth } = this.props;
+    if (this.state.itineraries) {
+      auth.user.favorites.map(i => {
+        if (this.state.itineraries.has(i._id)) {
+          favItineraries.push(i);
+        }
       });
-    } else {
-      itineraryList = (
-        <div className={classes.root}>
-          <Grid container direction="column">
-            <Grid item xs={12}>
-              <Typography variant="body2" className={classes.notfound}>
-                You've not favorited any itinerary yet
-              </Typography>
+
+      if (!favItineraries.length) {
+        itineraryList = (
+          <div className={classes.root}>
+            <Grid container direction="column">
+              <Grid item xs={12}>
+                <Typography variant="body2" className={classes.notfound}>
+                  You've not favorited any itinerary yet
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <img
-              style={{ maxWidth: "100%" }}
-              src="/images/notfound.png"
-              alt="not found"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Link to="/itinerary-creator">
-              <Typography variant="body2" className={classes.notfound}>
-                You might've not found your favorite itinerary yet, then{" "}
-                <span style={{ textDecoration: "underline" }}>
-                  create your own?
-                </span>
-              </Typography>
-            </Link>
-          </Grid>
-        </div>
-      );
+            <Grid item xs={12}>
+              <img
+                style={{ maxWidth: "100%" }}
+                src="/images/notfound.png"
+                alt="not found"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Link to="/itinerary-creator">
+                <Typography variant="body2" className={classes.notfound}>
+                  You might've not found your favorite itinerary yet, then{" "}
+                  <span style={{ textDecoration: "underline" }}>
+                    create your own?
+                  </span>
+                </Typography>
+              </Link>
+            </Grid>
+          </div>
+        );
+      } else {
+        itineraryList = favItineraries.map(i => {
+          return <ItineraryCard key={i._id} itinerary={i} />;
+        });
+      }
+    } else {
+      itineraryList = <div>Loading...</div>;
     }
 
     return (
@@ -98,12 +130,13 @@ MyItineraries.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  itineraries: state.itineraries.itineraries
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadUser, getItinerariesByUser }
+    { loadUser, getItinerariesByUser, getItineraries }
   )(withStyles(styles, { withTheme: true })(MyItineraries))
 );

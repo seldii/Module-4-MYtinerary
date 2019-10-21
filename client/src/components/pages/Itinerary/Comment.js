@@ -32,7 +32,8 @@ export class Comment extends Component {
     this.onChange = this.onChange.bind(this);
   }
   componentWillMount() {
-    this.props.getItinerary(this.props.itinerary._id);
+    const id = this.props.itinerary._id;
+    this.props.getItinerary(id);
   }
   componentDidMount() {}
 
@@ -55,7 +56,7 @@ export class Comment extends Component {
     //Add comment via addComment action
     await this.props.addComment(id, comment);
 
-    await getItinerary(this.props.itinerary._id);
+    await getItinerary(id); //set the itinerary in redux state
 
     this.setState({
       comment: "",

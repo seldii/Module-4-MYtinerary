@@ -38,6 +38,16 @@ export default function ActivitySlides(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = props.itinerary.activities.length;
 
+  const { itinerary } = props;
+
+  let activityImg;
+  if (itinerary) {
+    if (itinerary.activities[activeStep].image.slice(0, 4) === "http") {
+      activityImg = itinerary.activities[activeStep].image;
+    } else {
+      activityImg = "/" + itinerary.activities[activeStep].image;
+    }
+  }
   function handleNext() {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   }
@@ -55,7 +65,7 @@ export default function ActivitySlides(props) {
       </Paper>
       <img
         className={classes.img}
-        src={"/" + props.itinerary.activities[activeStep].image}
+        src={activityImg}
         alt={props.itinerary.activities[activeStep].description}
       />
       <MobileStepper

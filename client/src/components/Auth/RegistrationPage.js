@@ -6,7 +6,6 @@ import { register } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/authErrActions";
 import Footer from "../layout/Footer";
 import Typography from "@material-ui/core/Typography";
-import LogInModal from "./LogInModal";
 import ErrorMessage from "../common/ErrorMessage";
 import RegisterationForm from "./RegisterationForm";
 
@@ -64,7 +63,6 @@ class RegisterPage extends Component {
   };
 
   fileSelectedHandler = e => {
-    console.log(e.target.files[0]);
     this.setState({ file: e.target.files[0] });
   };
 

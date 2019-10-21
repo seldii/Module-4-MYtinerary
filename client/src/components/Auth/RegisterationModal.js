@@ -1,13 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  TextField,
-  Toolbar
-} from "@material-ui/core";
+import { Dialog, DialogContent, Toolbar } from "@material-ui/core";
 import ErrorMessage from "../common/ErrorMessage";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -16,7 +9,6 @@ import { clearErrors } from "../../store/actions/authErrActions";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
-import { Container } from "@material-ui/core";
 import RegisterationForm from "./RegisterationForm";
 
 const styles = theme => ({
@@ -95,7 +87,6 @@ class RegisterPage extends Component {
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
-    console.log(formData);
 
     //Attempt to register
     this.handlePasswordMatch().then(({ success }) => {

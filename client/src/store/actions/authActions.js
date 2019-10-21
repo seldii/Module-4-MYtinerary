@@ -43,7 +43,6 @@ export const register = formData => dispatch => {
     }
   };
 
-  console.log(...formData);
   axios
     .post("/users", formData, config)
     .then(res => {
