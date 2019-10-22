@@ -39,8 +39,15 @@ export class MyItineraries extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      hasError: false
     };
+  }
+
+  static getDerivedStateFromError(error) {
+    console.log(error);
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
   }
   componentDidMount() {
     const userId = this.props.auth.user._id;
@@ -56,6 +63,11 @@ export class MyItineraries extends Component {
   render() {
     const classes = this.props.classes;
     let itineraryList;
+
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
 
     if (this.props.itinerariesByUser.length) {
       itineraryList = this.props.itinerariesByUser.map(i => {

@@ -91,7 +91,7 @@ router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
 router.patch("/itinerary", (req, res) => {
   console.log(req.body.favorite);
   const newFavorite = req.body.favorite;
-  const id = req.body.user._id;
+  const id = req.body.user;
   User.findOne({ _id: id }, function(err, user) {
     if (!user.favorites.includes(newFavorite)) {
       user.favorites.push(newFavorite);
@@ -104,20 +104,18 @@ router.patch("/itinerary", (req, res) => {
 });
 
 //@router  DELETE /users
-//@desc Remove the itinerary to the favorites
-// @access Private
+//@desc Remove the itinerary_id from the favorites
+//@access Private
 
 router.delete("/itinerary", async (req, res) => {
-  const unFavorite = req.body.favorite._id;
+  const unFavorite = req.body.favorite;
   const id = req.body.user;
 
   const user = await User.findByIdAndUpdate(
     { _id: id },
     {
       $pull: {
-        favorites: {
-          _id: unFavorite
-        }
+        favorites: unFavorite
       }
     },
     { new: true }

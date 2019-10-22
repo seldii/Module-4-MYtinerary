@@ -6,7 +6,6 @@ import {
   IconButton,
   CardActions
 } from "@material-ui/core/";
-
 import Collapse from "@material-ui/core/Collapse";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -45,11 +44,6 @@ class ItineraryCard extends Component {
     this.handleExpandClick = this.handleExpandClick.bind(this);
   }
 
-  handleExpandClick = () => {
-    this.setState({
-      expanded: !this.state.expanded
-    });
-  };
   componentDidMount = () => {
     this.props.loadUser();
     const { favorites } = this.props.auth.user;
@@ -66,6 +60,12 @@ class ItineraryCard extends Component {
     } else {
       this.setState({ favorite: false });
     }
+  };
+
+  handleExpandClick = () => {
+    this.setState({
+      expanded: !this.state.expanded
+    });
   };
 
   addFavorite = async () => {
@@ -94,15 +94,23 @@ class ItineraryCard extends Component {
   render() {
     const { expanded } = this.state;
     const itinerary = this.props.itinerary;
-
-    const image = itinerary.user.image
-      ? itinerary.user.image
-      : "/" + itinerary.user.profileImage;
+    let image;
+    if (itinerary.user.image || itinerary.user.profileImage) {
+      image = itinerary.user.image
+        ? itinerary.user.image
+        : "/" + itinerary.user.profileImage;
+    }
 
     return (
       <Card>
         <CardHeader
-          avatar={<Avatar alt={itinerary.user.name} src={image} />}
+          avatar={
+            image ? (
+              <Avatar alt={itinerary.user.name} src={image} />
+            ) : (
+              <Avatar alt={itinerary.user.name} src="/images/userAvatar.png" />
+            )
+          }
           action={
             <IconButton
               aria-label="Settings"
