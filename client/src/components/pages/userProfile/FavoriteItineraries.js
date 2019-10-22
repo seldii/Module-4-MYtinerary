@@ -70,7 +70,6 @@ export class MyItineraries extends Component {
     let favItineraries = [];
     let itineraryList;
     const { favorites } = this.props.auth.user;
-
     if (this.state.itineraries) {
       for (let fav of favorites) {
         if (this.state.itineraries.has(fav)) {
