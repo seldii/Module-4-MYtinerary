@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -16,6 +16,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LogInModal from "../Auth/LogInModal";
+import { getItineraries } from "../../store/actions/itineraryAction";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -35,8 +36,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TemporaryDrawer = ({ auth }) => {
+const TemporaryDrawer = () => {
   const classes = useStyles();
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const [state, setState] = React.useState({
     right: false
   });
@@ -89,7 +92,10 @@ const TemporaryDrawer = ({ auth }) => {
               <ListItemIcon className={classes.menuIcon}>
                 <FontAwesomeIcon icon="heart" />
               </ListItemIcon>
-              <ListItemText className={classes.listItemText}>
+              <ListItemText
+                className={classes.listItemText}
+                onClick={() => dispatch(getItineraries())}
+              >
                 Itineraries You've Liked
               </ListItemText>
             </ListItem>
@@ -195,15 +201,4 @@ const TemporaryDrawer = ({ auth }) => {
   );
 };
 
-TemporaryDrawer.propTypes = {
-  auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(
-  mapStateToProps,
-  null
-)(TemporaryDrawer);
+export default TemporaryDrawer;

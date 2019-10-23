@@ -1,8 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { getItinerariesByUser } from "../../../store/actions/itineraryAction";
-import { loadUser } from "../../../store/actions/authActions";
-import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import ItineraryCard from "../../pages/Itinerary/ItineraryCard";
 import { Typography, Divider, Grid } from "@material-ui/core/";
@@ -35,42 +33,29 @@ const styles = theme => ({
   }
 });
 
-export class MyItineraries extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      hasError: false
+export const MyItineraries = props => {
+  const [isLoading, setIsLoading] = useState(true);
+  const userId = useSelector(state => state.auth.user._id);
+  const itinerariesByUser = useSelector(
+    state => state.itineraries.itinerariesByUser
+  );
+  const dispatch = useDispatch();
+  const classes = props.classes;
+
+  useEffect(() => {
+    const iti = async () => {
+      await dispatch(getItinerariesByUser(userId));
     };
-  }
+    setIsLoading(false);
+    iti();
+  }, [itinerariesByUser]);
 
-  static getDerivedStateFromError(error) {
-    console.log(error);
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
-  }
-  componentDidMount() {
-    const userId = this.props.auth.user._id;
-    this.props.getItinerariesByUser(userId);
-  }
-
-  componentDidUpdate(nextProps) {
-    if (this.props.auth.user._id !== nextProps.auth.user._id) {
-      this.props.getItinerariesByUser(nextProps.auth.user._id);
-    }
-  }
-
-  render() {
-    const classes = this.props.classes;
-    let itineraryList;
-
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
-    }
-
-    if (this.props.itinerariesByUser.length) {
-      itineraryList = this.props.itinerariesByUser.map(i => {
+  let itineraryList;
+  if (isLoading) {
+    itineraryList = <div>Loading..</div>;
+  } else {
+    if (itinerariesByUser.length) {
+      itineraryList = itinerariesByUser.map(i => {
         return <ItineraryCard key={i._id} itinerary={i} />;
       });
     } else {
@@ -100,30 +85,17 @@ export class MyItineraries extends Component {
         </div>
       );
     }
-    return (
-      <React.Fragment>
-        <Divider variant="middle" />
-        {itineraryList}
-        <Footer />
-      </React.Fragment>
-    );
   }
-}
 
-MyItineraries.propTypes = {
-  getItinerariesByUser: PropTypes.func.isRequired,
-  itinerariesByUser: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loadUser: PropTypes.func.isRequired
+  return (
+    <React.Fragment>
+      <Divider variant="middle" />
+      {itineraryList}
+      <Footer />
+    </React.Fragment>
+  );
 };
 
-const mapStateToProps = state => ({
-  itinerariesByUser: state.itineraries.itinerariesByUser,
-  auth: state.auth
-});
-
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { getItinerariesByUser, loadUser }
-  )(withStyles(styles, { withTheme: true })(MyItineraries))
+  withStyles(styles, { withTheme: true })(MyItineraries)
 );

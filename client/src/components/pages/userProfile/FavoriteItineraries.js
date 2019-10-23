@@ -41,17 +41,6 @@ export class MyItineraries extends Component {
   componentWillMount() {
     this.getItineraries();
   }
-  componentDidMount() {
-    this.props.loadUser();
-    const userName = this.props.auth.user.name;
-    this.props.getItinerariesByUser(userName);
-  }
-
-  componentDidUpdate(nextProps) {
-    if (this.props.auth.user._id !== nextProps.auth.user._id) {
-      this.props.getItinerariesByUser(nextProps.auth.user.name);
-    }
-  }
 
   getItineraries = async () => {
     let itinerariesSet = new Set();
