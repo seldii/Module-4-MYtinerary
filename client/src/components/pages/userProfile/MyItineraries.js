@@ -45,8 +45,9 @@ export const MyItineraries = props => {
   useEffect(() => {
     const iti = async () => {
       await dispatch(getItinerariesByUser(userId));
+      await setIsLoading(false);
     };
-    setIsLoading(false);
+
     iti();
   }, [itinerariesByUser]);
 

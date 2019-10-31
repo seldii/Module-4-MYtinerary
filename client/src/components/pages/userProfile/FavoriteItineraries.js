@@ -117,13 +117,17 @@ export class MyItineraries extends Component {
 }
 
 MyItineraries.propTypes = {
-  loadUser: PropTypes.func.isRequired
+  loadUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  itineraries: PropTypes.array.isRequired
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  itineraries: state.itineraries.itineraries
-});
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+    itineraries: state.itineraries.itineraries
+  };
+};
 
 export default withRouter(
   connect(
