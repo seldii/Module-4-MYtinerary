@@ -41,7 +41,11 @@ mongoose.set("useFindAndModify", false);
 
 //Connect to Mongo
 mongoose
-  .connect(db, { useNewUrlParser: true, useCreateIndex: true })
+  .connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  })
   .then(console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 const PORT = process.env.PORT || 5000;
