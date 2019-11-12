@@ -1,8 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
-import ItineraryCard from "../../Itinerary/ItineraryCard";
-import { Typography, Divider, Grid } from "@material-ui/core/";
+import { Typography, Divider, Grid, withStyles } from "@material-ui/core/";
 
 const styles = theme => ({
   notfound: {
@@ -61,4 +59,4 @@ const NotFoundPage = props => {
 
 NotFoundPage.propTypes = {};
 
-export default NotFoundPage;
+export default withStyles(styles, { withTheme: true })(NotFoundPage);

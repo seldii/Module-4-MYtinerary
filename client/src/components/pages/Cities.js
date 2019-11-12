@@ -34,15 +34,15 @@ const styles = theme => ({
       },
 
       "& $imageTitle": {
-        border: "2px solid currentColor",
-        opacity: 1,
+        borderBottom: "2px double currentColor",
+        opacity: 0.7,
         padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(
           1
         ) + 6}px`
       }
     }
   },
-  focusVisible: {},
+
   imageButton: {
     position: "absolute",
     left: 0,

@@ -6,24 +6,23 @@ import {
   getItineraries
 } from "../../../../store/actions/itineraryAction";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ItineraryCard from "../../../pages/Itinerary/ItineraryCard";
 import Divider from "@material-ui/core/Divider";
 import Footer from "../../../layout/Footer";
-import { withStyles } from "@material-ui/core/styles";
 import NotFoundPage from "./NotFoundPage";
 
 export class MyItineraries extends Component {
-  state = {
-    itineraries: null
-  };
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      itineraries: null
+    };
     this.getItineraries();
   }
 
   getItineraries = async () => {
     let itinerariesSet = new Set();
-    await this.props.getItineraries();
     const itineraries = await this.props.itineraries;
     for (let i of itineraries) {
       itinerariesSet.add(i._id);
@@ -81,8 +80,7 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { loadUser, getItinerariesByUser, getItineraries }
-  )(MyItineraries)
+  connect(mapStateToProps, { loadUser, getItinerariesByUser, getItineraries })(
+    MyItineraries
+  )
 );
