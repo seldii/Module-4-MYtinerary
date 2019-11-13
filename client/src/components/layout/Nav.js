@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -54,7 +54,7 @@ const TemporaryDrawer = () => {
   const sideList = side => (
     <div className={classes.list} role="presentation">
       <List>
-        <Link to="/cities">
+        <NavLink to="/cities" exact>
           <ListItem
             button
             onClick={toggleDrawer(side, false)}
@@ -65,8 +65,8 @@ const TemporaryDrawer = () => {
             </ListItemIcon>
             <ListItemText className={classes.listItemText}>Cities</ListItemText>
           </ListItem>
-        </Link>
-        <Link to="/">
+        </NavLink>
+        <NavLink to="/" exact>
           <ListItem
             button
             onClick={toggleDrawer(side, false)}
@@ -77,12 +77,12 @@ const TemporaryDrawer = () => {
             </ListItemIcon>
             <ListItemText className={classes.listItemText}>Home</ListItemText>
           </ListItem>
-        </Link>
+        </NavLink>
       </List>
       <Divider />
       {isAuthenticated ? (
         <Fragment>
-          <Link to={{ pathname: `/${user.name}/favoriteitineraries` }}>
+          <NavLink to={{ pathname: `/${user.name}/favoriteitineraries` }}>
             <ListItem
               button
               onClick={toggleDrawer(side, false)}
@@ -98,8 +98,8 @@ const TemporaryDrawer = () => {
                 Itineraries You've Liked
               </ListItemText>
             </ListItem>
-          </Link>
-          <Link to={{ pathname: `/${user.name}/myitineraries` }}>
+          </NavLink>
+          <NavLink to={{ pathname: `/${user.name}/myitineraries` }}>
             <ListItem
               button
               onClick={toggleDrawer(side, false)}
@@ -112,10 +112,10 @@ const TemporaryDrawer = () => {
                 MyItineraries
               </ListItemText>
             </ListItem>
-          </Link>
+          </NavLink>
 
           <List>
-            <Link to="/city-creator">
+            <NavLink to="/city-creator">
               <ListItem
                 button
                 onClick={toggleDrawer(side, false)}
@@ -128,8 +128,8 @@ const TemporaryDrawer = () => {
                   Add / Update a City
                 </ListItemText>
               </ListItem>
-            </Link>
-            <Link to="/itinerary-creator">
+            </NavLink>
+            <NavLink to="/itinerary-creator">
               <ListItem
                 button
                 onClick={toggleDrawer(side, false)}
@@ -142,7 +142,7 @@ const TemporaryDrawer = () => {
                   Add / Update an Itinerary
                 </ListItemText>
               </ListItem>
-            </Link>
+            </NavLink>
             <ListItem button>
               <ListItemText>
                 {user ? `Welcome ${user.name} !` : ""}
@@ -151,7 +151,7 @@ const TemporaryDrawer = () => {
                 <Avatar alt={user.name} src={picture} />
               </ListItemAvatar>
             </ListItem>
-            <Link to="/profile">
+            <NavLink to="/profile">
               <ListItem
                 button
                 onClick={toggleDrawer(side, false)}
@@ -164,7 +164,7 @@ const TemporaryDrawer = () => {
                   Profile
                 </ListItemText>
               </ListItem>
-            </Link>
+            </NavLink>
           </List>
         </Fragment>
       ) : (

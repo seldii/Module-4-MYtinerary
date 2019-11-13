@@ -100,6 +100,20 @@ class App extends Component {
                 path="/:user/favoriteitineraries"
                 component={withRouter(FavItineraries)}
               />
+              <Route
+                render={() => (
+                  <h3
+                    style={{
+                      textAlign: "center",
+                      marginTop: "56px",
+                      color: "#006064",
+                      opacity: "0.7"
+                    }}
+                  >
+                    Page Not Found!
+                  </h3>
+                )}
+              />
             </Switch>
           </Container>
         </Router>
