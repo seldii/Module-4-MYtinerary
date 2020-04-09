@@ -105,7 +105,7 @@ class RegisterPage extends Component {
     const { value } = e.target;
     if (value === this.state.password) {
       this.setState({ confirm: value, msg: "", match: true });
-    } else if (value != this.state.password && value != "") {
+    } else if (value !== this.state.password && value !== "") {
       this.setState({ msg: "Password doesn't match", match: false });
     } else if (value === "") {
       this.setState({ msg: null, match: "empty" });
@@ -155,7 +155,6 @@ const mapStateToProps = state => ({
   error: state.errorAuth
 });
 
-export default connect(
-  mapStateToProps,
-  { register, clearErrors }
-)(withStyles({ withTheme: true })(RegisterPage));
+export default connect(mapStateToProps, { register, clearErrors })(
+  withStyles({ withTheme: true })(RegisterPage)
+);

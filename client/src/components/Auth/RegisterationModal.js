@@ -22,11 +22,6 @@ class RegisterPage extends Component {
     super(props);
     this.state = {
       open: false,
-      name: "",
-      email: "",
-      profileImage: null,
-      password: null,
-      confirm: null,
       match: "empty",
       msg: null
     };
@@ -77,10 +72,8 @@ class RegisterPage extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { name, email, password, profileImage } = this.state;
+  onSubmit = values => {
+    const { name, email, password, profileImage } = values;
 
     const formData = new FormData();
     formData.append("profileImage", profileImage);
@@ -109,7 +102,7 @@ class RegisterPage extends Component {
     const { value } = e.target;
     if (value === this.state.password) {
       this.setState({ confirm: value, msg: "", match: true });
-    } else if (value != this.state.password && value != "") {
+    } else if (value !== this.state.password && value !== "") {
       this.setState({ msg: "Password doesn't match", match: false });
     } else if (value === "") {
       this.setState({ msg: null, match: "empty" });
@@ -163,7 +156,6 @@ class RegisterPage extends Component {
             <RegisterationForm
               msg={this.state.msg}
               match={this.state.match}
-              onChange={this.onChange}
               onSubmit={this.onSubmit}
               handleNewPassword={this.handleNewPassword}
               handleConfirmedPassword={this.handleConfirmedPassword}
@@ -181,7 +173,6 @@ const mapStateToProps = state => ({
   error: state.errorAuth
 });
 
-export default connect(
-  mapStateToProps,
-  { register, clearErrors }
-)(withStyles(styles, { withTheme: true })(RegisterPage));
+export default connect(mapStateToProps, { register, clearErrors })(
+  withStyles(styles, { withTheme: true })(RegisterPage)
+);
