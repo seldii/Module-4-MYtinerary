@@ -2,18 +2,18 @@ import React from "react";
 import { Avatar, Grid, Typography } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: 10,
     width: 70,
-    height: 70
+    height: 70,
   },
   container: {
-    backgroundColor: "#f2f2f2"
+    backgroundColor: "#f2f2f2",
   },
   nameTag: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 }));
 
 const ProfileCard = ({ user }) => {
@@ -29,10 +29,10 @@ const ProfileCard = ({ user }) => {
         alignItems="center"
       >
         <Avatar
-          alt={user.name}
-          src={user.image || "/" + user.profileImage}
+          alt={user?.name}
+          src={user?.image || "/" + user?.profileImage}
           className={classes.avatar}
-        ></Avatar>
+        />
       </Grid>
 
       <Grid className={classes.nameTag}>

@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
+import { Formik } from "formik";
 import Button from "@material-ui/core/Button";
 import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText
+  DialogContentText,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -20,15 +21,15 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import RegistrationPage from "../Auth/RegistrationPage";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {},
   link: {
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
   },
   button: {
     color: theme.palette.secondary.main,
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 });
 
 class LogInModal extends Component {
@@ -37,9 +38,7 @@ class LogInModal extends Component {
 
     this.state = {
       open: false,
-      email: "",
-      password: "",
-      msg: null
+      msg: null,
     };
 
     this.handleClose = this.handleClose.bind(this);
@@ -49,7 +48,7 @@ class LogInModal extends Component {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
     login: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
+    clearErrors: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps) {
@@ -75,14 +74,14 @@ class LogInModal extends Component {
     const { isAuthenticated } = this.props;
     if (!this.state.open) {
       this.setState({
-        open: !this.state.open
+        open: !this.state.open,
       });
     } else {
       if (isAuthenticated) {
         // Clear errors
         this.props.clearErrors();
         this.setState({
-          open: !this.state.open
+          open: !this.state.open,
         });
         if (this.props.toggleDrawer) {
           this.props.toggleDrawer();
@@ -93,22 +92,16 @@ class LogInModal extends Component {
 
   handleClose = () => {
     this.setState({
-      open: !this.state.open
+      open: !this.state.open,
     });
   };
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { email, password } = this.state;
+  onSubmit = (values) => {
+    const { email, password } = values;
 
     const user = {
       email,
-      password
+      password,
     };
 
     // Attempt to login
@@ -151,65 +144,76 @@ class LogInModal extends Component {
                 Please enter your login details
               </DialogContentText>
             )}
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              onSubmit={this.onSubmit}
+            >
+              {({ handleSubmit, handleReset, handleChange }) => (
+                <form onSubmit={handleSubmit}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    type="email"
+                    name="email"
+                    label="Email"
+                    id="email"
+                    placeholder="Email"
+                    className="mb-3"
+                    onChange={handleChange}
+                    fullWidth
+                  />
 
-            <form onSubmit={this.onSubmit}>
-              <TextField
-                autoFocus
-                margin="dense"
-                type="email"
-                name="email"
-                label="Email"
-                id="email"
-                placeholder="Email"
-                className="mb-3"
-                onChange={this.onChange}
-                fullWidth
-              />
-
-              <TextField
-                type="password"
-                name="password"
-                id="password"
-                lanel="Password"
-                placeholder="Password"
-                className="mb-3"
-                onChange={this.onChange}
-                fullWidth
-              />
-              <DialogActions>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  value="Submit"
-                  className={this.props.classes.button}
-                  onClick={this.props.toggle}
-                >
-                  Login
-                </Button>
-              </DialogActions>
-              <Grid container>
-                <Grid item xs>
-                  <Link
-                    to="#"
-                    variant="body2"
-                    className={this.props.classes.link}
-                  >
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link
-                    to="/sign-up"
-                    component={RegistrationPage}
-                    variant="body2"
-                    className={this.props.classes.link}
-                    onClick={this.handleClose}
-                  >
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
+                  <TextField
+                    type="password"
+                    name="password"
+                    id="password"
+                    lanel="Password"
+                    placeholder="Password"
+                    className="mb-3"
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <DialogActions>
+                    <Button
+                      type="submit"
+                      value="Submit"
+                      onClick={this.props.toggle}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      variant="contained"
+                      className={this.props.classes.button}
+                      onClick={handleReset}
+                    >
+                      RESET
+                    </Button>
+                  </DialogActions>
+                  <Grid container>
+                    <Grid item xs>
+                      <Link
+                        to="#"
+                        variant="body2"
+                        className={this.props.classes.link}
+                      >
+                        Forgot password?
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <Link
+                        to="/sign-up"
+                        component={RegistrationPage}
+                        variant="body2"
+                        className={this.props.classes.link}
+                        onClick={this.handleClose}
+                      >
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </form>
+              )}
+            </Formik>
           </DialogContent>
         </Dialog>
       </React.Fragment>
@@ -217,12 +221,11 @@ class LogInModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.error,
 });
 
-export default connect(
-  mapStateToProps,
-  { login, clearErrors }
-)(withStyles(styles, { withTheme: true })(LogInModal));
+export default connect(mapStateToProps, { login, clearErrors })(
+  withStyles(styles, { withTheme: true })(LogInModal)
+);

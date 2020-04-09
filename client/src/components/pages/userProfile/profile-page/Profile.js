@@ -14,10 +14,11 @@ class Profile extends Component {
   }
 
   static propTypes = {
-    auth: PropTypes.object
+    auth: PropTypes.object,
   };
 
   componentDidMount = () => {
+    console.log("componentDidMount");
     this.props.loadUser();
   };
   render() {
@@ -27,7 +28,7 @@ class Profile extends Component {
       <div>
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid container justify="center" alignItems="center">
-            <ProfileCard user={user}></ProfileCard>
+            <ProfileCard user={user || ""}></ProfileCard>
           </Grid>
           <Grid></Grid>
           <Grid container justify="center" alignItems="center">
@@ -40,10 +41,7 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
-export default connect(
-  mapStateToProps,
-  { loadUser }
-)(Profile);
+export default connect(mapStateToProps, { loadUser })(Profile);
