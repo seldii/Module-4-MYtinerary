@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileCard = ({ user }) => {
   const classes = useStyles();
+  const { name, image, profileImage } = user;
+
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid
@@ -29,8 +31,8 @@ const ProfileCard = ({ user }) => {
         alignItems="center"
       >
         <Avatar
-          alt={user?.name}
-          src={user?.image || "/" + user?.profileImage}
+          alt={name}
+          src={image || "/" + profileImage}
           className={classes.avatar}
         />
       </Grid>

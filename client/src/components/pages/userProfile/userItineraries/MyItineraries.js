@@ -7,11 +7,11 @@ import { Divider } from "@material-ui/core/";
 import Footer from "../../../layout/Footer";
 import NotFoundPage from "./NotFoundPage";
 
-const MyItineraries = props => {
+const MyItineraries = (props) => {
   const [isLoading, setIsLoading] = useState(true);
-  const userId = useSelector(state => state.auth.user._id);
+  const userId = useSelector((state) => state.auth?.user?._id);
   const itinerariesByUser = useSelector(
-    state => state.itineraries.itinerariesByUser
+    (state) => state.itineraries.itinerariesByUser
   );
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const MyItineraries = props => {
     itineraryList = <div>Loading..</div>;
   } else {
     if (itinerariesByUser.length) {
-      itineraryList = itinerariesByUser.map(i => {
+      itineraryList = itinerariesByUser.map((i) => {
         return <ItineraryCard key={i._id} itinerary={i} />;
       });
     } else {

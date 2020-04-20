@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadUser } from "../../../../store/actions/authActions";
 import {
   getItinerariesByUser,
-  getItineraries
+  getItineraries,
 } from "../../../../store/actions/itineraryAction";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -16,7 +16,7 @@ export class MyItineraries extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itineraries: null
+      itineraries: null,
     };
     this.getItineraries();
   }
@@ -28,15 +28,15 @@ export class MyItineraries extends Component {
       itinerariesSet.add(i._id);
     }
     await this.setState({
-      itineraries: itinerariesSet
+      itineraries: itinerariesSet,
     });
   };
 
   render() {
     let favItineraries = [];
     let itineraryList;
-    const { favorites } = this.props.auth.user;
-    if (this.state.itineraries) {
+    const { favorites } = this.props.auth.user || [];
+    if (this.state.itineraries && favorites) {
       for (let fav of favorites) {
         if (this.state.itineraries.has(fav)) {
           for (let i of this.props.itineraries) {
@@ -48,7 +48,7 @@ export class MyItineraries extends Component {
       if (!favItineraries.length) {
         itineraryList = <NotFoundPage />;
       } else {
-        itineraryList = favItineraries.map(i => {
+        itineraryList = favItineraries.map((i) => {
           return <ItineraryCard key={i._id} itinerary={i} />;
         });
       }
@@ -69,13 +69,13 @@ export class MyItineraries extends Component {
 MyItineraries.propTypes = {
   loadUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  itineraries: PropTypes.array.isRequired
+  itineraries: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.auth,
-    itineraries: state.itineraries.itineraries
+    itineraries: state.itineraries.itineraries,
   };
 };
 
