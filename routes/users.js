@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 //where sould the upcoming file be stored
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "./uploads/profilePics");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
-  }
+  },
 });
 //file filters accept or deny the file
 
@@ -22,9 +22,9 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 5
+    fileSize: 1024 * 1024 * 5,
   },
-  fileFilter: fileFilter
+  fileFilter: fileFilter,
 });
 //validationnpm
 
@@ -45,7 +45,7 @@ router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { name, email, password } = req.body;
+  const { name, email, password, profileImage } = req.body;
 
   //Validation
   if (!name || !email || !password) {
@@ -53,16 +53,16 @@ router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
   }
 
   //Check for existing user
-  User.findOne({ email: email }).then(user => {
+  User.findOne({ email: email }).then((user) => {
     if (user) return res.status(400).json({ msg: "User already exists" });
     const newUser = new User({
       name: name,
       email: email,
       password: password,
-      profileImage: req.file.path
+      profileImage: profileImage,
     });
 
-    newUser.save().then(user => {
+    newUser.save().then((user) => {
       jwt.sign(
         { id: user.id },
         config.jwtSecret,
@@ -75,8 +75,8 @@ router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
               id: user.id,
               name: user.name,
               email: user.email,
-              profileImage: user.profileImage
-            }
+              profileImage: user.profileImage,
+            },
           });
         }
       );
@@ -92,10 +92,10 @@ router.patch("/itinerary", (req, res) => {
   console.log(req.body.favorite);
   const newFavorite = req.body.favorite;
   const id = req.body.user;
-  User.findOne({ _id: id }, function(err, user) {
+  User.findOne({ _id: id }, function (err, user) {
     if (!user.favorites.includes(newFavorite)) {
       user.favorites.push(newFavorite);
-      user.save(function(err, user) {
+      user.save(function (err, user) {
         if (err) throw err;
         res.json(user);
       });
@@ -115,13 +115,13 @@ router.delete("/itinerary", async (req, res) => {
     { _id: id },
     {
       $pull: {
-        favorites: unFavorite
-      }
+        favorites: unFavorite,
+      },
     },
     { new: true }
   );
   if (user)
-    user.save(function(err, user) {
+    user.save(function (err, user) {
       if (err) throw err;
 
       res.json(user);

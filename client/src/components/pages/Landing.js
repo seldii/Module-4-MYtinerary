@@ -14,10 +14,10 @@ import Button from "@material-ui/core/Button";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     maxWidth: "100%",
-    flexGrow: 1
+    flexGrow: 1,
   },
 
   paper: {
@@ -26,27 +26,27 @@ const styles = theme => ({
     backgroundColor: "white",
     margin: "auto",
     fontStyle: "italic",
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
   },
   button: {
     marginBottom: theme.spacing(2),
     background: theme.palette.secondary.light,
     "&:hover": {
-      background: theme.palette.primary.light
+      background: theme.palette.primary.light,
     },
     color: "white",
     font: theme.typography.button,
     width: "100%",
     height: "2.5rem",
     [theme.breakpoints.up("sm")]: {
-      height: "3rem"
-    }
+      height: "3rem",
+    },
   },
   buttonBase: {
-    width: "100%"
+    width: "100%",
   },
   search: {
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
   },
 
   header: {
@@ -56,18 +56,18 @@ const styles = theme => ({
     alignItems: "center",
     justifyContent: "center",
     height: "40%",
-    fontSize: "1rem"
+    fontSize: "1rem",
   },
 
   description: {
     fontSize: "1.1rem",
-    color: "white"
+    color: "white",
   },
   buttonbase: {
     display: "flex",
     flexWrap: "wrap",
     minWidth: 300,
-    width: "100%"
+    width: "100%",
   },
   image: {
     position: "relative",
@@ -75,20 +75,20 @@ const styles = theme => ({
     width: "100%",
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
-      height: 100
+      height: 100,
     },
     "&:hover, &$focusVisible": {
       zIndex: 1,
       "& $imageBackdrop": {
-        opacity: 0.15
+        opacity: 0.15,
       },
       "& $imageMarked": {
-        opacity: 0
+        opacity: 0,
       },
       "& $imageTitle": {
-        border: "2px solid currentColor"
-      }
-    }
+        border: "2px solid currentColor",
+      },
+    },
   },
   focusVisible: {},
   imageButton: {
@@ -100,7 +100,7 @@ const styles = theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   imageSrc: {
     position: "absolute",
@@ -109,7 +109,7 @@ const styles = theme => ({
     top: 0,
     bottom: 0,
     backgroundSize: "cover",
-    backgroundPosition: "center 40%"
+    backgroundPosition: "center 40%",
   },
   imageBackdrop: {
     position: "absolute",
@@ -119,13 +119,14 @@ const styles = theme => ({
     bottom: 0,
     backgroundColor: theme.palette.common.black,
     opacity: 0.4,
-    transition: theme.transitions.create("opacity")
+    transition: theme.transitions.create("opacity"),
   },
   imageTitle: {
     position: "relative",
-    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) +
-      6}px`
-  }
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${
+      theme.spacing(1) + 6
+    }px`,
+  },
 });
 
 class Landing extends Component {
@@ -135,24 +136,24 @@ class Landing extends Component {
   }
 
   componentDidMount() {
-    this.props.getCities();
+    getCities();
   }
 
   handleNext() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return { activeStep: prevState.activeStep + 1 };
     });
   }
 
   handleBack() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return { activeStep: prevState.activeStep - 1 };
     });
   }
   render() {
-    const classes = this.props.classes;
+    const { classes, cities, auth, theme } = this.props;
     const activeStep = this.state.activeStep;
-    const maxSteps = this.props.cities.length;
+    const maxSteps = cities?.length;
 
     return (
       <div className={classes.root}>
@@ -195,34 +196,34 @@ class Landing extends Component {
                 </Typography>
               </Grid>
             </Grid>
-            {this.props.auth.isAuthenticated && this.props.cities ? (
+            {auth.isAuthenticated && cities.length ? (
               <div className={classes.root}>
                 <div className={classes.buttonbase}>
                   <ButtonBase
                     focusRipple
-                    key={this.props.cities[activeStep].name}
+                    key={cities[activeStep].name}
                     className={classes.image}
                     focusVisibleClassName={classes.focusVisible}
                     style={{
-                      width: this.props.cities[activeStep].image.width
+                      width: cities[activeStep].image.width,
                     }}
                   >
                     <Link
                       to={{
-                        pathname: `/cities/${this.props.cities[activeStep].name}`
+                        pathname: `/cities/${cities[activeStep].name}`,
                       }}
-                      params={{ cityName: this.props.cities[activeStep].name }}
+                      params={{ cityName: cities[activeStep].name }}
                     >
                       <span
                         className={classes.imageSrc}
                         style={{
-                          backgroundImage: `url(${this.props.cities[activeStep].image})`
+                          backgroundImage: `url(${cities[activeStep].image})`,
                         }}
                       />
                       <span className={classes.imageBackdrop} />
                       <span className={classes.imageButton}>
                         <Typography className={classes.imageTitle}>
-                          {this.props.cities[activeStep].name}
+                          {cities[activeStep].name}
                         </Typography>
                       </span>
                     </Link>
@@ -239,7 +240,7 @@ class Landing extends Component {
                       onClick={this.handleNext.bind(this)}
                       disabled={activeStep === maxSteps - 1}
                     >
-                      {this.props.theme.direction === "rtl" ? (
+                      {theme.direction === "rtl" ? (
                         <KeyboardArrowLeft />
                       ) : (
                         <KeyboardArrowRight />
@@ -252,7 +253,7 @@ class Landing extends Component {
                       onClick={this.handleBack.bind(this)}
                       disabled={activeStep === 0}
                     >
-                      {this.props.theme.direction === "rtl" ? (
+                      {theme.direction === "rtl" ? (
                         <KeyboardArrowRight />
                       ) : (
                         <KeyboardArrowLeft />
@@ -293,16 +294,16 @@ class Landing extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cities: state.cities.cities,
-  auth: state.auth
+  auth: state.auth,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getCities: () => {
       dispatch(getCities());
-    }
+    },
   };
 };
 export default connect(
