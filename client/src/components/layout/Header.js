@@ -17,7 +17,7 @@ const Header = () => {
           <Col xs style={{ margin: "auto" }}>
             <img
               className="headerImage"
-              src="/images/logo.png"
+              src="/images/logo_transparent.png"
               alt="header"
             ></img>
           </Col>
