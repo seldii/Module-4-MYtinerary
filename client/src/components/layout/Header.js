@@ -2,9 +2,10 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Nav from "./Nav";
 import { makeStyles } from "@material-ui/core/styles";
+import "./style.scss";
 
-const useStyles = makeStyles(theme => ({
-  header: {}
+const useStyles = makeStyles((theme) => ({
+  header: {},
 }));
 
 const Header = () => {
@@ -13,7 +14,13 @@ const Header = () => {
     <header className={classes.header}>
       <Container>
         <Row style={{ flexWrap: "nowrap" }}>
-          <Col xs style={{ margin: "auto" }} />
+          <Col xs style={{ margin: "auto" }}>
+            <img
+              className="headerImage"
+              src="/images/logo.png"
+              alt="header"
+            ></img>
+          </Col>
           <Col xs style={{ margin: "auto", padding: "0px" }}>
             <Nav />
           </Col>

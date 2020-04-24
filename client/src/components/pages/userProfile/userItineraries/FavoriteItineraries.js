@@ -18,16 +18,24 @@ export class MyItineraries extends Component {
     this.state = {
       itineraries: null,
     };
+    this.props.getUser();
+    this.props.getItineraries();
+  }
+
+  componentDidMount() {
+    const { auth } = this.props;
+    this.props.getItinerariesByUser(auth?.user?.id);
     this.getItineraries();
   }
 
-  getItineraries = async () => {
+  getItineraries = () => {
     let itinerariesSet = new Set();
-    const itineraries = await this.props.itineraries;
+    const itineraries = this.props.itineraries;
+
     for (let i of itineraries) {
       itinerariesSet.add(i._id);
     }
-    await this.setState({
+    this.setState({
       itineraries: itinerariesSet,
     });
   };
@@ -79,8 +87,22 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getItinerariesByUser: (userId) => {
+      dispatch(getItinerariesByUser(userId));
+    },
+
+    getItineraries: () => {
+      dispatch(getItineraries());
+    },
+
+    getUser: () => {
+      dispatch(loadUser());
+    },
+  };
+};
+
 export default withRouter(
-  connect(mapStateToProps, { loadUser, getItinerariesByUser, getItineraries })(
-    MyItineraries
-  )
+  connect(mapStateToProps, mapDispatchToProps)(MyItineraries)
 );

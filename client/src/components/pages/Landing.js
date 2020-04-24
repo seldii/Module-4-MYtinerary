@@ -136,7 +136,7 @@ class Landing extends Component {
   }
 
   componentDidMount() {
-    getCities();
+    this.props.getCities();
   }
 
   handleNext() {
