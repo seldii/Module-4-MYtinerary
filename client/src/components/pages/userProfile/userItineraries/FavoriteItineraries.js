@@ -12,69 +12,53 @@ import Divider from "@material-ui/core/Divider";
 import Footer from "../../../layout/Footer";
 import NotFoundPage from "./NotFoundPage";
 
-export class MyItineraries extends Component {
+export class FavoriteItineraries extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itineraries: null,
+      favItineraries: [],
     };
-    this.props.getUser();
-    this.props.getItineraries();
   }
 
   componentDidMount() {
-    const { auth } = this.props;
-    this.props.getItinerariesByUser(auth?.user?.id);
-    this.getItineraries();
+    const { loadUser, getItineraries } = this.props;
+    loadUser();
+    getItineraries();
+    this.getFavoriteItineraries();
   }
 
-  getItineraries = () => {
-    let itinerariesSet = new Set();
-    const itineraries = this.props.itineraries;
+  getFavoriteItineraries = () => {
+    const { itineraries, auth } = this.props;
+    const { favorites } = auth?.user;
 
-    for (let i of itineraries) {
-      itinerariesSet.add(i._id);
-    }
-    this.setState({
-      itineraries: itinerariesSet,
-    });
+    console.log({ itineraries });
+
+    const favItineraries = itineraries.length
+      ? favorites?.map((favorite) => {
+          console.log(favorite);
+          return itineraries.find((i) => i._id === favorite);
+        })
+      : [];
+    console.log(favItineraries);
+
+    this.setState({ favItineraries });
   };
 
   render() {
-    let favItineraries = [];
-    let itineraryList;
-    const { favorites } = this.props.auth.user || [];
-    if (this.state.itineraries && favorites) {
-      for (let fav of favorites) {
-        if (this.state.itineraries.has(fav)) {
-          for (let i of this.props.itineraries) {
-            if (i._id === fav) favItineraries.push(i);
-          }
-        }
-      }
-
-      if (!favItineraries.length) {
-        itineraryList = <NotFoundPage />;
-      } else {
-        itineraryList = favItineraries.map((i) => {
-          return <ItineraryCard key={i._id} itinerary={i} />;
-        });
-      }
-    } else {
-      itineraryList = <div>Loading...</div>;
-    }
-
     return (
       <React.Fragment>
         <Divider />
-        {itineraryList}
+        {this.state.favItineraries.length &&
+          this.state.favItineraries.map((i) => (
+            <ItineraryCard key={i._id} itinerary={i} />
+          ))}
         <Footer />
       </React.Fragment>
     );
   }
 }
 
-MyItineraries.propTypes = {
+FavoriteItineraries.propTypes = {
   loadUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   itineraries: PropTypes.array.isRequired,
@@ -87,7 +71,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+/* const mapDispatchToProps = (dispatch) => {
   return {
     getItinerariesByUser: (userId) => {
       dispatch(getItinerariesByUser(userId));
@@ -101,8 +85,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(loadUser());
     },
   };
-};
+}; */
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(MyItineraries)
+  connect(mapStateToProps, { getItineraries, loadUser })(FavoriteItineraries)
 );

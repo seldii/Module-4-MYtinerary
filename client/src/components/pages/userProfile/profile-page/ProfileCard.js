@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProfileCard = ({ user }) => {
+const ProfileCard = ({ user, itineraries }) => {
   const classes = useStyles();
   const { name, image, profileImage } = user;
 
@@ -35,6 +35,10 @@ const ProfileCard = ({ user }) => {
           src={image || "/" + profileImage}
           className={classes.avatar}
         />
+        <div>
+          <span>{itineraries ? itineraries.length : ""}</span>
+          <span>Itineraries</span>
+        </div>
       </Grid>
 
       <Grid className={classes.nameTag}>

@@ -1,36 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getItinerariesByUser } from "../../../../store/actions/itineraryAction";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import ItineraryCard from "../../Itinerary/ItineraryCard";
 import { Divider } from "@material-ui/core/";
+import { loadUser } from "../../../../store/actions/authActions";
+import { getItinerariesByUser } from "../../../../store/actions/itineraryAction";
 import Footer from "../../../layout/Footer";
 import NotFoundPage from "./NotFoundPage";
 
-const MyItineraries = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const userId = useSelector((state) => state.auth?.user?._id);
-  const itinerariesByUser = useSelector(
-    (state) => state.itineraries.itinerariesByUser
-  );
-  const dispatch = useDispatch();
+export class MyItineraries extends Component {
+  componentDidMount() {
+    const { getItinerariesByUser, getUser, auth } = this.props;
+    getUser();
+    getItinerariesByUser(auth.user?._id);
+  }
 
-  useEffect(() => {
-    try {
-      const iti = async () => {
-        await dispatch(getItinerariesByUser(userId));
-        await setIsLoading(false);
-      };
-      iti();
-    } catch (err) {
-      console.log(err);
-    }
-  }, [itinerariesByUser]);
+  render() {
+    const { itinerariesByUser } = this.props;
+    let itineraryList;
 
-  let itineraryList;
-  if (isLoading) {
-    itineraryList = <div>Loading..</div>;
-  } else {
     if (itinerariesByUser.length) {
       itineraryList = itinerariesByUser.map((i) => {
         return <ItineraryCard key={i._id} itinerary={i} />;
@@ -38,15 +26,33 @@ const MyItineraries = (props) => {
     } else {
       itineraryList = <NotFoundPage />;
     }
-  }
 
-  return (
-    <React.Fragment>
-      <Divider variant="middle" />
-      {itineraryList}
-      <Footer />
-    </React.Fragment>
-  );
+    return (
+      <React.Fragment>
+        <Divider variant="middle" />
+        {itineraryList}
+        <Footer />
+      </React.Fragment>
+    );
+  }
+}
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  itinerariesByUser: state.itineraries.itinerariesByUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getItinerariesByUser: (userId) => {
+      dispatch(getItinerariesByUser(userId));
+    },
+
+    getUser: () => {
+      dispatch(loadUser());
+    },
+  };
 };
 
-export default withRouter(MyItineraries);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MyItineraries)
+);

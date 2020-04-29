@@ -6,9 +6,9 @@ const multer = require("multer");
 //where sould the upcoming file be stored
 const storage = multer.diskStorage({
   destination: `./uploads/activityPics`,
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
-  }
+  },
 });
 //file filters accept or deny the file
 const fileFilter = (req, file, cb) => {
@@ -19,9 +19,9 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 5
+    fileSize: 1024 * 1024 * 5,
   },
-  fileFilter: fileFilter
+  fileFilter: fileFilter,
 }).any();
 
 //Itinerary Model
@@ -47,12 +47,12 @@ router.post("/", upload, itineraryValidation, async (req, res) => {
     price,
     hashtag,
     comments,
-    description
+    description,
   } = req.body;
   const user = {
     _id: userId,
     image: userPic,
-    name: userName
+    name: userName,
   };
 
   const descriptions = description.split(",");
@@ -62,7 +62,7 @@ router.post("/", upload, itineraryValidation, async (req, res) => {
   descriptions.forEach((d, i) => {
     activities.push({
       description: d,
-      image: req.files[i].path
+      image: req.files[i].path,
     });
   });
 
@@ -80,9 +80,9 @@ router.post("/", upload, itineraryValidation, async (req, res) => {
       price,
       hashtag,
       comments,
-      activities
+      activities,
     });
-    newItinerary.save().then(itinerary => res.send(itinerary));
+    newItinerary.save().then((itinerary) => res.send(itinerary));
   } catch (err) {
     res.status(500).send("Server Error");
   }
@@ -100,7 +100,7 @@ router.patch("/:id", itineraryValidation, auth, async (req, res) => {
       req.body,
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
     if (!itinerary) {
@@ -141,9 +141,9 @@ router.delete("/itinerary/:id", async (req, res) => {
     {
       $pull: {
         comments: {
-          date: date
-        }
-      }
+          date: date,
+        },
+      },
     },
     { new: true }
   );

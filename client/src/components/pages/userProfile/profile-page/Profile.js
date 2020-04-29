@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProfileCard from "./ProfileCard";
 import { loadUser } from "../../../../store/actions/authActions";
+import { getItinerariesByUser } from "../../../../store/actions/itineraryAction";
 import LogOut from "../../../Auth/LogOut";
 
 class Profile extends Component {
@@ -18,22 +19,29 @@ class Profile extends Component {
   };
 
   componentDidMount = () => {
-    console.log("componentDidMount");
-    this.props.loadUser();
+    const { getUser, getItinerariesByUser, auth } = this.props;
+    getUser();
+    getItinerariesByUser(auth.user?._id);
   };
   render() {
-    const { user } = this.props.auth;
+    const {
+      auth: { user },
+      itinerariesByUser,
+    } = this.props;
 
     return (
       <div>
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid container justify="center" alignItems="center">
-            <ProfileCard user={user || ""}></ProfileCard>
+            <ProfileCard
+              user={user || ""}
+              itineraries={itinerariesByUser}
+            ></ProfileCard>
           </Grid>
           <Grid></Grid>
           <Grid container justify="center" alignItems="center">
             <FontAwesomeIcon icon="sign-out-alt" />
-            <LogOut></LogOut>
+            <LogOut />
           </Grid>
         </Grid>
       </div>
@@ -43,5 +51,18 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  itinerariesByUser: state.itineraries.itinerariesByUser,
 });
-export default connect(mapStateToProps, { loadUser })(Profile);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getItinerariesByUser: (userId) => {
+      dispatch(getItinerariesByUser(userId));
+    },
+
+    getUser: () => {
+      dispatch(loadUser());
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
