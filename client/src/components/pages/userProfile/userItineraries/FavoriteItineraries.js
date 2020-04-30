@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUser } from "../../../../store/actions/authActions";
-import {
-  getItinerariesByUser,
-  getItineraries,
-} from "../../../../store/actions/itineraryAction";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import ItineraryCard from "../../../pages/Itinerary/ItineraryCard";
 import Divider from "@material-ui/core/Divider";
+import * as actionCreators from "../../../../store/actions/index";
 import Footer from "../../../layout/Footer";
 import NotFoundPage from "./NotFoundPage";
 
@@ -21,10 +17,8 @@ export class FavoriteItineraries extends Component {
   }
 
   componentDidMount() {
-    const { loadUser, getItineraries } = this.props;
-    loadUser();
-    getItineraries();
-    this.getFavoriteItineraries();
+    this.props.getUser();
+    this.props.initItineraries();
   }
 
   getFavoriteItineraries = () => {
@@ -33,7 +27,7 @@ export class FavoriteItineraries extends Component {
 
     console.log({ itineraries });
 
-    const favItineraries = itineraries.length
+    const favItineraries = itineraries
       ? favorites?.map((favorite) => {
           console.log(favorite);
           return itineraries.find((i) => i._id === favorite);
@@ -48,8 +42,8 @@ export class FavoriteItineraries extends Component {
     return (
       <React.Fragment>
         <Divider />
-        {this.state.favItineraries.length &&
-          this.state.favItineraries.map((i) => (
+        {this.props.itineraries &&
+          this.props.itineraries.map((i) => (
             <ItineraryCard key={i._id} itinerary={i} />
           ))}
         <Footer />
@@ -71,22 +65,18 @@ const mapStateToProps = (state) => {
   };
 };
 
-/* const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getItinerariesByUser: (userId) => {
-      dispatch(getItinerariesByUser(userId));
-    },
-
-    getItineraries: () => {
-      dispatch(getItineraries());
+    initItineraries: () => {
+      dispatch(actionCreators.getItineraries());
     },
 
     getUser: () => {
-      dispatch(loadUser());
+      dispatch(actionCreators.loadUser());
     },
   };
-}; */
+};
 
 export default withRouter(
-  connect(mapStateToProps, { getItineraries, loadUser })(FavoriteItineraries)
+  connect(mapStateToProps, mapDispatchToProps)(FavoriteItineraries)
 );

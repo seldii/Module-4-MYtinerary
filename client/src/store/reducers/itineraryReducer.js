@@ -1,81 +1,81 @@
-import {
-  GET_ITINERARIES,
-  GET_ITINERARY,
-  CREATE_ITINERARY,
-  DELETE_ITINERARY,
-  UPDATE_ITINERARY,
-  GET_ITINERARIES_BY_CITYNAME,
-  GET_ITINERARIES_BY_USER
-} from "../actions/types";
+import * as actionTypes from "../actions/types";
 
 const initialState = {
-  itineraries: [],
+  itineraries: null,
   itinerary: null,
   itinerariesByCity: [],
   itinerariesByUser: [],
-  loading: true
+  loading: true,
+  error: false,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
-    case GET_ITINERARIES:
+    case actionTypes.GET_ITINERARIES:
       return {
         ...state,
-        itineraries: action.payload,
-        loading: false
+        itineraries: action.itineraries,
+        loading: false,
+        error: false,
       };
-    case GET_ITINERARY:
+    case actionTypes.FETCH_ITINERARIES_FAILED:
+      return {
+        ...state,
+        error: true,
+        loading: false,
+      };
+    case actionTypes.GET_ITINERARY:
       return {
         ...state,
         itinerary: action.payload,
-        loading: false
+        loading: false,
       };
 
-    case GET_ITINERARIES_BY_CITYNAME:
+    case actionTypes.GET_ITINERARIES_BY_CITYNAME:
       return {
         ...state,
-        itinerariesByCity: action.payload
+        itinerariesByCity: action.payload,
       };
-    case GET_ITINERARIES_BY_USER:
+    case actionTypes.GET_ITINERARIES_BY_USER:
       return {
         ...state,
-        itinerariesByUser: action.payload
+        itinerariesByUser: action.payload,
       };
-    case CREATE_ITINERARY:
+    case actionTypes.CREATE_ITINERARY:
       return {
         ...state,
         itineraries: [action.payload, ...state.itineraries],
         itinerariesByUser: [action.payload, ...state.itinerariesByUser],
-        loading: false
+        loading: false,
       };
 
-    case UPDATE_ITINERARY:
+    case actionTypes.UPDATE_ITINERARY:
       return {
         ...state,
         itineraries: [
           action.payload,
           ...state.itineraries.filter(
-            itinerary => itinerary._id !== action.payload._id
-          )
+            (itinerary) => itinerary._id !== action.payload._id
+          ),
         ],
         itinerariesByUser: [
           action.payload,
           ...state.itinerariesByUser.filter(
-            itinerary => itinerary._id !== action.payload._id
-          )
+            (itinerary) => itinerary._id !== action.payload._id
+          ),
         ],
-        loading: false
+        loading: false,
       };
-    case DELETE_ITINERARY:
+    case actionTypes.DELETE_ITINERARY:
       return {
         ...state,
         itineraries: state.itineraries.filter(
-          itinerary => itinerary._id !== action.payload
+          (itinerary) => itinerary._id !== action.payload
         ),
         itinerariesByUser: state.itinerariesByUser.filter(
-          itinerary => itinerary._id !== action.payload
+          (itinerary) => itinerary._id !== action.payload
         ),
-        loading: false
+        loading: false,
       };
 
     default:
