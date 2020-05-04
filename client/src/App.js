@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   withRouter,
-  Switch
+  Switch,
 } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Landing from "./components/pages/Landing";
@@ -38,7 +38,7 @@ import {
   faPaperPlane,
   faUnlockAlt,
   faSignOutAlt,
-  faArrowAltCircleLeft
+  faArrowAltCircleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -59,12 +59,12 @@ library.add(
   faArrowAltCircleLeft
 );
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     [theme.breakpoints.up("sm")]: {
-      width: "60% !important"
-    }
-  }
+      width: "60% !important",
+    },
+  },
 });
 
 class App extends Component {
@@ -107,7 +107,7 @@ class App extends Component {
                       textAlign: "center",
                       marginTop: "56px",
                       color: "#006064",
-                      opacity: "0.7"
+                      opacity: "0.7",
                     }}
                   >
                     Page Not Found!

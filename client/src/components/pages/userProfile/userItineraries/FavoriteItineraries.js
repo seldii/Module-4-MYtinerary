@@ -19,26 +19,17 @@ export class FavoriteItineraries extends Component {
   componentDidMount() {
     this.props.getUser();
     this.props.initItineraries();
+    this.getFavoriteItineraries();
   }
 
-  getFavoriteItineraries = () => {
-    const { itineraries, auth } = this.props;
-    const { favorites } = auth?.user;
-
-    console.log({ itineraries });
-
-    const favItineraries = itineraries
-      ? favorites?.map((favorite) => {
-          console.log(favorite);
-          return itineraries.find((i) => i._id === favorite);
-        })
-      : [];
-    console.log(favItineraries);
-
-    this.setState({ favItineraries });
+  getFavoriteItineraries = async () => {
+    const { auth } = await this.props;
+    console.log(auth.user);
+    await this.props.getFavoriteItineraries(auth.user);
   };
 
   render() {
+    console.log(this.props.favorites);
     return (
       <React.Fragment>
         <Divider />
@@ -61,18 +52,22 @@ FavoriteItineraries.propTypes = {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    favorites: state.favorites.favorites,
     itineraries: state.itineraries.itineraries,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, state) => {
   return {
+    getUser: () => {
+      dispatch(actionCreators.loadUser());
+    },
     initItineraries: () => {
       dispatch(actionCreators.getItineraries());
     },
 
-    getUser: () => {
-      dispatch(actionCreators.loadUser());
+    getFavoriteItineraries: (user) => {
+      dispatch(actionCreators.fetchFavorites(user));
     },
   };
 };

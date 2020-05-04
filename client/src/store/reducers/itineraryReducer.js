@@ -1,10 +1,16 @@
 import * as actionTypes from "../actions/types";
+import store from "../../store";
+
+console.log(store);
+
+/* const favorites = store.getState().favorites.favorites; */
 
 const initialState = {
   itineraries: null,
   itinerary: null,
   itinerariesByCity: [],
   itinerariesByUser: [],
+  favoriteItineraries: [],
   loading: true,
   error: false,
 };
@@ -41,6 +47,16 @@ export default function (state = initialState, action) {
         ...state,
         itinerariesByUser: action.payload,
       };
+    /*    case actionTypes.GET_FAVORITE_ITINERARIES:
+      return {
+        ...state,
+        favoriteItineraries: [
+          ...favorites?.map((favorite) => {
+            console.log(favorite);
+            return state.itineraries.find((i) => i._id === favorite);
+          }),
+        ],
+      }; */
     case actionTypes.CREATE_ITINERARY:
       return {
         ...state,

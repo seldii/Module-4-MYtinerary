@@ -84,12 +84,26 @@ router.post("/", userValidation, upload.single("profileImage"), (req, res) => {
   });
 });
 
+//@router  GET /users
+//@desc Fetch the itinerary to the favorites
+//@access Private
+
+router.get("/favorites/:id", async (req, res) => {
+  console.log(req.params);
+  try {
+    const user = await User.findById(req.params.id);
+    res.send(user.favorites);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //@router  PATCH /users
 //@desc Add the itinerary to the favorites
 // @access Private
 
 router.patch("/itinerary", (req, res) => {
-  console.log(req.body.favorite);
+  console.log(req.body);
   const newFavorite = req.body.favorite;
   const id = req.body.user;
   User.findOne({ _id: id }, function (err, user) {

@@ -9,3 +9,5 @@ export {
 } from "./itineraryAction";
 
 export { loadUser } from "./authActions";
+
+export { fetchFavorites } from "./favoriteActions";
